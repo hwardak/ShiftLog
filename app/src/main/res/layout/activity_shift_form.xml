@@ -1,0 +1,992 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hwardak.shiftlog.ShiftFormActivity"
+    android:orientation="vertical"
+    >
+
+
+    <TextView
+        android:id="@+id/infoBannerTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:textSize="@dimen/subtitle_font_size"
+        android:visibility="visible" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/nameLinearLayout">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:text="Name: "
+                    android:textSize="@dimen/subtitle_font_size"
+                    />
+
+                <EditText
+                    android:id="@+id/employeeNameEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="Name"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:enabled="false"
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/timeLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Time: "
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:visibility="gone" />
+                <!--Change to textview.-->
+                <EditText
+                    android:id="@+id/timeEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:enabled="false"
+                    android:text=""
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/dateLinearLayout">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:text="Date: "
+                    android:textSize="@dimen/subtitle_font_size"
+                    />
+
+                <EditText
+                    android:id="@+id/dateEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:enabled="false"
+                    android:text="Date"
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/startTimeLinearLayout">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:text="Start time: "
+                    android:textSize="@dimen/subtitle_font_size"
+                    />
+
+                <EditText
+                    android:id="@+id/startTimeEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="ex 22:45"
+                    android:inputType="time"
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/endTimeLinearLayout">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:text="End time: "
+                    android:textSize="@dimen/subtitle_font_size"
+                    />
+
+                <EditText
+                    android:id="@+id/endTimeEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:hint="ex 22:45"
+                    android:inputType="time"
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+
+            <RadioGroup
+                android:id="@+id/tillNumberRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:text="Till #: "
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="One"
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Two"
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Over Lap"
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </RadioGroup>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/startingTillAmountLinearLayout">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:text="Starting Till $: "
+                    android:textSize="@dimen/subtitle_font_size"
+                    />
+
+                <EditText
+                    android:id="@+id/startingTillAmountEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:inputType="numberDecimal"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/finalDropLinearLayout">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:text="Final Drop $: "
+                    android:textSize="@dimen/subtitle_font_size"
+                    />
+
+                <EditText
+                    android:id="@+id/finalDropAmountEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/redemptionsLinearLayout">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1.5"
+                    android:layout_height="wrap_content"
+                    android:text="Redemptions $: "
+                    android:textSize="@dimen/subtitle_font_size"
+                    />
+
+                <EditText
+                    android:id="@+id/redemptionsEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:inputType="numberDecimal"
+                    android:hint="Fuel, Giftcards, and/or Lotto..."
+                    />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lotto Count"
+                android:textSize="@dimen/title_font_size"
+                android:gravity="center_horizontal"
+                android:id="@+id/lottoCountTitle"
+                android:paddingTop="15sp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Value $"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Open"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Add"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Close"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Sold"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Passport"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <EditText
+                    android:id="@+id/lotto1Open"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto1Add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto1Close"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto1Sold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto1Passport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <EditText
+                    android:id="@+id/lotto2Open"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto2Add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto2Close"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto2Sold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto2Passport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <EditText
+                    android:id="@+id/lotto3Open"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto3Add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto3Close"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto3Sold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto3Passport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <EditText
+                    android:id="@+id/lotto4Open"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto4Add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto4Close"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto4Sold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto4Passport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <EditText
+                    android:id="@+id/lotto5Open"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto5Add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto5Close"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto5Sold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto5Passport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <EditText
+                    android:id="@+id/lotto10Open"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto10Add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto10Close"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto10Sold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto10Passport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <EditText
+                    android:id="@+id/lotto20Open"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto20Add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto20Close"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto20Sold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto20Passport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:backgroundTint="@color/colorPrimary"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="30"
+                    android:textSize="@dimen/subtitle_font_size"
+                    android:gravity="center_horizontal"
+
+                    />
+
+                <EditText
+                    android:id="@+id/lotto30Open"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto30Add"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto30Close"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto30Sold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lotto30Passport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <EditText
+                    android:id="@+id/lottoOtherValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:hint="Other..."
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lottoOtherOpen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lottoOtherAdd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lottoOtherClose"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+                <EditText
+                    android:id="@+id/lottoOtherSold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+
+                <EditText
+                    android:id="@+id/lottoOtherPassport"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text=""
+
+                    android:textSize="@dimen/subtitle_font_size" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="15sp"
+                >
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="openShiftButtonOnClick"
+                    android:text="Open Shift" />
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Close Shift"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

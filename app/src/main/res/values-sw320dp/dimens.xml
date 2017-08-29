@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <dimen name="title_font_size">25sp</dimen>
+
+    <dimen name="subtitle_font_size">16sp</dimen>
+
+    <dimen name="button_font_size">14sp</dimen>
+
+    <dimen name="generic_font_size">14sp</dimen>
+
+
+    <dimen name="image_view_height">180sp</dimen>
+
+</resources>

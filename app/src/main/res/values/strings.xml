@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">ShiftLog</string>
+    <string name="settings_instructions">In order to export your rewash reports, you will need a GMail account. That GMail account will be used to send your rewash reports to your recipient email of choice.</string>
+    <string-array name="months_array">
+        <item>All Months</item>
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+    <string-array name="years_array">
+        <item>All Years</item>
+        <item>This year</item>
+        <item>Last year</item>
+    </string-array>
+
+    <string name="test_string">XXXXXXXX</string>
+
+    <string name="IdEditTextHint">Please enter your ID…</string>
+
+</resources>

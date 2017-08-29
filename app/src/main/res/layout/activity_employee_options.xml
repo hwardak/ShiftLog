@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_manager_options"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hwardak.shiftlog.EmployeeOptions"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Add Employee"
+            android:onClick="addEmployeeButtonOnClick"
+            android:id="@+id/addEmployeeButton"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Delete Employee"
+            android:onClick="onDeleteButtonClick"
+            android:id="@+id/deleteEmployeeButton"
+            android:enabled="false"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/employeeOptionsAddEmployeeLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/employeeOptionsIdEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elevation="24dp"
+            android:hint="Enter Id..."
+            android:inputType="number"
+            android:lines="1"
+            android:maxLength="5"
+            android:textColorHint="#8FF742" />
+
+        <EditText
+            android:id="@+id/employeeOptionsNameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Enter Name..."
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColorHint="#8FF742"
+            />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Employees -"
+        android:textSize="25sp"
+        android:gravity="center_horizontal" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        >
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/employeeListView"
+            >
+
+
+        </ListView>
+
+
+    </ScrollView>
+
+</LinearLayout>
