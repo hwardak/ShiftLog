@@ -71,7 +71,7 @@ public class ShiftFormActivity extends AppCompatActivity {
 
         employeeHasOpenShift = this.doesEmployeeHaveOpenShift(userID);
 
-        if(employeeHasOpenShift){
+        if (employeeHasOpenShift) {
             ArrayList<String> shiftData = shiftsDataAccess.getEmployeesOpenShiftData(userID);
             this.loadExistingForm(shiftData);
 
@@ -83,7 +83,7 @@ public class ShiftFormActivity extends AppCompatActivity {
     }
 
     private boolean doesEmployeeHaveOpenShift(int userID) {
-        if(shiftsDataAccess.doesEmployeeHaveOpenShift(userID)){
+        if (shiftsDataAccess.doesEmployeeHaveOpenShift(userID)) {
             return true;
         } else {
             return false;
@@ -102,7 +102,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         employeeNameEditText = (EditText) findViewById(R.id.employeeNameEditText);
         dateEditText = (EditText) findViewById(R.id.dateEditText);
         declaredStartTimeEditText = (EditText) findViewById(R.id.startTimeEditText);
-        declaredEndTimeEditText = (EditText) findViewById(R.id.endTimeEditText);
+//        declaredEndTimeEditText = (EditText) findViewById(R.id.endTimeEditText);
         startingTillAmountEditText = (EditText) findViewById(R.id.startingTillAmountEditText);
         finalDropAmountEditText = (EditText) findViewById(R.id.finalDropAmountEditText);
         redemptionsEditText = (EditText) findViewById(R.id.redemptionsEditText);
@@ -120,7 +120,7 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
-    private void loadExistingForm(ArrayList<String> shiftData){
+    private void loadExistingForm(ArrayList<String> shiftData) {
         employeeName = shiftData.get(0);
         employeeNameEditText.setText(employeeName);
 
@@ -137,7 +137,6 @@ public class ShiftFormActivity extends AppCompatActivity {
         startingTillAmountEditText.setText(String.valueOf(startingTillAmount));
 
 
-
     }
 
     private void getStartTimeDate() {
@@ -149,7 +148,6 @@ public class ShiftFormActivity extends AppCompatActivity {
     }
 
 
-
     public void openShiftButtonOnClick(View view) {
         actualStartTime = calendar.getTime().toString().substring(11, 16);
         checkOpeningFormFields();
@@ -157,76 +155,86 @@ public class ShiftFormActivity extends AppCompatActivity {
     }
 
 
-
-    private void checkOpeningFormFields(){
-        isDeclaredStartTimeValid();
-
+    private void checkOpeningFormFields() {
 
     }
 
-    private boolean isDeclaredStartTimeValid() {
-        declaredStartTime = declaredStartTimeEditText.getText().toString();
-        String formErrors = "";
-        boolean formValidationPass = true;
+//    //TODO: add zero to start of time if length is 3.
+//    private boolean isDeclaredStartTimeValid() {
+//        declaredStartTime = declaredStartTimeEditText.getText().toString();
+//        String formErrors = "";
+//        int hour;
+//        int minute;
+//        boolean formValidationPass = true;
+//
+//        Log.d("declaredStart", declaredStartTime);
+//
+//        //remove semicolon.
+//        declaredStartTime = declaredStartTime.replace(":", "");
+//
+//        //Check if declared time is NULL and between 3 and 4 chars in length.
+//        if (declaredStartTime != null && (declaredStartTime.length() >= 3 && declaredStartTime.length() <= 4)) {
+//
+//            //If the declaredStartTime length is, a zero will be added to the begining of the String.
+//            // 930 = 0930
+//            if (declaredStartTime.length() == 3) {
+//                declaredStartTime = "0" + declaredStartTime;
+//            }
+//
+//            hour = Integer.parseInt(declaredStartTime.substring(0, 2));
+//            minute = Integer.parseInt(declaredStartTime.substring(2));
+//
+//            Log.d("hour", " " + hour);
+//            Log.d("min", " " + minute);
+//
+//            //check if hour is valid, greater than 0 and less than 24.
+//            if (!(hour >= 0 && hour < 24)) {
+//                formErrors += "Starting time invalid HOUR\n";
+//                formValidationPass = false;
+//            }
+//
+//            //check if minute is valid, greater than 0, and less than 59.
+//            if (!(minute >= 0 && minute < 59)) {
+//                formErrors += "Starting time invalid MINUTE\n";
+//                formValidationPass = false;
+//
+//            }
+//        } else {
+//            formValidationPass = false;
+//            formErrors += "Invalid starting time format.\n";
+//        }
+//
+//        if(formValidationPass){
+//            declaredStartTimeEditText.setText(declaredStartTime);
+//        }
+//        updateInfoBanner(formErrors);
+//
+//        return formValidationPass;
+//
+//    }
 
-        Log.d("declaredStart", declaredStartTime);
+    private void updateInfoBanner(String formErrors) {
+        infoBannerTextView.setText(formErrors);
+    }
 
+    //TODO: add one to two zeros to end of starting till
+    public boolean isStartingTillValid() {
+        String formErrors;
+        if (!startingTillAmountEditText.getText().toString().equals("")) {
+            if(!startingTillAmountEditText.getText().toString().contains(".")){
+                String startingTillPlusDecimalAndZeros = startingTillAmountEditText.getText().toString() + ".00";
+                startingTillAmountEditText.setText(startingTillPlusDecimalAndZeros);
+            }
+            startingTillAmount = Double.parseDouble(startingTillAmountEditText.getText().toString());
+            Log.d("Starting Till", " " + startingTillAmount);
 
-        //check if entry was made, and if its the correct length, taking into account that the
-        //semicolon may or may not be present
-        if(declaredStartTime != null && (declaredStartTime.length() >= 3 && declaredStartTime.length() <= 5)) {
-
-            declaredStartTime.replace(":", "");
-            //check for semicolon.
-            if (!declaredStartTime.contains(":")) {
-                Log.d("Semicolon" , "No");
-                Log.d("hour",declaredStartTime.substring(0,2));
-                Log.d("min",declaredStartTime.substring(2,4));
-                //check if hour is valid, greater than 0 and less than 24.
-                if (!(Integer.parseInt(declaredStartTime.substring(0, 2)) >= 0
-                        && Integer.parseInt(declaredStartTime.substring(0, 2)) < 24)) {
-                    formErrors += "Starting time invalid HOUR\n";
-                    formValidationPass = false;
-
-                }
-                //check if minute is valid, greater than 0, and less than 59.
-                if (!(Integer.parseInt(declaredStartTime.substring(2, 4)) >= 0
-                        && Integer.parseInt(declaredStartTime.substring(2, 4)) < 59)) {
-                    formErrors += "Starting time invalid MINUTE\n";
-                    formValidationPass = false;
-
-                }
-
-
-            } else {
-                Log.d("Semicolon" , "Yes");
-                Log.d("hour", declaredStartTime.substring(0, 2));
-                Log.d("min", declaredStartTime.substring(3, 5));
-
-                //check if hour is valid, greater than 0 and less than 24.
-                if (!(Integer.parseInt(declaredStartTime.substring(0, 2)) >= 0
-                        && Integer.parseInt(declaredStartTime.substring(0, 2)) < 24)) {
-                    formErrors += "Starting time invalid HOUR\n";
-                    formValidationPass = false;
-
-                }
-                //check if minute is valid, greater than 0, and less than 59.
-                if (!(Integer.parseInt(declaredStartTime.substring(3, 5)) >= 0
-                        && Integer.parseInt(declaredStartTime.substring(3, 5)) < 59)) {
-                    formErrors += "Starting time invalid MINUTE\n";
-                    formValidationPass = false;
-
-                }
+            if (startingTillAmount > 0) {
+                return true;
             }
         }
-        if (!formValidationPass) {
-            infoBannerTextView.setText(formErrors);
-        } else {
-            infoBannerTextView.setText("");
-        }
-
-        return formValidationPass;
-
+//        formErrors += "Invalid Starting Till";
+        return false;
     }
-}
 
+
+}
