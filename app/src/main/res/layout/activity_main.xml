@@ -22,10 +22,10 @@
             android:textSize="@dimen/title_font_size" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/image_view_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="#193078fd"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/shift_log_logo"
             />
 
 
@@ -68,11 +68,6 @@
 
         </LinearLayout>
 
-
-
-
-
-        
 
     </LinearLayout>
 

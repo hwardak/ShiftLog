@@ -167,71 +167,6 @@ public class ShiftFormActivity extends AppCompatActivity {
         }
     }
 
-    private void preloadStartTime() {
-//        Log.d("PreloadStartTime", calendar.getTime().toString().substring(11, 16));
-//        Log.d("PreloadStartTimeHour", calendar.getTime().toString().substring(11, 13));
-//        Log.d("PreloadStartTimeMinute", calendar.getTime().toString().substring(14, 16));
-
-        int hour = Integer.parseInt(calendar.getTime().toString().substring(11, 13));
-        int minute = Integer.parseInt(calendar.getTime().toString().substring(14, 16));
-        String hourString = "";
-        String minuteString = "";
-
-
-        //Convert hour from 24hr to 12hr format and toggle AmPm toggleButton.
-        if (hour == 0) {
-            hour = 12;
-            startTimeAmPmToggleButton.setChecked(false);
-        } else if (hour > 12) {
-            hour = hour - 12;
-            startTimeAmPmToggleButton.setChecked(true);
-        }
-
-
-
-
-//      Round minute to closest quarter.
-        if (minute < 7) {
-            minuteString = "00";
-        } else if (minute > 8 && minute < 22) {
-            minuteString = "15";
-        } else if (minute > 22 && minute < 37) {
-            minuteString = "30";
-        } else if (minute > 37 && minute < 52) {
-            minuteString = "45";
-        } else if (minute > 52){
-            hour++;
-            minuteString = "00";
-        }
-
-
-        hourString = Integer.toString(hour);
-
-
-
-
-//        Log.d("PreloadHour",  " " + hour);
-//        Log.d("PreloadMinute",  " " + minute);
-//        Log.d("PreloadMinuteString",  " " + minuteString);
-//        Log.d("PreloadHourString",  " " + hourString);
-
-
-
-
-        declaredStartTimeHourEditText.setText(hourString);
-        declaredStartTimeMinuteEditText.setText(minuteString);
-
-
-    }
-
-    private boolean doesEmployeeHaveOpenShift(int userID) {
-        if (shiftsDataAccess.doesEmployeeHaveOpenShift(userID)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
 
     private void instantiateVariables() {
         Intent intent = this.getIntent();
@@ -331,6 +266,74 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
+    private void preloadStartTime() {
+//        Log.d("PreloadStartTime", calendar.getTime().toString().substring(11, 16));
+//        Log.d("PreloadStartTimeHour", calendar.getTime().toString().substring(11, 13));
+//        Log.d("PreloadStartTimeMinute", calendar.getTime().toString().substring(14, 16));
+
+        int hour = Integer.parseInt(calendar.getTime().toString().substring(11, 13));
+        int minute = Integer.parseInt(calendar.getTime().toString().substring(14, 16));
+        String hourString = "";
+        String minuteString = "";
+
+
+        //Convert hour from 24hr to 12hr format and toggle AmPm toggleButton.
+        if (hour == 0) {
+            hour = 12;
+            startTimeAmPmToggleButton.setChecked(false);
+        } else if (hour > 12) {
+            hour = hour - 12;
+            startTimeAmPmToggleButton.setChecked(true);
+        }
+
+
+
+
+//      Round minute to closest quarter.
+        if (minute < 7) {
+            minuteString = "00";
+        } else if (minute > 7 && minute <= 22) {
+            minuteString = "15";
+        } else if (minute > 22 && minute <= 37) {
+            minuteString = "30";
+        } else if (minute > 37 && minute <= 52) {
+            minuteString = "45";
+        } else if (minute > 52){
+            hour++;
+            minuteString = "00";
+        }
+
+
+        hourString = Integer.toString(hour);
+
+
+
+
+//        Log.d("PreloadHour",  " " + hour);
+//        Log.d("PreloadMinute",  " " + minute);
+//        Log.d("PreloadMinuteString",  " " + minuteString);
+//        Log.d("PreloadHourString",  " " + hourString);
+
+
+
+
+        declaredStartTimeHourEditText.setText(hourString);
+        declaredStartTimeMinuteEditText.setText(minuteString);
+
+
+    }
+
+    private boolean doesEmployeeHaveOpenShift(int userID) {
+        if (shiftsDataAccess.doesEmployeeHaveOpenShift(userID)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
 
     private void loadNewForm(int userID) {
         employeeName = employeeDataAccess.getEmployeeName(userID);
@@ -375,6 +378,60 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
+
+    private boolean areClosingFormFieldsValid(){
+        boolean pass = true;
+        infoBannerTextView.setText("");
+
+        if(isFinalDropValid()){
+            finalDropAmount = Double.parseDouble(finalDropAmountEditText.getText().toString());
+        }
+
+        if(isRedemptionsValid()) {
+
+        }
+        return pass;
+    }
+
+    private boolean isFinalDropValid() {
+        String formErrors = "";
+        boolean pass = true;
+
+        //If starting till is NOT empty.
+        if (!finalDropAmountEditText.getText().toString().equals("")) {
+            String finalDrop = finalDropAmountEditText.getText().toString();
+
+            //If starting till contains a decimal.
+            if (finalDrop.contains(".")) {
+
+                //If no chars after decimal, add '00'
+                if (finalDrop.substring(finalDrop.indexOf(".")).length() == 1) {
+                    finalDrop += "00";
+                }
+
+                //If only 1 char after decimal, add '0'
+                if (finalDrop.substring(finalDrop.indexOf(".")).length() == 2) {
+                    finalDrop += "0";
+                }
+
+                //No decimal, add '.00'
+            } else {
+                finalDrop += ".00";
+            }
+            //Update starting till EditText with formatted starting till value.
+            finalDropAmountEditText.setText(finalDrop);
+
+            Log.d("Final Drop", " " + finalDrop);
+
+        } else {
+            formErrors += "Final drop invalid.\n";
+            updateInfoBanner(formErrors);
+            pass = false;
+        }
+        return pass;
+
+
+    }
 
 
     private boolean areOpenningFormFieldsValid() {
@@ -445,17 +502,6 @@ public class ShiftFormActivity extends AppCompatActivity {
         Log.d("OpenTotal", " " + lottoOpenTotal);
     }
 
-//    private int getLottoTotalOpenCount(){
-//        return lotto1Open
-//                + (lotto2Open * 2)
-//                + (lotto3Open * 3)
-//                + (lotto4Open * 4)
-//                + (lotto5Open * 5)
-//                + (lotto10Open * 10)
-//                + (lotto20Open * 20)
-//                + (lotto30Open * 30)
-//                + (lottoOtherOpen * lottoOtherValue);
-//    }
 
 
     private boolean isShiftOverLap() {
@@ -700,5 +746,49 @@ public class ShiftFormActivity extends AppCompatActivity {
         updateInfoBanner(formErrors);
 
         return pass;
+    }
+
+
+    public boolean isRedemptionsValid() {
+        String formErrors = "";
+        boolean pass = true;
+
+        //If starting till is NOT empty.
+        if (!redemptionsEditText.getText().toString().equals("")) {
+            String redemptions = redemptionsEditText.getText().toString();
+
+            //If starting till contains a decimal.
+            if (redemptions.contains(".")) {
+
+                //If no chars after decimal, add '00'
+                if (redemptions.substring(redemptions.indexOf(".")).length() == 1) {
+                    redemptions += "00";
+                }
+
+                //If only 1 char after decimal, add '0'
+                if (redemptions.substring(redemptions.indexOf(".")).length() == 2) {
+                    redemptions += "0";
+                }
+
+                //No decimal, add '.00'
+            } else {
+                redemptions += ".00";
+            }
+            //Update starting till EditText with formatted starting till value.
+            redemptionsEditText.setText(redemptions);
+
+            Log.d("Redemption", " " + redemptions);
+
+        } else {
+            formErrors += "Redemptions invalid.\n";
+            updateInfoBanner(formErrors);
+            pass = false;
+        }
+        return pass;
+    }
+
+
+    public void closeShiftButtonOnClick(View view) {
+        areClosingFormFieldsValid();
     }
 }

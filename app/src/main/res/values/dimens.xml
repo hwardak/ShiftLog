@@ -12,6 +12,6 @@
 
     <dimen name="button_font_size">16sp</dimen>
 
-    <dimen name="image_view_height">220sp</dimen>
+    <dimen name="image_view_height">3000sp</dimen>
 
 </resources>
