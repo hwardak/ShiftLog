@@ -116,9 +116,11 @@ public class ShiftFormActivity extends AppCompatActivity {
     boolean employeeHasOpenShift;
 
     String employeeName;
-    String date;
-    int year;
-    int month;
+    String dateStart;
+    int yearStart;
+    int monthStart;
+    int monthEnd;
+
     int dayOfMonthStart;
     int dayOfMonthEnd;
 
@@ -217,7 +219,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shift_form);
 
         this.instantiateVariables();
-
+        this.loadEditTextLists();
         employeeHasOpenShift = this.doesEmployeeHaveOpenShift(userID);
 
         //If the employee has previsously signed in, but has not signed out yet, their unclosed
@@ -227,13 +229,12 @@ public class ShiftFormActivity extends AppCompatActivity {
             this.loadExistingForm(shiftData);
 
         } else {
-            this.getStartTimeDate();
+            this.getStartDate();
             this.preloadStartTime();
             this.loadNewForm(userID);
 
         }
     }
-
 
     private void instantiateVariables() {
         Intent intent = this.getIntent();
@@ -262,6 +263,12 @@ public class ShiftFormActivity extends AppCompatActivity {
         tillOverLapRadioButton = (RadioButton) findViewById(R.id.tillOverLapRadioButton);
         nonOverLapShiftFieldsLinearLayout = (LinearLayout) findViewById(R.id.nonOverLapShiftFieldsLinearLayout);
 
+        lottoOpenIntList = new ArrayList<Integer>();
+        lottoAddIntList = new ArrayList<Integer>();
+        lottoCloseIntList = new ArrayList<Integer>();
+        lottoSoldIntList = new ArrayList<Integer>();
+        lottoPassportIntList = new ArrayList<Integer>();
+
         lotto1OpenEditText = (EditText) findViewById(R.id.lotto1Open);
         lotto2OpenEditText = (EditText) findViewById(R.id.lotto2Open);
         lotto3OpenEditText = (EditText) findViewById(R.id.lotto3Open);
@@ -271,20 +278,6 @@ public class ShiftFormActivity extends AppCompatActivity {
         lotto20OpenEditText = (EditText) findViewById(R.id.lotto20Open);
         lotto30OpenEditText = (EditText) findViewById(R.id.lotto30Open);
         lottoOtherOpenEditText = (EditText) findViewById(R.id.lottoOtherOpen);
-
-        lottoOpenEditTextsList = new ArrayList<EditText>();
-        lottoAddEditTextsList = new ArrayList<EditText>();
-        lottoCloseEditTextsList = new ArrayList<EditText>();
-        lottoSoldEditTextsList = new ArrayList<EditText>();
-        lottoPassportEditTextsList = new ArrayList<EditText>();
-
-        lottoOpenIntList = new ArrayList<Integer>();
-        lottoAddIntList = new ArrayList<Integer>();
-        lottoCloseIntList = new ArrayList<Integer>();
-        lottoSoldIntList = new ArrayList<Integer>();
-        lottoPassportIntList = new ArrayList<Integer>();
-
-
 
         lotto1AddEditText = (EditText) findViewById(R.id.lotto1Add);
         lotto2AddEditText = (EditText) findViewById(R.id.lotto2Add);
@@ -342,6 +335,8 @@ public class ShiftFormActivity extends AppCompatActivity {
                     nonOverLapShiftFieldsLinearLayout.setVisibility(View.VISIBLE);
                 }
 
+
+
             }
         });
 
@@ -351,7 +346,6 @@ public class ShiftFormActivity extends AppCompatActivity {
 
 
     }
-
 
     private void activateTextChangeListners(){
 
@@ -446,22 +440,72 @@ public class ShiftFormActivity extends AppCompatActivity {
     private void loadNewForm(int userID) {
         employeeName = employeeDataAccess.getEmployeeName(userID);
         employeeNameEditText.setText(employeeName);
-        dateEditText.setText(date);
+        dateEditText.setText(dateStart);
 
     }
 
+    /**
+     * Recieves a String Array of shiftForm entries from a previously opened shift.
+     * Each entry from the String Array is set into its respective EditText.
+     * The declaredStartTime comes in the format '1234PM', it is split into 3 subStrings; hour
+     * min, and amPm.
+     * @param shiftData String Array of entries from when the shift was opened.
+     */
     private void loadExistingForm(ArrayList<String> shiftData) {
         employeeName = shiftData.get(0);
         employeeNameEditText.setText(employeeName);
 
-        declaredStartTime = shiftData.get(1);
-//        declaredStartTimeEditText.setText(declaredStartTime);
 
-        date = shiftData.get(2);
-        dateEditText.setText(date);
+        //TODO: Move all the declared time functions below to its own method.
+
+        //declaredStartTime comes in the format '1234PM', it is split into 3 subStrings.
+        //hour and min are set into their respective EditTexts, amPm is used to toggle the AMPM
+        //toggle button.
+        declaredStartTime = shiftData.get(1);
+        Log.d("loadStartTime", declaredStartTime);
+
+
+        String hour = declaredStartTime.substring(0,2);
+        String min = declaredStartTime.substring(2,4);
+        String amPM = declaredStartTime.substring(4);
+
+//        Log.d("loadStartTimeHour", hour);
+//        Log.d("loadStartTimeMin", min);
+//        Log.d("loadStartTimeAMPM", amPM);
+
+        declaredStartTimeHourEditText.setText(hour);
+        declaredStartTimeMinuteEditText.setText(min);
+
+        if(amPM.equals("AM")){
+            startTimeAmPmToggleButton.setChecked(false);
+        } else {
+            startTimeAmPmToggleButton.setChecked(true);
+
+        }
+
+
+        dateStart = shiftData.get(2);
+        Log.d("loadDateStart", " " + dateStart);
+        dateEditText.setText(dateStart);
+
+        //gets the previously checked radioButton's id, and compares it with each radioButton in the
+        //form, which ever one it matches is the one that is checked.
+
+        Log.d("loadTillNumberID", " " + tillNumber);
+        Log.d("loadTillNumberOneID", " " + tillOneRadioButton.getId());
+        Log.d("loadTillNumberTwoID", " " + tillTwoRadioButton.getId());
+        Log.d("loadTillNumberOverLapID", " " + tillOverLapRadioButton.getId());
+
 
         tillNumber = Integer.parseInt(shiftData.get(3));
-        tillNumberRadioGroup.check(tillNumber);
+        if(tillNumber == tillOneRadioButton.getId()){
+            tillOneRadioButton.setChecked(true);
+        } else if(tillNumber == tillTwoRadioButton.getId()) {
+            tillTwoRadioButton.setChecked(true);
+        } else if(tillNumber == tillOverLapRadioButton.getId()){
+            tillOverLapRadioButton.setChecked(true);
+        }
+
 
         startingTillAmount = Double.parseDouble(shiftData.get(4));
         startingTillAmountEditText.setText(String.valueOf(startingTillAmount));
@@ -469,17 +513,13 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
-    private void getStartTimeDate() {
-        date = calendar.getTime().toString().substring(0, 11); // Wed Aug 09
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH); // Jan = 0, dec = 11
+    private void getStartDate() {
+        dateStart = calendar.getTime().toString().substring(0, 11); // Wed Aug 09
+        yearStart = calendar.get(Calendar.YEAR);
+        monthStart = calendar.get(Calendar.MONTH); // Jan = 0, dec = 11
         dayOfMonthStart = calendar.get(Calendar.DAY_OF_MONTH);
 
     }
-
-
-
-
 
     private boolean isShiftOverLap() {
         RadioButton tillNumber = (RadioButton) findViewById(tillNumberRadioGroup.getCheckedRadioButtonId());
@@ -498,8 +538,6 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
-
-
     /**
      * Receives a string of errors and displays them to the user via textview above the scroll view.
      * @param formErrors String of errors
@@ -509,8 +547,6 @@ public class ShiftFormActivity extends AppCompatActivity {
         String newBannerText = currentBannerText + formErrors;
         infoBannerTextView.setText(newBannerText);
     }
-
-
 
     /**
      * Checks if the declared start hour and minutes editText entries are valid.
@@ -570,11 +606,11 @@ public class ShiftFormActivity extends AppCompatActivity {
             //Check if the hour EditText value is less than 12, since we will be using the AmPm format.
             if(Integer.parseInt(declaredEndTimeHourEditText.getText().toString()) > 12 ){
                 pass = false;
-                formErrors += "Invalid ending Hour.\n";
+//                formErrors += "Invalid ending Hour.\n";
             }
         } else {
             pass = false;
-            formErrors += "Enter ending time hour.\n";
+//            formErrors += "Enter ending time hour.\n";
 
         }
 
@@ -583,11 +619,11 @@ public class ShiftFormActivity extends AppCompatActivity {
             //Check if the minute EditText value is less than 59.
             if (Integer.parseInt(declaredEndTimeMinuteEditText.getText().toString()) > 59) {
                 pass = false;
-                formErrors += "Invalid ending Minute.\n";
+//                formErrors += "Invalid ending Minute.\n";
             }
         } else {
             pass = false;
-            formErrors += "Enter ending time minute.\n";
+//            formErrors += "Enter ending time minute.\n";
         }
 
         //If the minute edittext only contains only one integer, a zero will be added before the
@@ -636,9 +672,6 @@ public class ShiftFormActivity extends AppCompatActivity {
 
         return timeAmPm;
     }
-
-
-
 
     /**
      * Checks and formats starting till value, and alerts user of invalid entries.
@@ -760,10 +793,12 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
+    /**
+     * Loops through each EditTexts in the 'Open' column of the lotto counts.
+     * If any of the EditTexts are empty, false is returned and the info banner is passed a
+     * String reflecting the error.
+     * @return pass.
+     */
     private boolean isOpenLottoCountValid() {
         boolean pass = true;
         String formErrors = "";
@@ -775,43 +810,8 @@ public class ShiftFormActivity extends AppCompatActivity {
             }
         }
 
-//        if(lotto1OpenEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//
-//
-//        if(lotto2OpenEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto3OpenEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto4OpenEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto5OpenEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto10OpenEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto20OpenEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto30OpenEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//
-//        if(lottoOtherValueEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//
-//        if(lottoOtherOpenEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-
         if(!pass){
-            formErrors = "Invalid starting lotto entry.\n";
+            formErrors = "Invalid Open lotto entry.\n";
         } else {
             formErrors = "";
         }
@@ -821,6 +821,12 @@ public class ShiftFormActivity extends AppCompatActivity {
         return pass;
     }
 
+    /**
+     * Loops through each EditTexts in the 'Add' column of the lotto counts.
+     * If any of the EditTexts are empty, false is returned and the info banner is passed a
+     * String reflecting the error.
+     * @return pass.
+     */
     private boolean isAddLottoCountValid() {
 
         boolean pass = true;
@@ -831,40 +837,6 @@ public class ShiftFormActivity extends AppCompatActivity {
                 pass = false;
             }
         }
-
-
-//        if(lotto1AddEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto2AddEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto3AddEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto4AddEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto5AddEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto10AddEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto20AddEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto30AddEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//
-//        if(lottoOtherValueEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//
-//        if(lottoOtherAddEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
 
         if(!pass){
             formErrors = "Invalid add lotto entry.\n";
@@ -877,6 +849,12 @@ public class ShiftFormActivity extends AppCompatActivity {
         return pass;
     }
 
+    /**
+     * Loops through each EditTexts in the 'Close' column of the lotto counts.
+     * If any of the EditTexts are empty, false is returned and the info banner is passed a
+     * String reflecting the error.
+     * @return pass.
+     */
     private boolean isCloseLottoCountValid() {
 
         boolean pass = true;
@@ -887,39 +865,6 @@ public class ShiftFormActivity extends AppCompatActivity {
                 pass = false;
             }
         }
-
-//        if(lotto1CloseEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto2CloseEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto3CloseEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto4CloseEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto5CloseEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto10CloseEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto20CloseEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto30CloseEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//
-//        if(lottoOtherValueEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//
-//        if(lottoOtherCloseEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
 
         if(!pass){
             formErrors = "Invalid close lotto entry.\n";
@@ -932,6 +877,12 @@ public class ShiftFormActivity extends AppCompatActivity {
         return pass;
     }
 
+    /**
+     * Loops through each EditTexts in the 'Passport' column of the lotto counts.
+     * If any of the EditTexts are empty, false is returned and the info banner is passed a
+     * String reflecting the error.
+     * @return pass.
+     */
     private boolean isPassportLottoCountValid() {
 
         boolean pass = true;
@@ -943,39 +894,6 @@ public class ShiftFormActivity extends AppCompatActivity {
             }
         }
 
-//        if(lotto1PassportEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto2PassportEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto3PassportEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto4PassportEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto5PassportEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto10PassportEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto20PassportEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//        if(lotto30PassportEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//
-//        if(lottoOtherValueEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-//
-//        if(lottoOtherPassportEditText.getText().toString().equals("")){
-//            pass = false;
-//        }
-
         if(!pass){
             formErrors = "Invalid Passport lotto entry.\n";
         } else {
@@ -986,10 +904,7 @@ public class ShiftFormActivity extends AppCompatActivity {
 
         return pass;
 
-
     }
-
-
 
     private void getLottoOpenCounts() {
 
@@ -1063,7 +978,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         lottoOtherClose = Integer.parseInt(lottoOtherCloseEditText.getText().toString());
 
         lottoCloseTotal =
-                + lotto1Sold
+                + lotto1Close
                         + (lotto2Close * 2)
                         + (lotto3Close * 3)
                         + (lotto4Close * 4)
@@ -1129,9 +1044,8 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
-
-
-    private boolean areClosingFormFieldsValid(){
+    //TODO: Should move all collecting and data writing to another method, only invoked if this method returns true.
+    private boolean areManditoryClosingFormFieldsValid(){
         boolean pass = true;
         infoBannerTextView.setText("");
 
@@ -1173,11 +1087,10 @@ public class ShiftFormActivity extends AppCompatActivity {
         return pass;
     }
 
-    private boolean areOpenningFormFieldsValid() {
+    //TODO: Should move all collecting and data writing to another method, only invoked if this method returns true.
+    private boolean areManditoryOpenningFormFieldsValid() {
         boolean pass = true;
         infoBannerTextView.setText("");
-
-
 
         //Check the declared start time.
         if(isDeclaredStartTimeValid()){
@@ -1186,17 +1099,20 @@ public class ShiftFormActivity extends AppCompatActivity {
             pass = false;
         }
 
-        if(isDeclaredEndTimeValid()){
-            declaredEndTime = getDeclaredEndTime();
-        } else {
-            pass = false;
-        }
+//        if(isDeclaredEndTimeValid()){
+//            declaredEndTime = getDeclaredEndTime();
+//        } else {
+//            pass = false;
+//        }
+
+        tillNumber = tillNumberRadioGroup.getCheckedRadioButtonId();
 
         //If the shift is an over lap shift, retrun true, the rest of the checks are for on-till
         //shifts
         if(tillOverLapRadioButton.isChecked()){
             return true;
         }
+
 
         //Check the starting till amount.
         if(isStartingTillValid()){
@@ -1205,7 +1121,9 @@ public class ShiftFormActivity extends AppCompatActivity {
             pass = false;
         }
 
-        if(isOpenLottoCountValid()){
+
+        if(isOpenLottoCountValid()
+                ){
             getLottoOpenCounts();
         } else {
             pass = false;
@@ -1214,23 +1132,58 @@ public class ShiftFormActivity extends AppCompatActivity {
         return pass;
     }
 
-
     public void openShiftButtonOnClick(View view) {
         actualStartTime = calendar.getTime().toString().substring(11, 16);
-        if(areOpenningFormFieldsValid()){
-//            openNewShift();
+        if(areManditoryOpenningFormFieldsValid()){
+            if(areOpenLottoCountsValid()){
+                getLottoOpenCounts();
+                checkAndGetNonManditoryFormFields();
+                openNewShift();
+            }
         }
     }
 
-    public void closeShiftButtonOnClick(View view) {
-        actualEndTime = calendar.getTime().toString().substring(11, 16);
-        areClosingFormFieldsValid();
+    private boolean areOpenLottoCountsValid() {
+        boolean pass = true;
+        for(int i = 0; i < lottoOpenEditTextsList.size(); i++) {
+            if(lottoOpenEditTextsList.get(i).getText().toString().equals("")) {
+                pass = false;
+            }
+        }
+
+        if(!pass){
+            updateInfoBanner("Invalid Open lotto entry.\n");
+        }
+
+        return pass;
     }
 
+    private void openNewShift() {
+        Log.d("openingNewShift", dateStart);
+        shiftsDataAccess.openNewShift(employeeName, userID, dateStart, declaredStartTime, actualStartTime, tillNumber, startingTillAmount, 1);
 
+    }
 
+    public void closeShiftButtonOnClick(View view) {
+        if(areManditoryOpenningFormFieldsValid()) {
+            if (areManditoryClosingFormFieldsValid()) {
+                actualEndTime = calendar.getTime().toString().substring(11, 16);
+            }
+        }
+    }
 
-    private void LoadEditTextLists(){
+    /**
+     * Instantiate an ArrayList oF EditTexts for each column in the lotto count form.
+     * Adds each EditText from each column to its respective ArrayList of EditTexts.
+     */
+    private void loadEditTextLists(){
+
+        lottoOpenEditTextsList = new ArrayList<EditText>();
+        lottoAddEditTextsList = new ArrayList<EditText>();
+        lottoCloseEditTextsList = new ArrayList<EditText>();
+        lottoSoldEditTextsList = new ArrayList<EditText>();
+        lottoPassportEditTextsList = new ArrayList<EditText>();
+
         lottoOpenEditTextsList.add(lotto1OpenEditText);
         lottoOpenEditTextsList.add(lotto2OpenEditText);
         lottoOpenEditTextsList.add(lotto3OpenEditText);
@@ -1332,6 +1285,40 @@ public class ShiftFormActivity extends AppCompatActivity {
         lottoPassportIntList.add(lotto20Passport);
         lottoPassportIntList.add(lotto30Passport);
         lottoPassportIntList.add(lottoOtherPassport);
+
+    }
+
+    /**
+     * This method will check all EditTexts that are not manditory for opening a shift, if they
+     * contain a valid entry, it will be saved in the db.
+     */
+    private void checkAndGetNonManditoryFormFields(){
+
+        if(isDeclaredEndTimeValid()){
+            declaredEndTime = getDeclaredEndTime();
+        } else {
+            declaredEndTime = "0000AM";
+        }
+
+        if(isRedemptionsValid()) {
+            redemptionsAmount = Double.parseDouble(redemptionsEditText.getText().toString());
+        } else {
+            redemptionsAmount = 0;
+        }
+
+        if(isAddLottoCountValid()){
+            getLottoAddCounts();
+        }
+
+        if(isCloseLottoCountValid()){
+            getLottoCloseCounts();
+        }
+
+        if(isPassportLottoCountValid()){
+            getLottoPassportCounts();
+        }
+
+
 
     }
 

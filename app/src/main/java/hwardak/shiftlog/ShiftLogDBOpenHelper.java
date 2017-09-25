@@ -46,7 +46,7 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
 
     }
 
-
+    //TODO: Remove date column, and replace with 3 columns, day, month, year
     static final String TABLE_SHIFTS = "shifts";
     static final String SHIFTS_COLUMN_SHIFT_ID = "_id";
     static final String SHIFTS_COLUMN_EMPLOYEE_NAME = "name";
@@ -62,7 +62,7 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
     static final String SHIFTS_COLUMN_FINAL_DROP_AMOUNT = "finalDropAmount";
     static final String SHIFTS_COLUMN_REDEMPTIONS = "redemptions";
     static final String SHIFTS_COLUMN_LOTTO_ID = "lottoId";
-    static final String SHIFT_COLUMN_SHIFT_OPEN = "shiftOpen";
+    static final String SHIFTS_COLUMN_SHIFT_OPEN = "shiftOpen";
 
     //TODO: perhaps the money values should be stored as a REAL instead of TEXT.
 
@@ -82,7 +82,7 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
             + SHIFTS_COLUMN_FINAL_DROP_AMOUNT + " TEXT, "
             + SHIFTS_COLUMN_REDEMPTIONS + " TEXT, "
             + SHIFTS_COLUMN_LOTTO_ID + " INTEGER, "
-            + SHIFT_COLUMN_SHIFT_OPEN + " INTEGER "
+            + SHIFTS_COLUMN_SHIFT_OPEN + " INTEGER "
             + ");";
 
 
