@@ -28,257 +28,262 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/nameLinearLayout">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_height="wrap_content"
-                    android:text="Name: "
-                    android:textSize="@dimen/subtitle_font_size"
-                    />
-
-                <EditText
-                    android:id="@+id/employeeNameEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:text="Name"
-                    android:textSize="@dimen/subtitle_font_size"
-                    android:enabled="false"
-
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/timeLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:text="Time: "
-                    android:textSize="@dimen/subtitle_font_size"
-                    android:visibility="gone" />
-                <!--Change to textview.-->
-                <EditText
-                    android:id="@+id/timeEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:enabled="false"
-                    android:text=""
-                    android:textSize="@dimen/subtitle_font_size" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/dateLinearLayout">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_height="wrap_content"
-                    android:text="Date: "
-                    android:textSize="@dimen/subtitle_font_size"
-                    />
-
-                <EditText
-                    android:id="@+id/dateEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:enabled="false"
-                    android:text="Date"
-                    android:textSize="@dimen/subtitle_font_size" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/startTimeLinearLayout">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_height="wrap_content"
-                    android:text="Start time: "
-                    android:textSize="@dimen/subtitle_font_size"
-                    />
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    >
-                    <EditText
-                        android:id="@+id/startTimeHourEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="00"
-                        android:inputType="number"
-                        android:maxLength="2"
-                        android:textSize="@dimen/title_font_size" />
-
+                    android:id="@+id/nameLinearLayout">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/title_font_size"
-                        android:text=":"
+                        android:text="Name: "
+                        android:textSize="@dimen/subtitle_font_size"
                         />
-
 
                     <EditText
-                        android:id="@+id/startTimeMinuteEditText"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/employeeNameEditText"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="00"
-                        android:inputType="number"
-                        android:maxLength="2"
-                        android:textSize="@dimen/title_font_size" />
+                        android:layout_weight="3"
+                        android:text="Name"
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:enabled="false"
 
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textOff="AM"
-                        android:textOn="PM"
-                        android:textSize="@dimen/title_font_size"
-                        android:id="@+id/startTimeAmPmToggleButton"
                         />
-
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/endTimeLinearLayout">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:layout_height="wrap_content"
-                    android:text="End time: "
-                    android:textSize="@dimen/subtitle_font_size"
-                    />
-
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
+                    android:id="@+id/timeLinearLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    >
-                    <EditText
-                        android:id="@+id/endTimeHourEditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="00"
-                        android:inputType="number"
-                        android:maxLength="2"
-                        android:textSize="@dimen/title_font_size" />
+                    android:visibility="gone">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/title_font_size"
-                        android:text=":"
-                        />
+                        android:layout_weight="1.5"
+                        android:text="Time: "
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:visibility="gone" />
+                    <!--Change to textview.-->
+                    <EditText
+                        android:id="@+id/timeEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:enabled="false"
+                        android:text=""
+                        android:textSize="@dimen/subtitle_font_size" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/dateLinearLayout">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_height="wrap_content"
+                        android:text="Date: "
+                        android:textSize="@dimen/subtitle_font_size"
+                        />
 
                     <EditText
-                        android:id="@+id/endTimeMinuteEditText"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/dateEditText"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="00"
-                        android:inputType="number"
-                        android:maxLength="2"
-                        android:textSize="@dimen/title_font_size" />
-
-                    <ToggleButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textOff="AM"
-                        android:textOn="PM"
-                        android:textSize="@dimen/title_font_size"
-                        android:id="@+id/endTimeAmPmToggleButton"
-                        />
-
+                        android:layout_weight="3"
+                        android:enabled="false"
+                        android:text="Date"
+                        android:textSize="@dimen/subtitle_font_size" />
 
                 </LinearLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/startTimeLinearLayout">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_height="wrap_content"
+                        android:text="Start time: "
+                        android:textSize="@dimen/subtitle_font_size"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+
+                        <EditText
+                            android:id="@+id/startTimeHourEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:text="00"
+                            android:textSize="@dimen/title_font_size" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/title_font_size"
+                            android:text=":"
+                            />
+
+
+                        <EditText
+                            android:id="@+id/startTimeMinuteEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="00"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:text="00"
+                            android:textSize="@dimen/title_font_size" />
+
+                        <ToggleButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textOff="AM"
+                            android:textOn="PM"
+                            android:textSize="@dimen/title_font_size"
+                            android:id="@+id/startTimeAmPmToggleButton"
+                            />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/endTimeLinearLayout">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_height="wrap_content"
+                        android:text="End time: "
+                        android:textSize="@dimen/subtitle_font_size"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+
+                        <EditText
+                            android:id="@+id/endTimeHourEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="00"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:text="00"
+                            android:textSize="@dimen/title_font_size" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/title_font_size"
+                            android:text=":"
+                            />
+
+
+                        <EditText
+                            android:id="@+id/endTimeMinuteEditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="00"
+                            android:inputType="number"
+                            android:maxLength="2"
+                            android:text="00"
+                            android:textSize="@dimen/title_font_size" />
+
+                        <ToggleButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textOff="AM"
+                            android:textOn="PM"
+                            android:textSize="@dimen/title_font_size"
+                            android:id="@+id/endTimeAmPmToggleButton"
+                            />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <RadioGroup
+                    android:id="@+id/tillNumberRadioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Till #: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <RadioButton
+                        android:id="@+id/tillOneRadioButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:text="One"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <RadioButton
+                        android:id="@+id/tillTwoRadioButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:text="Two"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <RadioButton
+                        android:id="@+id/offTillRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="Off till  "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </RadioGroup>
             </LinearLayout>
 
-
-            <RadioGroup
-                android:id="@+id/tillNumberRadioGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:text="Till #: "
-                    android:textSize="@dimen/subtitle_font_size" />
-
-                <RadioButton
-                    android:id="@+id/tillOneRadioButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-
-                    android:text="One"
-                    android:textSize="@dimen/subtitle_font_size" />
-
-                <RadioButton
-                    android:id="@+id/tillTwoRadioButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-
-                    android:text="Two"
-                    android:textSize="@dimen/subtitle_font_size" />
-
-                <RadioButton
-                    android:id="@+id/tillOverLapRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:text="Over Lap"
-                    android:textSize="@dimen/subtitle_font_size" />
-
-            </RadioGroup>
-        </LinearLayout>
-
             <LinearLayout
-                android:id="@+id/nonOverLapShiftFieldsLinearLayout"
+                android:id="@+id/onTillShiftFieldsLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:id="@+id/startingTillAmountLinearLayout"
@@ -300,35 +305,10 @@
                         android:layout_weight="3"
                         android:inputType="numberDecimal"
                         android:maxLength="6"
+                        android:text="00.00"
                         android:textSize="@dimen/subtitle_font_size" />
 
                 </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/finalDropLinearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:text="Final Drop $: "
-                        android:textSize="@dimen/subtitle_font_size" />
-
-                    <EditText
-                        android:id="@+id/finalDropAmountEditText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:inputType="numberDecimal"
-                        android:maxLength="6"
-                        android:textSize="@dimen/subtitle_font_size" />
-
-                </LinearLayout>
-
 
                 <LinearLayout
                     android:id="@+id/redemptionsLinearLayout"
@@ -350,12 +330,330 @@
                         android:layout_weight="3"
                         android:hint="Fuel, Giftcards, and/or Lotto..."
                         android:inputType="numberDecimal"
+                        android:text="00.00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/driveOffLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Drive offs $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/driveOffsEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="drive offs..."
+                        android:inputType="numberDecimal"
+                        android:text="00.00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/finalDropLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Final Drop $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/finalDropEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:inputType="numberDecimal"
+                        android:maxLength="6"
+                        android:text="00.00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/shortOverLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Short/Over $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/tillShortOverEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:inputType="numberDecimal"
+                        android:maxLength="6"
+                        android:text="00.00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Print Out Ticket Counts"
+                    android:textSize="@dimen/title_font_size" />
+
+                <LinearLayout
+                    android:id="@+id/printOutTerminalLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Terminal $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/printOutTerminalEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="Total sales from lotto terminal"
+                        android:inputType="number"
+                        android:text="00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/printOutPassortLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Passport $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/printOutPassportEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="Total sales from lotto terminal"
+                        android:inputType="number"
+                        android:text="00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/printOutDifferenceLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Difference $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/printOutDifferenceEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:enabled="false"
+                        android:hint="Total sales from lotto terminal"
+                        android:inputType="number"
+                        android:text="00"
                         android:textSize="@dimen/subtitle_font_size" />
 
                 </LinearLayout>
 
 
-                          </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Scratch Ticket Counts"
+                    android:textSize="@dimen/title_font_size" />
+
+                <LinearLayout
+                    android:id="@+id/scratchStartLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Start $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/scratchStartEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="Total start value..."
+                        android:inputType="number"
+                        android:text="00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scratchAddLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Add $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/scratchAddEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="Total add value..."
+                        android:inputType="number"
+                        android:text="00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scratchCloseLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Close $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/scratchCloseEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="Total close value..."
+                        android:inputType="number"
+                        android:text="00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scratchSoldLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Sold $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/scratchSoldEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="Total sold value..."
+                        android:text="00"
+                        android:enabled="false"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/scratchPassportLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Passport $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/scratchPassportEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:hint="Total passport value..."
+                        android:inputType="number"
+                        android:text="00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/scratchDifferenceLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:text="Difference $: "
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                    <EditText
+                        android:id="@+id/scratchDifferenceEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:inputType="number"
+                        android:enabled="false"
+                        android:text="00"
+                        android:textSize="@dimen/subtitle_font_size" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"

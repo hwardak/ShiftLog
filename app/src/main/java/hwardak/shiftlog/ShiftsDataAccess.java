@@ -74,7 +74,6 @@ public class ShiftsDataAccess {
                 shiftData.add(cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE)));
                 shiftData.add(cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_TILL_NUMBER)));
                 shiftData.add(cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_STARTING_TILL_AMOUNT)));
-                shiftData.add(cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_LOTTO_ID)));
 
 
     return shiftData;

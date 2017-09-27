@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -25,93 +23,43 @@ public class ShiftFormActivity extends AppCompatActivity {
     EmployeeDataAccess employeeDataAccess;
     ShiftsDataAccess shiftsDataAccess;
 
-    LinearLayout nonOverLapShiftFieldsLinearLayout;
+    LinearLayout onTillShiftFieldsLinearLayout;
 
     TextView infoBannerTextView;
 
     EditText employeeNameEditText;
     EditText dateEditText;
+
     EditText declaredStartTimeHourEditText;
     EditText declaredStartTimeMinuteEditText;
+
     EditText declaredEndTimeHourEditText;
     EditText declaredEndTimeMinuteEditText;
-    EditText startingTillAmountEditText;
-    EditText finalDropAmountEditText;
-    EditText redemptionsEditText;
-
-    EditText lotto1OpenEditText;
-    EditText lotto2OpenEditText;
-    EditText lotto3OpenEditText;
-    EditText lotto4OpenEditText;
-    EditText lotto5OpenEditText;
-    EditText lotto10OpenEditText;
-    EditText lotto20OpenEditText;
-    EditText lotto30OpenEditText;
-    EditText lottoOtherOpenEditText;
-    ArrayList<EditText> lottoOpenEditTextsList;
-    ArrayList<Integer> lottoOpenIntList;
-
-
-
-    EditText lotto1AddEditText;
-    EditText lotto2AddEditText;
-    EditText lotto3AddEditText;
-    EditText lotto4AddEditText;
-    EditText lotto5AddEditText;
-    EditText lotto10AddEditText;
-    EditText lotto20AddEditText;
-    EditText lotto30AddEditText;
-    EditText lottoOtherAddEditText;
-    ArrayList<EditText> lottoAddEditTextsList;
-    ArrayList<Integer> lottoAddIntList;
-
-    EditText lotto1CloseEditText;
-    EditText lotto2CloseEditText;
-    EditText lotto3CloseEditText;
-    EditText lotto4CloseEditText;
-    EditText lotto5CloseEditText;
-    EditText lotto10CloseEditText;
-    EditText lotto20CloseEditText;
-    EditText lotto30CloseEditText;
-    EditText lottoOtherCloseEditText;
-    ArrayList<EditText> lottoCloseEditTextsList;
-    ArrayList<Integer>  lottoCloseIntList;
-
-    EditText lotto1SoldEditText;
-    EditText lotto2SoldEditText;
-    EditText lotto3SoldEditText;
-    EditText lotto4SoldEditText;
-    EditText lotto5SoldEditText;
-    EditText lotto10SoldEditText;
-    EditText lotto20SoldEditText;
-    EditText lotto30SoldEditText;
-    EditText lottoOtherSoldEditText;
-    ArrayList<EditText> lottoSoldEditTextsList;
-    ArrayList<Integer>lottoSoldIntList;
-
-
-    EditText lotto1PassportEditText;
-    EditText lotto2PassportEditText;
-    EditText lotto3PassportEditText;
-    EditText lotto4PassportEditText;
-    EditText lotto5PassportEditText;
-    EditText lotto10PassportEditText;
-    EditText lotto20PassportEditText;
-    EditText lotto30PassportEditText;
-    EditText lottoOtherPassportEditText;
-    ArrayList<EditText> lottoPassportEditTextsList;
-    ArrayList<Integer> lottoPassportIntList;
-
-    EditText lottoOtherValueEditText;
-
-
 
     RadioGroup tillNumberRadioGroup;
     RadioButton tillOneRadioButton;
     RadioButton tillTwoRadioButton;
-    RadioButton tillOverLapRadioButton;
+    RadioButton offTillRadioButton;
     ToggleButton startTimeAmPmToggleButton;
     ToggleButton endTimeAmPmToggleButton;
+
+    EditText startingTillEditText;
+    EditText redemptionsEditText;
+    EditText driveOffsEditText;
+    EditText finalDropEditText;
+    EditText tillShortOverEditText;
+
+    EditText printOutTerminalEditText;
+    EditText printOutPassportEditText;
+    EditText printOutDifferenceEditText;
+
+    EditText scratchStartEditText;
+    EditText scratchAddEditText;
+    EditText scratchCloseEditText;
+    EditText scratchSoldEditText;
+    EditText scratchPassportEditText;
+    EditText scratchDifferenceEditText;
+
 
     boolean employeeHasOpenShift;
 
@@ -130,6 +78,18 @@ public class ShiftFormActivity extends AppCompatActivity {
     String declaredEndTime;
     String actualEndTime;
 
+    int scratchStart;
+    int scratchAdd;
+    int scratchClose;
+    int scratchPassport;
+    int scratchSold;
+    int scratchDifference;
+
+    double printOutTerminal;
+    double printOutPassport;
+    double printOutDifference;
+
+
     int tillNumber;
 
     double startingTillAmount;
@@ -138,72 +98,6 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     Calendar calendar;
 
-    int lottoOtherValue;
-
-    int lotto1Open;
-    int lotto2Open;
-    int lotto3Open;
-    int lotto4Open;
-    int lotto5Open;
-    int lotto10Open;
-    int lotto20Open;
-    int lotto30Open;
-    int lottoOtherOpen;
-    int lottoOpenTotal;
-
-    int lotto1Add;
-    int lotto2Add;
-    int lotto3Add;
-    int lotto4Add;
-    int lotto5Add;
-    int lotto10Add;
-    int lotto20Add;
-    int lotto30Add;
-    int lottoOtherAdd;
-    int lottoAddTotal;
-
-    int lotto1Close;
-    int lotto2Close;
-    int lotto3Close;
-    int lotto4Close;
-    int lotto5Close;
-    int lotto10Close;
-    int lotto20Close;
-    int lotto30Close;
-    int lottoOtherClose;
-    int lottoCloseTotal;
-
-    int lotto1Sold;
-    int lotto2Sold;
-    int lotto3Sold;
-    int lotto4Sold;
-    int lotto5Sold;
-    int lotto10Sold;
-    int lotto20Sold;
-    int lotto30Sold;
-    int lottoOtherSold;
-    int lottoSoldTotal;
-
-    int lotto1Passport;
-    int lotto2Passport;
-    int lotto3Passport;
-    int lotto4Passport;
-    int lotto5Passport;
-    int lotto10Passport;
-    int lotto20Passport;
-    int lotto30Passport;
-    int lottoOtherPassport;
-    int lottoPassportTotal;
-
-    int lotto1Difference;
-    int lotto2Difference;
-    int lotto3Difference;
-    int lotto4Difference;
-    int lotto5Difference;
-    int lotto10Difference;
-    int lotto20Difference;
-    int lotto30Difference;
-    int lottoOtherDifference;
 
     /**
      * - Views and variables instantiated.
@@ -219,7 +113,6 @@ public class ShiftFormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shift_form);
 
         this.instantiateVariables();
-        this.loadEditTextLists();
         employeeHasOpenShift = this.doesEmployeeHaveOpenShift(userID);
 
         //If the employee has previsously signed in, but has not signed out yet, their unclosed
@@ -244,82 +137,40 @@ public class ShiftFormActivity extends AppCompatActivity {
         employeeDataAccess = new EmployeeDataAccess(this);
         shiftsDataAccess = new ShiftsDataAccess(this);
 
+        infoBannerTextView = (TextView) findViewById(R.id.infoBannerTextView);
+
         employeeNameEditText = (EditText) findViewById(R.id.employeeNameEditText);
         dateEditText = (EditText) findViewById(R.id.dateEditText);
+
         declaredStartTimeHourEditText = (EditText) findViewById(R.id.startTimeHourEditText);
         declaredStartTimeMinuteEditText = (EditText) findViewById(R.id.startTimeMinuteEditText);
+
         declaredEndTimeHourEditText = (EditText) findViewById(R.id.endTimeHourEditText);
         declaredEndTimeMinuteEditText = (EditText) findViewById(R.id.endTimeMinuteEditText);
-        startingTillAmountEditText = (EditText) findViewById(R.id.startingTillAmountEditText);
-        finalDropAmountEditText = (EditText) findViewById(R.id.finalDropAmountEditText);
-        redemptionsEditText = (EditText) findViewById(R.id.redemptionsEditText);
-        infoBannerTextView = (TextView) findViewById(R.id.infoBannerTextView);
+
         startTimeAmPmToggleButton = (ToggleButton) findViewById(R.id.startTimeAmPmToggleButton);
         endTimeAmPmToggleButton = (ToggleButton) findViewById(R.id.endTimeAmPmToggleButton);
 
+        startingTillEditText = (EditText) findViewById(R.id.startingTillAmountEditText);
+        redemptionsEditText = (EditText) findViewById(R.id.redemptionsEditText);
+        driveOffsEditText = (EditText) findViewById(R.id.driveOffsEditText);
+        finalDropEditText = (EditText) findViewById(R.id.finalDropEditText);
+        tillShortOverEditText = (EditText) findViewById(R.id.tillShortOverEditText);
+
+        onTillShiftFieldsLinearLayout = (LinearLayout) findViewById(R.id.onTillShiftFieldsLinearLayout);
         tillNumberRadioGroup = (RadioGroup) findViewById(R.id.tillNumberRadioGroup);
         tillOneRadioButton = (RadioButton) findViewById(R.id.tillOneRadioButton);
         tillTwoRadioButton = (RadioButton) findViewById(R.id.tillTwoRadioButton);
-        tillOverLapRadioButton = (RadioButton) findViewById(R.id.tillOverLapRadioButton);
-        nonOverLapShiftFieldsLinearLayout = (LinearLayout) findViewById(R.id.nonOverLapShiftFieldsLinearLayout);
+        offTillRadioButton = (RadioButton) findViewById(R.id.offTillRadioButton);
 
-        lottoOpenIntList = new ArrayList<Integer>();
-        lottoAddIntList = new ArrayList<Integer>();
-        lottoCloseIntList = new ArrayList<Integer>();
-        lottoSoldIntList = new ArrayList<Integer>();
-        lottoPassportIntList = new ArrayList<Integer>();
+        scratchStartEditText = (EditText) findViewById(R.id.scratchStartEditText);
+        scratchAddEditText = (EditText) findViewById(R.id.scratchAddEditText);
+        scratchCloseEditText = (EditText) findViewById(R.id.scratchCloseEditText);
+        scratchPassportEditText = (EditText) findViewById(R.id.scratchPassportEditText);
+        scratchSoldEditText = (EditText) findViewById(R.id.scratchSoldEditText);
+        scratchDifferenceEditText = (EditText) findViewById(R.id.scratchDifferenceEditText);
 
-        lotto1OpenEditText = (EditText) findViewById(R.id.lotto1Open);
-        lotto2OpenEditText = (EditText) findViewById(R.id.lotto2Open);
-        lotto3OpenEditText = (EditText) findViewById(R.id.lotto3Open);
-        lotto4OpenEditText = (EditText) findViewById(R.id.lotto4Open);
-        lotto5OpenEditText = (EditText) findViewById(R.id.lotto5Open);
-        lotto10OpenEditText = (EditText) findViewById(R.id.lotto10Open);
-        lotto20OpenEditText = (EditText) findViewById(R.id.lotto20Open);
-        lotto30OpenEditText = (EditText) findViewById(R.id.lotto30Open);
-        lottoOtherOpenEditText = (EditText) findViewById(R.id.lottoOtherOpen);
 
-        lotto1AddEditText = (EditText) findViewById(R.id.lotto1Add);
-        lotto2AddEditText = (EditText) findViewById(R.id.lotto2Add);
-        lotto3AddEditText = (EditText) findViewById(R.id.lotto3Add);
-        lotto4AddEditText = (EditText) findViewById(R.id.lotto4Add);
-        lotto5AddEditText = (EditText) findViewById(R.id.lotto5Add);
-        lotto10AddEditText = (EditText) findViewById(R.id.lotto10Add);
-        lotto20AddEditText = (EditText) findViewById(R.id.lotto20Add);
-        lotto30AddEditText = (EditText) findViewById(R.id.lotto30Add);
-        lottoOtherAddEditText = (EditText) findViewById(R.id.lottoOtherAdd);
-
-        lotto1CloseEditText = (EditText) findViewById(R.id.lotto1Close);
-        lotto2CloseEditText = (EditText) findViewById(R.id.lotto2Close);
-        lotto3CloseEditText = (EditText) findViewById(R.id.lotto3Close);
-        lotto4CloseEditText = (EditText) findViewById(R.id.lotto4Close);
-        lotto5CloseEditText = (EditText) findViewById(R.id.lotto5Close);
-        lotto10CloseEditText = (EditText) findViewById(R.id.lotto10Close);
-        lotto20CloseEditText = (EditText) findViewById(R.id.lotto20Close);
-        lotto30CloseEditText = (EditText) findViewById(R.id.lotto30Close);
-        lottoOtherCloseEditText = (EditText) findViewById(R.id.lottoOtherClose);
-
-        lotto1SoldEditText = (EditText) findViewById(R.id.lotto1Sold);
-        lotto2SoldEditText = (EditText) findViewById(R.id.lotto2Sold);
-        lotto3SoldEditText = (EditText) findViewById(R.id.lotto3Sold);
-        lotto4SoldEditText = (EditText) findViewById(R.id.lotto4Sold);
-        lotto5SoldEditText = (EditText) findViewById(R.id.lotto5Sold);
-        lotto10SoldEditText = (EditText) findViewById(R.id.lotto10Sold);
-        lotto20SoldEditText = (EditText) findViewById(R.id.lotto20Sold);
-        lotto30SoldEditText = (EditText) findViewById(R.id.lotto30Sold);
-        lottoOtherSoldEditText = (EditText) findViewById(R.id.lottoOtherSold);
-
-        lotto1PassportEditText = (EditText) findViewById(R.id.lotto1Passport);
-        lotto2PassportEditText = (EditText) findViewById(R.id.lotto2Passport);
-        lotto3PassportEditText = (EditText) findViewById(R.id.lotto3Passport);
-        lotto4PassportEditText = (EditText) findViewById(R.id.lotto4Passport);
-        lotto5PassportEditText = (EditText) findViewById(R.id.lotto5Passport);
-        lotto10PassportEditText = (EditText) findViewById(R.id.lotto10Passport);
-        lotto20PassportEditText = (EditText) findViewById(R.id.lotto20Passport);
-        lotto30PassportEditText = (EditText) findViewById(R.id.lotto30Passport);
-        lottoOtherPassportEditText = (EditText) findViewById(R.id.lottoOtherPassport);
-
-        lottoOtherValueEditText = (EditText) findViewById(R.id.lottoOtherValue);
 
 
         tillNumberRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -329,48 +180,16 @@ public class ShiftFormActivity extends AppCompatActivity {
 
                 //If the overlap radiobutton is clicked, the nonOverLapShiftFieldsLayout is made
                 //visible.
-                if(tillOverLapRadioButton.getId() == checkedId){
-                    nonOverLapShiftFieldsLinearLayout.setVisibility(View.GONE);
+                if(offTillRadioButton.getId() == checkedId){
+                    onTillShiftFieldsLinearLayout.setVisibility(View.GONE);
                 } else {
-                    nonOverLapShiftFieldsLinearLayout.setVisibility(View.VISIBLE);
+                    onTillShiftFieldsLinearLayout.setVisibility(View.VISIBLE);
                 }
-
-
-
             }
         });
 
-
-
-
-
-
     }
 
-    private void activateTextChangeListners(){
-
-        lotto1CloseEditText.addTextChangedListener(new TextWatcher() {
-            //Not in use.
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            //Not in use
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-            //
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
-
-
-    }
 
     private void preloadStartTime() {
 //        Log.d("PreloadStartTime", calendar.getTime().toString().substring(11, 16));
@@ -494,7 +313,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         Log.d("loadTillNumberID", " " + tillNumber);
         Log.d("loadTillNumberOneID", " " + tillOneRadioButton.getId());
         Log.d("loadTillNumberTwoID", " " + tillTwoRadioButton.getId());
-        Log.d("loadTillNumberOverLapID", " " + tillOverLapRadioButton.getId());
+        Log.d("loadTillNumberOverLapID", " " + offTillRadioButton.getId());
 
 
         tillNumber = Integer.parseInt(shiftData.get(3));
@@ -502,13 +321,13 @@ public class ShiftFormActivity extends AppCompatActivity {
             tillOneRadioButton.setChecked(true);
         } else if(tillNumber == tillTwoRadioButton.getId()) {
             tillTwoRadioButton.setChecked(true);
-        } else if(tillNumber == tillOverLapRadioButton.getId()){
-            tillOverLapRadioButton.setChecked(true);
+        } else if(tillNumber == offTillRadioButton.getId()){
+            offTillRadioButton.setChecked(true);
         }
 
 
         startingTillAmount = Double.parseDouble(shiftData.get(4));
-        startingTillAmountEditText.setText(String.valueOf(startingTillAmount));
+        startingTillEditText.setText(String.valueOf(startingTillAmount));
 
 
     }
@@ -581,7 +400,7 @@ public class ShiftFormActivity extends AppCompatActivity {
             formErrors += "Enter starting time minute";
         }
 
-        //If the minute edittext only contains only one integer, a zero will be added before the
+        //If the minute edittext only contains one integer, a zero will be added before the
         //integer.  2 >> 02
         if(declaredStartTimeMinuteEditText.getText().toString().length() == 1){
             String currentStartTimeMinute = declaredStartTimeMinuteEditText.getText().toString();
@@ -682,8 +501,8 @@ public class ShiftFormActivity extends AppCompatActivity {
         boolean pass = true;
 
         //If starting till is NOT empty.
-        if (!startingTillAmountEditText.getText().toString().equals("")) {
-            String startingTill = startingTillAmountEditText.getText().toString();
+        if (!startingTillEditText.getText().toString().equals("")) {
+            String startingTill = startingTillEditText.getText().toString();
 
             //If starting till contains a decimal.
             if (startingTill.contains(".")) {
@@ -703,7 +522,7 @@ public class ShiftFormActivity extends AppCompatActivity {
                 startingTill += ".00";
             }
             //Update starting till EditText with formatted starting till value.
-            startingTillAmountEditText.setText(startingTill);
+            startingTillEditText.setText(startingTill);
 
             Log.d("Starting Till", " " + startingTill);
 
@@ -758,28 +577,13 @@ public class ShiftFormActivity extends AppCompatActivity {
         boolean pass = true;
 
         //If starting till is NOT empty.
-        if (!finalDropAmountEditText.getText().toString().equals("")) {
-            String finalDrop = finalDropAmountEditText.getText().toString();
+        if (!finalDropEditText.getText().toString().equals("")) {
+            String finalDrop = finalDropEditText.getText().toString();
 
             //If starting till contains a decimal.
-            if (finalDrop.contains(".")) {
 
-                //If no chars after decimal, add '00'
-                if (finalDrop.substring(finalDrop.indexOf(".")).length() == 1) {
-                    finalDrop += "00";
-                }
-
-                //If only 1 char after decimal, add '0'
-                if (finalDrop.substring(finalDrop.indexOf(".")).length() == 2) {
-                    finalDrop += "0";
-                }
-
-                //No decimal, add '.00'
-            } else {
-                finalDrop += ".00";
-            }
             //Update starting till EditText with formatted starting till value.
-            finalDropAmountEditText.setText(finalDrop);
+            finalDropEditText.setText(finalDrop);
 
             Log.d("Final Drop", " " + finalDrop);
 
@@ -793,255 +597,25 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Loops through each EditTexts in the 'Open' column of the lotto counts.
-     * If any of the EditTexts are empty, false is returned and the info banner is passed a
-     * String reflecting the error.
-     * @return pass.
-     */
-    private boolean isOpenLottoCountValid() {
-        boolean pass = true;
-        String formErrors = "";
+    private double formatToDollarValue(String string){
+        if (string.contains(".")) {
 
-
-        for(int i = 0; i < lottoOpenEditTextsList.size(); i++){
-            if(lottoOpenEditTextsList.get(i).getText().toString().equals("")){
-                pass = false;
+            //If no chars after decimal, add '00'
+            if (string.substring(string.indexOf(".")).length() == 1) {
+                string += "00";
             }
-        }
 
-        if(!pass){
-            formErrors = "Invalid Open lotto entry.\n";
-        } else {
-            formErrors = "";
-        }
-
-        updateInfoBanner(formErrors);
-
-        return pass;
-    }
-
-    /**
-     * Loops through each EditTexts in the 'Add' column of the lotto counts.
-     * If any of the EditTexts are empty, false is returned and the info banner is passed a
-     * String reflecting the error.
-     * @return pass.
-     */
-    private boolean isAddLottoCountValid() {
-
-        boolean pass = true;
-        String formErrors = "";
-
-        for(int i = 0; i < lottoAddEditTextsList.size(); i++){
-            if(lottoAddEditTextsList.get(i).getText().toString().equals("")){
-                pass = false;
+            //If only 1 char after decimal, add '0'
+            if (string.substring(string.indexOf(".")).length() == 2) {
+                string += "0";
             }
-        }
 
-        if(!pass){
-            formErrors = "Invalid add lotto entry.\n";
+            //No decimal, add '.00'
         } else {
-            formErrors = "";
+            string += ".00";
         }
 
-        updateInfoBanner(formErrors);
-
-        return pass;
-    }
-
-    /**
-     * Loops through each EditTexts in the 'Close' column of the lotto counts.
-     * If any of the EditTexts are empty, false is returned and the info banner is passed a
-     * String reflecting the error.
-     * @return pass.
-     */
-    private boolean isCloseLottoCountValid() {
-
-        boolean pass = true;
-        String formErrors = "";
-
-        for(int i = 0; i < lottoCloseEditTextsList.size(); i++){
-            if(lottoCloseEditTextsList.get(i).getText().toString().equals("")){
-                pass = false;
-            }
-        }
-
-        if(!pass){
-            formErrors = "Invalid close lotto entry.\n";
-        } else {
-            formErrors = "";
-        }
-
-        updateInfoBanner(formErrors);
-
-        return pass;
-    }
-
-    /**
-     * Loops through each EditTexts in the 'Passport' column of the lotto counts.
-     * If any of the EditTexts are empty, false is returned and the info banner is passed a
-     * String reflecting the error.
-     * @return pass.
-     */
-    private boolean isPassportLottoCountValid() {
-
-        boolean pass = true;
-        String formErrors = "";
-
-        for(int i = 0; i < lottoPassportEditTextsList.size(); i++){
-            if(lottoPassportEditTextsList.get(i).getText().toString().equals("")){
-                pass = false;
-            }
-        }
-
-        if(!pass){
-            formErrors = "Invalid Passport lotto entry.\n";
-        } else {
-            formErrors = "";
-        }
-
-        updateInfoBanner(formErrors);
-
-        return pass;
-
-    }
-
-    private void getLottoOpenCounts() {
-
-        //TODO: How can I make this work?
-//        for(int i = 0; i < lottoOpenIntList.size(); i++){
-//            lottoOpenIntList.get(i) = Integer.parseInt(lottoOpenEditTextsList.get(i).getText().toString());
-//        }
-
-
-        lotto1Open = Integer.parseInt(lotto1OpenEditText.getText().toString());
-        lotto2Open = Integer.parseInt(lotto2OpenEditText.getText().toString());
-        lotto3Open = Integer.parseInt(lotto3OpenEditText.getText().toString());
-        lotto4Open = Integer.parseInt(lotto4OpenEditText.getText().toString());
-        lotto5Open = Integer.parseInt(lotto5OpenEditText.getText().toString());
-        lotto10Open = Integer.parseInt(lotto10OpenEditText.getText().toString());
-        lotto20Open = Integer.parseInt(lotto20OpenEditText.getText().toString());
-        lotto30Open = Integer.parseInt(lotto30OpenEditText.getText().toString());
-        lottoOtherValue = Integer.parseInt(lottoOtherValueEditText.getText().toString());
-        lottoOtherOpen = Integer.parseInt(lottoOtherOpenEditText.getText().toString());
-
-        lottoOpenTotal =
-                + lotto1Open
-                        + (lotto2Open * 2)
-                        + (lotto3Open * 3)
-                        + (lotto4Open * 4)
-                        + (lotto5Open * 5)
-                        + (lotto10Open * 10)
-                        + (lotto20Open * 20)
-                        + (lotto30Open * 30)
-                        + (lottoOtherOpen * lottoOtherValue);
-
-        Log.d("OpenTotal", " " + lottoOpenTotal);
-    }
-
-    private void getLottoAddCounts() {
-
-        lotto1Add = Integer.parseInt(lotto1AddEditText.getText().toString());
-        lotto2Add = Integer.parseInt(lotto2AddEditText.getText().toString());
-        lotto3Add = Integer.parseInt(lotto3AddEditText.getText().toString());
-        lotto4Add = Integer.parseInt(lotto4AddEditText.getText().toString());
-        lotto5Add = Integer.parseInt(lotto5AddEditText.getText().toString());
-        lotto10Add = Integer.parseInt(lotto10AddEditText.getText().toString());
-        lotto20Add = Integer.parseInt(lotto20AddEditText.getText().toString());
-        lotto30Add = Integer.parseInt(lotto30AddEditText.getText().toString());
-        lottoOtherAdd = Integer.parseInt(lottoOtherAddEditText.getText().toString());
-
-        lottoAddTotal =
-                + lotto1Add
-                        + (lotto2Add * 2)
-                        + (lotto3Add * 3)
-                        + (lotto4Add * 4)
-                        + (lotto5Add * 5)
-                        + (lotto10Add * 10)
-                        + (lotto20Add * 20)
-                        + (lotto30Add * 30)
-                        + (lottoOtherAdd * lottoOtherValue);
-
-        Log.d("AddTotal", " " + lottoAddTotal);
-    }
-
-    private void getLottoCloseCounts() {
-        lotto1Close = Integer.parseInt(lotto1CloseEditText.getText().toString());
-        lotto2Close = Integer.parseInt(lotto2CloseEditText.getText().toString());
-        lotto3Close = Integer.parseInt(lotto3CloseEditText.getText().toString());
-        lotto4Close = Integer.parseInt(lotto4CloseEditText.getText().toString());
-        lotto5Close = Integer.parseInt(lotto5CloseEditText.getText().toString());
-        lotto10Close = Integer.parseInt(lotto10CloseEditText.getText().toString());
-        lotto20Close = Integer.parseInt(lotto20CloseEditText.getText().toString());
-        lotto30Close = Integer.parseInt(lotto30CloseEditText.getText().toString());
-        lottoOtherValue = Integer.parseInt(lottoOtherValueEditText.getText().toString());
-        lottoOtherClose = Integer.parseInt(lottoOtherCloseEditText.getText().toString());
-
-        lottoCloseTotal =
-                + lotto1Close
-                        + (lotto2Close * 2)
-                        + (lotto3Close * 3)
-                        + (lotto4Close * 4)
-                        + (lotto5Close * 5)
-                        + (lotto10Close * 10)
-                        + (lotto20Close * 20)
-                        + (lotto30Close * 30)
-                        + (lottoOtherClose * lottoOtherValue);
-
-        Log.d("CloseTotal", " " + lottoCloseTotal);
-    }
-
-    private void getLottoSoldCount() {
-        lotto1Sold = Integer.parseInt(lotto1SoldEditText.getText().toString());
-        lotto2Sold = Integer.parseInt(lotto2SoldEditText.getText().toString());
-        lotto3Sold = Integer.parseInt(lotto3SoldEditText.getText().toString());
-        lotto4Sold = Integer.parseInt(lotto4SoldEditText.getText().toString());
-        lotto5Sold = Integer.parseInt(lotto5SoldEditText.getText().toString());
-        lotto10Sold = Integer.parseInt(lotto10SoldEditText.getText().toString());
-        lotto20Sold = Integer.parseInt(lotto20SoldEditText.getText().toString());
-        lotto30Sold = Integer.parseInt(lotto30SoldEditText.getText().toString());
-        lottoOtherValue = Integer.parseInt(lottoOtherValueEditText.getText().toString());
-        lottoOtherSold = Integer.parseInt(lottoOtherSoldEditText.getText().toString());
-
-        lottoSoldTotal =
-                + lotto1Sold
-                        + (lotto2Sold * 2)
-                        + (lotto3Sold * 3)
-                        + (lotto4Sold * 4)
-                        + (lotto5Sold * 5)
-                        + (lotto10Sold * 10)
-                        + (lotto20Sold * 20)
-                        + (lotto30Sold * 30)
-                        + (lottoOtherSold * lottoOtherValue);
-
-        Log.d("SoldTotal", " " + lottoSoldTotal);
-
-    }
-
-    private void getLottoPassportCounts() {
-        lotto1Passport = Integer.parseInt(lotto1PassportEditText.getText().toString());
-        lotto2Passport = Integer.parseInt(lotto2PassportEditText.getText().toString());
-        lotto3Passport = Integer.parseInt(lotto3PassportEditText.getText().toString());
-        lotto4Passport = Integer.parseInt(lotto4PassportEditText.getText().toString());
-        lotto5Passport = Integer.parseInt(lotto5PassportEditText.getText().toString());
-        lotto10Passport = Integer.parseInt(lotto10PassportEditText.getText().toString());
-        lotto20Passport = Integer.parseInt(lotto20PassportEditText.getText().toString());
-        lotto30Passport = Integer.parseInt(lotto30PassportEditText.getText().toString());
-        lottoOtherPassport = Integer.parseInt(lottoOtherPassportEditText.getText().toString());
-
-        lottoPassportTotal =
-                + lotto1Passport
-                        + (lotto2Passport * 2)
-                        + (lotto3Passport * 3)
-                        + (lotto4Passport * 4)
-                        + (lotto5Passport * 5)
-                        + (lotto10Passport * 10)
-                        + (lotto20Passport * 20)
-                        + (lotto30Passport * 30)
-                        + (lottoOtherPassport * lottoOtherValue);
-
-        Log.d("PassportTotal", " " + lottoPassportTotal);
-
+        return 1;
     }
 
     //TODO: Should move all collecting and data writing to another method, only invoked if this method returns true.
@@ -1050,7 +624,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         infoBannerTextView.setText("");
 
         if(isFinalDropValid()){
-            finalDropAmount = Double.parseDouble(finalDropAmountEditText.getText().toString());
+            finalDropAmount = Double.parseDouble(finalDropEditText.getText().toString());
         } else {
             pass = false;
         }
@@ -1060,29 +634,6 @@ public class ShiftFormActivity extends AppCompatActivity {
         } else {
             pass = false;
         }
-
-        if(isAddLottoCountValid()){
-            getLottoAddCounts();
-        } else {
-            pass = false;
-        }
-
-        if(isCloseLottoCountValid()){
-            getLottoCloseCounts();
-        } else {
-            pass = false;
-        }
-
-        if(isPassportLottoCountValid()){
-            getLottoPassportCounts();
-        } else {
-            pass = false;
-        }
-
-        if(pass){
-            getLottoSoldCount();
-        }
-
 
         return pass;
     }
@@ -1099,34 +650,30 @@ public class ShiftFormActivity extends AppCompatActivity {
             pass = false;
         }
 
-//        if(isDeclaredEndTimeValid()){
-//            declaredEndTime = getDeclaredEndTime();
-//        } else {
-//            pass = false;
-//        }
-
+        //Get the till number, if off till return and do not collect remain form fields.
         tillNumber = tillNumberRadioGroup.getCheckedRadioButtonId();
 
         //If the shift is an over lap shift, retrun true, the rest of the checks are for on-till
         //shifts
-        if(tillOverLapRadioButton.isChecked()){
+        if(offTillRadioButton.isChecked()){
+
             return true;
         }
 
 
         //Check the starting till amount.
         if(isStartingTillValid()){
-            startingTillAmount = Double.parseDouble(startingTillAmountEditText.getText().toString());
+            startingTillAmount = Double.parseDouble(startingTillEditText.getText().toString());
         } else {
             pass = false;
         }
 
-
-        if(isOpenLottoCountValid()
-                ){
-            getLottoOpenCounts();
+        //Check the starting scratch ticket count.
+        if(!scratchStartEditText.getText().toString().equals("")){
+            scratchStart = Integer.parseInt(scratchStartEditText.getText().toString());
         } else {
             pass = false;
+            updateInfoBanner("Invalid start scratch count");
         }
 
         return pass;
@@ -1134,28 +681,10 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     public void openShiftButtonOnClick(View view) {
         actualStartTime = calendar.getTime().toString().substring(11, 16);
-        if(areManditoryOpenningFormFieldsValid()){
-            if(areOpenLottoCountsValid()){
-                getLottoOpenCounts();
-                checkAndGetNonManditoryFormFields();
-                openNewShift();
-            }
+        if(areManditoryOpenningFormFieldsValid()) {
+            checkAndGetNonManditoryFormFields();
+            openNewShift();
         }
-    }
-
-    private boolean areOpenLottoCountsValid() {
-        boolean pass = true;
-        for(int i = 0; i < lottoOpenEditTextsList.size(); i++) {
-            if(lottoOpenEditTextsList.get(i).getText().toString().equals("")) {
-                pass = false;
-            }
-        }
-
-        if(!pass){
-            updateInfoBanner("Invalid Open lotto entry.\n");
-        }
-
-        return pass;
     }
 
     private void openNewShift() {
@@ -1172,121 +701,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Instantiate an ArrayList oF EditTexts for each column in the lotto count form.
-     * Adds each EditText from each column to its respective ArrayList of EditTexts.
-     */
-    private void loadEditTextLists(){
 
-        lottoOpenEditTextsList = new ArrayList<EditText>();
-        lottoAddEditTextsList = new ArrayList<EditText>();
-        lottoCloseEditTextsList = new ArrayList<EditText>();
-        lottoSoldEditTextsList = new ArrayList<EditText>();
-        lottoPassportEditTextsList = new ArrayList<EditText>();
-
-        lottoOpenEditTextsList.add(lotto1OpenEditText);
-        lottoOpenEditTextsList.add(lotto2OpenEditText);
-        lottoOpenEditTextsList.add(lotto3OpenEditText);
-        lottoOpenEditTextsList.add(lotto4OpenEditText);
-        lottoOpenEditTextsList.add(lotto5OpenEditText);
-        lottoOpenEditTextsList.add(lotto10OpenEditText);
-        lottoOpenEditTextsList.add(lotto20OpenEditText);
-        lottoOpenEditTextsList.add(lotto30OpenEditText);
-        lottoOpenEditTextsList.add(lottoOtherOpenEditText);
-
-        lottoAddEditTextsList.add(lotto1AddEditText);
-        lottoAddEditTextsList.add(lotto2AddEditText);
-        lottoAddEditTextsList.add(lotto3AddEditText);
-        lottoAddEditTextsList.add(lotto4AddEditText);
-        lottoAddEditTextsList.add(lotto5AddEditText);
-        lottoAddEditTextsList.add(lotto10AddEditText);
-        lottoAddEditTextsList.add(lotto20AddEditText);
-        lottoAddEditTextsList.add(lotto30AddEditText);
-        lottoAddEditTextsList.add(lottoOtherAddEditText);
-
-        lottoCloseEditTextsList.add(lotto1CloseEditText);
-        lottoCloseEditTextsList.add(lotto2CloseEditText);
-        lottoCloseEditTextsList.add(lotto3CloseEditText);
-        lottoCloseEditTextsList.add(lotto4CloseEditText);
-        lottoCloseEditTextsList.add(lotto5CloseEditText);
-        lottoCloseEditTextsList.add(lotto10CloseEditText);
-        lottoCloseEditTextsList.add(lotto20CloseEditText);
-        lottoCloseEditTextsList.add(lotto30CloseEditText);
-        lottoCloseEditTextsList.add(lottoOtherCloseEditText);
-
-        lottoSoldEditTextsList.add(lotto1SoldEditText);
-        lottoSoldEditTextsList.add(lotto2SoldEditText);
-        lottoSoldEditTextsList.add(lotto3SoldEditText);
-        lottoSoldEditTextsList.add(lotto4SoldEditText);
-        lottoSoldEditTextsList.add(lotto5SoldEditText);
-        lottoSoldEditTextsList.add(lotto10SoldEditText);
-        lottoSoldEditTextsList.add(lotto20SoldEditText);
-        lottoSoldEditTextsList.add(lotto30SoldEditText);
-        lottoSoldEditTextsList.add(lottoOtherSoldEditText);
-
-        lottoPassportEditTextsList.add(lotto1PassportEditText);
-        lottoPassportEditTextsList.add(lotto2PassportEditText);
-        lottoPassportEditTextsList.add(lotto3PassportEditText);
-        lottoPassportEditTextsList.add(lotto4PassportEditText);
-        lottoPassportEditTextsList.add(lotto5PassportEditText);
-        lottoPassportEditTextsList.add(lotto10PassportEditText);
-        lottoPassportEditTextsList.add(lotto20PassportEditText);
-        lottoPassportEditTextsList.add(lotto30PassportEditText);
-        lottoPassportEditTextsList.add(lottoOtherPassportEditText);
-    }
-
-    private void loadLottoIntList(){
-        lottoOpenIntList.add(lotto1Open);
-        lottoOpenIntList.add(lotto2Open);
-        lottoOpenIntList.add(lotto3Open);
-        lottoOpenIntList.add(lotto4Open);
-        lottoOpenIntList.add(lotto5Open);
-        lottoOpenIntList.add(lotto10Open);
-        lottoOpenIntList.add(lotto2Open);
-        lottoOpenIntList.add(lotto3Open);
-        lottoOpenIntList.add(lottoOtherOpen);
-
-        lottoAddIntList.add(lotto1Add);
-        lottoAddIntList.add(lotto2Add);
-        lottoAddIntList.add(lotto3Add);
-        lottoAddIntList.add(lotto4Add);
-        lottoAddIntList.add(lotto5Add);
-        lottoAddIntList.add(lotto10Add);
-        lottoAddIntList.add(lotto20Add);
-        lottoAddIntList.add(lotto30Add);
-        lottoAddIntList.add(lottoOtherAdd);
-
-        lottoCloseIntList.add(lotto1Close);
-        lottoCloseIntList.add(lotto2Close);
-        lottoCloseIntList.add(lotto3Close);
-        lottoCloseIntList.add(lotto4Close);
-        lottoCloseIntList.add(lotto5Close);
-        lottoCloseIntList.add(lotto10Close);
-        lottoCloseIntList.add(lotto20Close);
-        lottoCloseIntList.add(lotto30Close);
-        lottoCloseIntList.add(lottoOtherClose);
-
-        lottoSoldIntList.add(lotto1Sold);
-        lottoSoldIntList.add(lotto2Sold);
-        lottoSoldIntList.add(lotto3Sold);
-        lottoSoldIntList.add(lotto4Sold);
-        lottoSoldIntList.add(lotto5Sold);
-        lottoSoldIntList.add(lotto10Sold);
-        lottoSoldIntList.add(lotto20Sold);
-        lottoSoldIntList.add(lotto30Sold);
-        lottoSoldIntList.add(lottoOtherSold);
-
-        lottoPassportIntList.add(lotto1Passport);
-        lottoPassportIntList.add(lotto2Passport);
-        lottoPassportIntList.add(lotto3Passport);
-        lottoPassportIntList.add(lotto4Passport);
-        lottoPassportIntList.add(lotto5Passport);
-        lottoPassportIntList.add(lotto10Passport);
-        lottoPassportIntList.add(lotto20Passport);
-        lottoPassportIntList.add(lotto30Passport);
-        lottoPassportIntList.add(lottoOtherPassport);
-
-    }
 
     /**
      * This method will check all EditTexts that are not manditory for opening a shift, if they
@@ -1306,17 +721,9 @@ public class ShiftFormActivity extends AppCompatActivity {
             redemptionsAmount = 0;
         }
 
-        if(isAddLottoCountValid()){
-            getLottoAddCounts();
-        }
+//        if()
 
-        if(isCloseLottoCountValid()){
-            getLottoCloseCounts();
-        }
 
-        if(isPassportLottoCountValid()){
-            getLottoPassportCounts();
-        }
 
 
 
