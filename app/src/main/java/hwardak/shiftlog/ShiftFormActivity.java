@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -326,7 +327,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         }
 
 
-        startingTillAmount = Double.parseDouble(shiftData.get(4));
+        startingTillAmount = Double.parseDouble(formatToDollarValue(shiftData.get(4)));
         startingTillEditText.setText(String.valueOf(startingTillAmount));
 
 
@@ -390,6 +391,7 @@ public class ShiftFormActivity extends AppCompatActivity {
 
         //Check if the minute EditText is not empty.
         if(!declaredStartTimeMinuteEditText.getText().toString().equals("")) {
+
             //Check if the minute EditText value is less than 59.
             if (Integer.parseInt(declaredStartTimeMinuteEditText.getText().toString()) > 59) {
                 pass = false;
@@ -500,37 +502,44 @@ public class ShiftFormActivity extends AppCompatActivity {
         String formErrors = "";
         boolean pass = true;
 
-        //If starting till is NOT empty.
-        if (!startingTillEditText.getText().toString().equals("")) {
-            String startingTill = startingTillEditText.getText().toString();
-
-            //If starting till contains a decimal.
-            if (startingTill.contains(".")) {
-
-                //If no chars after decimal, add '00'
-                if (startingTill.substring(startingTill.indexOf(".")).length() == 1) {
-                    startingTill += "00";
-                }
-
-                //If only 1 char after decimal, add '0'
-                if (startingTill.substring(startingTill.indexOf(".")).length() == 2) {
-                    startingTill += "0";
-                }
-
-                //No decimal, add '.00'
-            } else {
-                startingTill += ".00";
-            }
-            //Update starting till EditText with formatted starting till value.
-            startingTillEditText.setText(startingTill);
-
-            Log.d("Starting Till", " " + startingTill);
-
-        } else {
-            formErrors += "Starting Till Invalid.\n";
-            updateInfoBanner(formErrors);
+        if(TextUtils.isEmpty(startingTillEditText.getText().toString())) {
+            startingTillEditText.setError("Entry missing");
+            Log.d("TextUtils", " startingTill " );
             pass = false;
         }
+
+
+//        //If starting till is NOT empty.
+//        if (!startingTillEditText.getText().toString().equals("")) {
+//            String startingTill = startingTillEditText.getText().toString();
+//
+//            //If starting till contains a decimal.
+//            if (startingTill.contains(".")) {
+//
+//                //If no chars after decimal, add '00'
+//                if (startingTill.substring(startingTill.indexOf(".")).length() == 1) {
+//                    startingTill += "00";
+//                }
+//
+//                //If only 1 char after decimal, add '0'
+//                if (startingTill.substring(startingTill.indexOf(".")).length() == 2) {
+//                    startingTill += "0";
+//                }
+//
+//                //No decimal, add '.00'
+//            } else {
+//                startingTill += ".00";
+//            }
+//            //Update starting till EditText with formatted starting till value.
+//            startingTillEditText.setText(startingTill);
+//
+//            Log.d("Starting Till", " " + startingTill);
+//
+//        } else {
+//            formErrors += "Starting Till Invalid.\n";
+//            updateInfoBanner(formErrors);
+//            pass = false;
+//        }
         return pass;
     }
 
@@ -576,28 +585,39 @@ public class ShiftFormActivity extends AppCompatActivity {
         String formErrors = "";
         boolean pass = true;
 
-        //If starting till is NOT empty.
-        if (!finalDropEditText.getText().toString().equals("")) {
-            String finalDrop = finalDropEditText.getText().toString();
+        Log.d("TextUtils", " oooooooooooo " );
 
-            //If starting till contains a decimal.
-
-            //Update starting till EditText with formatted starting till value.
-            finalDropEditText.setText(finalDrop);
-
-            Log.d("Final Drop", " " + finalDrop);
-
-        } else {
-            formErrors += "Final drop invalid.\n";
-            updateInfoBanner(formErrors);
+        String finalDrop = finalDropEditText.getText().toString();
+        if(TextUtils.isEmpty(finalDrop)) {
+            finalDropEditText.setError("Your message");
+            Log.d("TextUtils", " oooooooooooo " );
             pass = false;
         }
+
+
+        //If starting till is NOT empty.
+//        if (!finalDropEditText.getText().toString().equals("")) {
+//            String finalDrop = finalDropEditText.getText().toString();
+//
+//            //If starting till contains a decimal.
+//
+//            //Update starting till EditText with formatted starting till value.
+//            finalDropEditText.setText(finalDrop);
+//
+//            Log.d("Final Drop", " " + finalDrop);
+//
+//
+//        } else {
+//            formErrors += "Final drop invalid.\n";
+//            updateInfoBanner(formErrors);
+//            pass = false;
+//        }
         return pass;
 
 
     }
 
-    private double formatToDollarValue(String string){
+    private String formatToDollarValue(String string){
         if (string.contains(".")) {
 
             //If no chars after decimal, add '00'
@@ -615,7 +635,7 @@ public class ShiftFormActivity extends AppCompatActivity {
             string += ".00";
         }
 
-        return 1;
+        return string;
     }
 
     //TODO: Should move all collecting and data writing to another method, only invoked if this method returns true.
@@ -680,6 +700,7 @@ public class ShiftFormActivity extends AppCompatActivity {
     }
 
     public void openShiftButtonOnClick(View view) {
+//        isFinalDropValid();
         actualStartTime = calendar.getTime().toString().substring(11, 16);
         if(areManditoryOpenningFormFieldsValid()) {
             checkAndGetNonManditoryFormFields();
