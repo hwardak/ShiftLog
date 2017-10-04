@@ -13,7 +13,7 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "DATABASE: ";
     private static final String DATABASE_NAME ="shiftLog.db";
-    private static int DATABASE_VERSION = 20;
+    private static int DATABASE_VERSION = 28;
 
     private static final String TABLE_SETTINGS = "settings";
     private static final String SETTINGS_COLUMN_USER_EMAIL = "userEmail";
@@ -62,17 +62,15 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
     static final String SHIFTS_COLUMN_DRIVE_OFFS = "driveOffs";
     static final String SHIFTS_COLUMN_FINAL_DROP_AMOUNT = "finalDropAmount";
     static final String SHIFTS_COLUMN_SHORT_OVER = "shortOver";
-    static final String SHIFT_COLUMN_PRINT_OUT_TERMINAL_COUNT = "printOutTermninalCount";
-    static final String SHIFT_COLUMN_PRINT_OUT_PASSPORT_COUNT = "printOutPassportCount";
-    static final String SHIFT_COLUMN_PRINT_OUT_DIFFERENCE = "printOutDifferenceCount";
-    static final String SHIFT_COLUMN_SCRATCH_START = "scratchStartCount";
-    static final String SHIFT_COLUMN_SCRATCH_ADD = "scratchAddCount";
-    static final String SHIFT_COLUMN_SCRATCH_CLOSE = "scratchCloseCount";
-    static final String SHIFT_COLUMN_SCRATCH_SOLD = "scratchSoldCount";
-    static final String SHIFT_COLUMN_SCRATCH_PASSPORT = "scratchPassportCount";
-    static final String SHIFT_COLUMN_SCRATCH_DIFFERENCE = "scratchDifferenceCount";
-
-
+    static final String SHIFTS_COLUMN_PRINT_OUT_TERMINAL_COUNT = "printOutTermninalCount";
+    static final String SHIFTS_COLUMN_PRINT_OUT_PASSPORT_COUNT = "printOutPassportCount";
+    static final String SHIFTS_COLUMN_PRINT_OUT_DIFFERENCE = "printOutDifferenceCount";
+    static final String SHIFTS_COLUMN_SCRATCH_START = "scratchStartCount";
+    static final String SHIFTS_COLUMN_SCRATCH_ADD = "scratchAddCount";
+    static final String SHIFTS_COLUMN_SCRATCH_CLOSE = "scratchCloseCount";
+    static final String SHIFTS_COLUMN_SCRATCH_SOLD = "scratchSoldCount";
+    static final String SHIFTS_COLUMN_SCRATCH_PASSPORT = "scratchPassportCount";
+    static final String SHIFTS_COLUMN_SCRATCH_DIFFERENCE = "scratchDifferenceCount";
     static final String SHIFTS_COLUMN_SHIFT_OPEN = "shiftOpen";
 
     //TODO: perhaps the money values should be stored as a REAL instead of TEXT.
@@ -93,15 +91,16 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
             + SHIFTS_COLUMN_REDEMPTIONS + " REAL, "
             + SHIFTS_COLUMN_DRIVE_OFFS + " REAL, "
             + SHIFTS_COLUMN_FINAL_DROP_AMOUNT + " REAL, "
-            + SHIFT_COLUMN_PRINT_OUT_TERMINAL_COUNT + " REAL, "
-            + SHIFT_COLUMN_PRINT_OUT_PASSPORT_COUNT + " REAL, "
-            + SHIFT_COLUMN_PRINT_OUT_DIFFERENCE + " REAL, "
-            + SHIFT_COLUMN_SCRATCH_START + " INTEGER, "
-            + SHIFT_COLUMN_SCRATCH_ADD + " INTEGER, "
-            + SHIFT_COLUMN_SCRATCH_CLOSE + " INTEGER, "
-            + SHIFT_COLUMN_SCRATCH_SOLD + " INTEGER, "
-            + SHIFT_COLUMN_SCRATCH_PASSPORT + " INTEGER, "
-            + SHIFT_COLUMN_SCRATCH_DIFFERENCE + " INTEGER, "
+            + SHIFTS_COLUMN_SHORT_OVER + " REAL, "
+            + SHIFTS_COLUMN_PRINT_OUT_TERMINAL_COUNT + " REAL, "
+            + SHIFTS_COLUMN_PRINT_OUT_PASSPORT_COUNT + " REAL, "
+            + SHIFTS_COLUMN_PRINT_OUT_DIFFERENCE + " REAL, "
+            + SHIFTS_COLUMN_SCRATCH_START + " INTEGER, "
+            + SHIFTS_COLUMN_SCRATCH_ADD + " INTEGER, "
+            + SHIFTS_COLUMN_SCRATCH_CLOSE + " INTEGER, "
+            + SHIFTS_COLUMN_SCRATCH_SOLD + " INTEGER, "
+            + SHIFTS_COLUMN_SCRATCH_PASSPORT + " INTEGER, "
+            + SHIFTS_COLUMN_SCRATCH_DIFFERENCE + " INTEGER, "
             + SHIFTS_COLUMN_SHIFT_OPEN + " INTEGER "
             + ");";
 

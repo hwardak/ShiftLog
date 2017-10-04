@@ -247,7 +247,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
                         android:text="Till #: "
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:id="@+id/tillNumberRadioGroupTextView"
+                        android:focusable="true"
+                        />
 
                     <RadioButton
                         android:id="@+id/tillOneRadioButton"
@@ -271,7 +274,6 @@
                         android:id="@+id/offTillRadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
                         android:text="Off till  "
                         android:textSize="@dimen/subtitle_font_size" />
 
@@ -305,7 +307,7 @@
                         android:layout_weight="3"
                         android:inputType="numberDecimal"
                         android:maxLength="6"
-                        android:text="00.00"
+                        android:hint="00.00"
                         android:textSize="@dimen/subtitle_font_size" />
 
                 </LinearLayout>
@@ -403,7 +405,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:inputType="numberDecimal"
+                        android:inputType="numberSigned|numberDecimal"
                         android:maxLength="6"
                         android:text="00.00"
                         android:textSize="@dimen/subtitle_font_size" />
@@ -519,9 +521,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:hint="Total start value..."
                         android:inputType="number"
-                        android:text="00"
+                        android:hint="00"
                         android:textSize="@dimen/subtitle_font_size" />
 
                 </LinearLayout>
@@ -666,14 +667,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="openShiftButtonOnClick"
-                    android:text="Open Shift" />
+                    android:text="Open Shift"
+                    android:id="@+id/openShiftButton"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="updateShiftButtonOnClick"
+                    android:text="Update Shift"
+                    android:id="@+id/updateShiftButton"/>
+
 
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="closeShiftButtonOnClick"
-                    android:text="Close Shift" />
+                    android:text="Close Shift"
+                    android:id="@+id/closeShiftButton"/>
+
 
             </LinearLayout>
         </LinearLayout>
