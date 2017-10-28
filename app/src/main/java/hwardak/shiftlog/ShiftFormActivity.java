@@ -3,7 +3,6 @@ package hwardak.shiftlog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,8 +15,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ShiftFormActivity extends AppCompatActivity {
 
@@ -26,6 +29,8 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     EmployeeDataAccess employeeDataAccess;
     ShiftsDataAccess shiftsDataAccess;
+
+    Toaster toaster;
 
     LinearLayout onTillShiftFieldsLinearLayout;
 
@@ -47,7 +52,6 @@ public class ShiftFormActivity extends AppCompatActivity {
     RadioButton tillTwoRadioButton;
     RadioButton offTillRadioButton;
     TextView tillNumberRadioGroupTextView;
-
 
 
     Button openShiftButton;
@@ -76,13 +80,17 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     String employeeName;
     String dateStart;
+    String dateEnd;
     int yearStart;
+    int yearEnd;
     int monthStart;
     int monthEnd;
 
+    double hoursWorked;
+
     int dayOfMonthStart;
     int dayOfMonthEnd;
-
+    String dayOfWeek;
 
     String declaredStartTime;
     String actualStartTime;
@@ -112,6 +120,8 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     Calendar calendar;
 
+    DecimalFormat df = new DecimalFormat("#.00");
+
 
     /**
      * - Views and variables instantiated.
@@ -131,11 +141,14 @@ public class ShiftFormActivity extends AppCompatActivity {
         //If the employee has previsously signed in, but has not signed out yet, their unclosed
         //shift data is reloaded into a form.
         if (employeeHasOpenShift) {
-            ArrayList<String> shiftData = shiftsDataAccess.getEmployeesOpenShiftData(userID);
+            toaster.toastUp(getApplicationContext(), "Shift in progress...");
+            ArrayList<String> shiftData = shiftsDataAccess.getEmployeeOpenShiftData(userID);
             this.loadExistingForm(shiftData);
             enableClosingViews(true);
 
         } else {
+            toaster.toastUp(getApplicationContext(), "Starting new shift...");
+
             this.getStartDate();
             this.preloadStartTime();
             this.loadNewForm(userID);
@@ -143,6 +156,13 @@ public class ShiftFormActivity extends AppCompatActivity {
 
 
         }
+
+        try {
+            calculateHoursWorked2();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void enableClosingViews(boolean b) {
@@ -183,6 +203,8 @@ public class ShiftFormActivity extends AppCompatActivity {
         employeeDataAccess = new EmployeeDataAccess(this);
         shiftsDataAccess = new ShiftsDataAccess(this);
 
+        toaster = new Toaster();
+
         employeeHasOpenShift = shiftsDataAccess.doesEmployeeHaveOpenShift(userID);
 
 
@@ -214,9 +236,9 @@ public class ShiftFormActivity extends AppCompatActivity {
         offTillRadioButton = (RadioButton) findViewById(R.id.offTillRadioButton);
         tillNumberRadioGroupTextView = (TextView) findViewById(R.id.tillNumberRadioGroupTextView);
 
-        printOutTerminalEditText  = (EditText) findViewById(R.id.printOutTerminalEditText);
-        printOutPassportEditText  = (EditText) findViewById(R.id.printOutPassportEditText);
-        printOutDifferenceEditText  = (EditText) findViewById(R.id.printOutDifferenceEditText);
+        printOutTerminalEditText = (EditText) findViewById(R.id.printOutTerminalEditText);
+        printOutPassportEditText = (EditText) findViewById(R.id.printOutPassportEditText);
+        printOutDifferenceEditText = (EditText) findViewById(R.id.printOutDifferenceEditText);
 
 
         scratchStartEditText = (EditText) findViewById(R.id.scratchStartEditText);
@@ -227,11 +249,9 @@ public class ShiftFormActivity extends AppCompatActivity {
         scratchDifferenceEditText = (EditText) findViewById(R.id.scratchDifferenceEditText);
 
 
-
         openShiftButton = (Button) findViewById(R.id.openShiftButton);
         updateShiftButton = (Button) findViewById(R.id.updateShiftButton);
         closeShiftButton = (Button) findViewById(R.id.closeShiftButton);
-
 
 
         tillNumberRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -241,7 +261,7 @@ public class ShiftFormActivity extends AppCompatActivity {
 
                 //If the overlap radiobutton is clicked, the nonOverLapShiftFieldsLayout is made
                 //visible.
-                if(offTillRadioButton.getId() == checkedId){
+                if (offTillRadioButton.getId() == checkedId) {
                     onTillShiftFieldsLinearLayout.setVisibility(View.GONE);
                 } else {
                     onTillShiftFieldsLinearLayout.setVisibility(View.VISIBLE);
@@ -251,13 +271,14 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
-
     private void preloadStartTime() {
 //        Log.d("PreloadStartTime", calendar.getTime().toString().substring(11, 16));
 //        Log.d("PreloadStartTimeHour", calendar.getTime().toString().substring(11, 13));
 //        Log.d("PreloadStartTimeMinute", calendar.getTime().toString().substring(14, 16));
 
         int hour = Integer.parseInt(calendar.getTime().toString().substring(11, 13));
+
+
         int minute = Integer.parseInt(calendar.getTime().toString().substring(14, 16));
         String hourString = "";
         String minuteString = "";
@@ -267,12 +288,14 @@ public class ShiftFormActivity extends AppCompatActivity {
         if (hour == 0) {
             hour = 12;
             startTimeAmPmToggleButton.setChecked(false);
-        } else if (hour > 12) {
+        } else if (hour == 12){
+            startTimeAmPmToggleButton.setChecked(true);
+        } else if (hour < 12){
+            startTimeAmPmToggleButton.setChecked(false);
+        }else if (hour > 12) {
             hour = hour - 12;
             startTimeAmPmToggleButton.setChecked(true);
         }
-
-
 
 
 //      Round minute to closest quarter.
@@ -284,7 +307,7 @@ public class ShiftFormActivity extends AppCompatActivity {
             minuteString = "30";
         } else if (minute > 37 && minute <= 52) {
             minuteString = "45";
-        } else if (minute > 52){
+        } else if (minute > 52) {
             hour++;
             minuteString = "00";
         }
@@ -293,14 +316,10 @@ public class ShiftFormActivity extends AppCompatActivity {
         hourString = Integer.toString(hour);
 
 
-
-
 //        Log.d("PreloadHour",  " " + hour);
 //        Log.d("PreloadMinute",  " " + minute);
 //        Log.d("PreloadMinuteString",  " " + minuteString);
 //        Log.d("PreloadHourString",  " " + hourString);
-
-
 
 
         declaredStartTimeHourEditText.setText(hourString);
@@ -309,14 +328,6 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
-//    private boolean doesEmployeeHaveOpenShift(int userID) {
-//        if (shiftsDataAccess.doesEmployeeHaveOpenShift(userID)) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
-
     private void loadNewForm(int userID) {
         employeeName = employeeDataAccess.getEmployeeName(userID);
         employeeNameEditText.setText(employeeName);
@@ -324,11 +335,16 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
+
+
+
+    //TODO: this method needs to be split up...
     /**
      * Recieves a String Array of shiftForm entries from a previously opened shift.
      * Each entry from the String Array is set into its respective EditText.
      * The declaredStartTime comes in the format '1234PM', it is split into 3 subStrings; hour
      * min, and amPm.
+     *
      * @param shiftData String Array of entries from when the shift was opened.
      */
     private void loadExistingForm(ArrayList<String> shiftData) {
@@ -339,6 +355,12 @@ public class ShiftFormActivity extends AppCompatActivity {
 /////////////////////
         //TODO: Move all the declared time functions below to its own method.
 
+
+        yearStart = Integer.parseInt(shiftData.get(22));
+        dateStart = shiftData.get(2);
+
+        dateEditText.setText(dateStart);
+
         //declaredStartTime comes in the format '1234PM', it is split into 3 subStrings.
         //hour and min are set into their respective EditTexts, amPm is used to toggle the AMPM
         //toggle button.
@@ -348,14 +370,15 @@ public class ShiftFormActivity extends AppCompatActivity {
         //TODO: this could be imporved.
         //If the length of the declaredStart time is less than 4, a space is added to beginning of
         // of the string.
-        if(declaredStartTime.length() == 5){
+        if (declaredStartTime.length() == 5) {
             declaredStartTime = "0" + declaredStartTime;
         }
 
-        String hour = declaredStartTime.substring(0,declaredStartTime.indexOf(":"));
-        String min = declaredStartTime.substring(declaredStartTime.indexOf(":") + 1 , 5);
+        String hour = declaredStartTime.substring(0, declaredStartTime.indexOf(":"));
+        String min = declaredStartTime.substring(declaredStartTime.indexOf(":") + 1, 5);
         String amPM = declaredStartTime.substring(5);
 
+        Log.d("AmPM", amPM + hour + min);
 
 //        Log.d("loadStartTimeHour", hour);
 //        Log.d("loadStartTimeMin", min);
@@ -364,7 +387,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         declaredStartTimeHourEditText.setText(hour);
         declaredStartTimeMinuteEditText.setText(min);
 
-        if(amPM.equals("AM")){
+        if (amPM == "AM") {
             startTimeAmPmToggleButton.setChecked(false);
         } else {
             startTimeAmPmToggleButton.setChecked(true);
@@ -383,12 +406,12 @@ public class ShiftFormActivity extends AppCompatActivity {
         //TODO: this could be imporved.
         //If the length of the declaredStart time is less than 4, a space is added to beginning of
         // of the string.
-        if(declaredEndTime.length() == 5){
+        if (declaredEndTime.length() == 5) {
             declaredEndTime = "0" + declaredEndTime;
         }
 
-        String hourEnd = declaredEndTime.substring(0,declaredEndTime.indexOf(":"));
-        String minEnd = declaredEndTime.substring(declaredEndTime.indexOf(":") + 1 , 5);
+        String hourEnd = declaredEndTime.substring(0, declaredEndTime.indexOf(":"));
+        String minEnd = declaredEndTime.substring(declaredEndTime.indexOf(":") + 1, 5);
         String amPMEnd = declaredEndTime.substring(5);
 
 
@@ -399,7 +422,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         declaredEndTimeHourEditText.setText(hourEnd);
         declaredEndTimeMinuteEditText.setText(minEnd);
 
-        if(amPM.equals("AM")){
+        if (amPM.equals("AM")) {
             endTimeAmPmToggleButton.setChecked(false);
         } else {
             endTimeAmPmToggleButton.setChecked(true);
@@ -419,16 +442,16 @@ public class ShiftFormActivity extends AppCompatActivity {
         //gets the previously checked radioButton's id, and compares it with each radioButton in the
         //form, which ever one it matches is the one that is checked.
         tillNumber = Integer.parseInt(shiftData.get(3));
-        if(tillNumber == tillOneRadioButton.getId()){
+        if (tillNumber == tillOneRadioButton.getId()) {
             tillOneRadioButton.setChecked(true);
-        } else if(tillNumber == tillTwoRadioButton.getId()) {
+        } else if (tillNumber == tillTwoRadioButton.getId()) {
             tillTwoRadioButton.setChecked(true);
-        } else if(tillNumber == offTillRadioButton.getId()){
+        } else if (tillNumber == offTillRadioButton.getId()) {
             offTillRadioButton.setChecked(true);
         }
 
 
-        startingTillAmount = Double.parseDouble(formatToDollarValue(shiftData.get(4)));
+        startingTillAmount = Double.parseDouble(shiftData.get(4));
         startingTillEditText.setText(String.valueOf(startingTillAmount));
 
         redemptionsAmount = Double.parseDouble(shiftData.get(9));
@@ -475,31 +498,24 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     private void getStartDate() {
         dateStart = calendar.getTime().toString().substring(0, 11); // Wed Aug 09
-        yearStart = calendar.get(Calendar.YEAR);
+        yearStart = calendar.get(Calendar.YEAR); // 2017
         monthStart = calendar.get(Calendar.MONTH); // Jan = 0, dec = 11
         dayOfMonthStart = calendar.get(Calendar.DAY_OF_MONTH);
+        dayOfWeek = dateStart.substring(0,3);
+        Log.d("Day of weeek ", dayOfWeek);
 
     }
 
-    private boolean isShiftOverLap() {
-        RadioButton tillNumber = (RadioButton) findViewById(tillNumberRadioGroup.getCheckedRadioButtonId());
-        Log.d("TillNumber", tillNumber.getText().toString());
+    private void getEndDate() {
+        dateEnd = calendar.getTime().toString().substring(0, 11); // Wed Aug 09
+        yearEnd = calendar.get(Calendar.YEAR); // 2017
 
-        if(tillNumber.getText().toString().equals("Over Lap")){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private String formatTimeTo24h(String time) {
-
-        return time;
 
     }
 
     /**
      * Receives a string of errors and displays them to the user via textview above the scroll view.
+     *
      * @param formErrors String of errors
      */
     private void updateInfoBanner(String formErrors) {
@@ -510,6 +526,7 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     /**
      * Checks if the declared start hour and minutes editText entries are valid.
+     *
      * @return Returns true if valid, false if otherwise.
      */
     private boolean isDeclaredStartTimeValid() {
@@ -517,9 +534,9 @@ public class ShiftFormActivity extends AppCompatActivity {
         String formErrors = "";
 
         //Check if the hour EditText is not empty.
-        if(!declaredStartTimeHourEditText.getText().toString().equals("")){
+        if (!declaredStartTimeHourEditText.getText().toString().equals("")) {
             //Check if the hour EditText value is less than 12, since we will be using the AmPm format.
-            if(Integer.parseInt(declaredStartTimeHourEditText.getText().toString()) > 12 ){
+            if (Integer.parseInt(declaredStartTimeHourEditText.getText().toString()) > 12) {
                 pass = false;
                 formErrors += "Invalid Starting Hour.\n";
             }
@@ -530,7 +547,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         }
 
         //Check if the minute EditText is not empty.
-        if(!declaredStartTimeMinuteEditText.getText().toString().equals("")) {
+        if (!declaredStartTimeMinuteEditText.getText().toString().equals("")) {
 
             //Check if the minute EditText value is less than 59.
             if (Integer.parseInt(declaredStartTimeMinuteEditText.getText().toString()) > 59) {
@@ -544,14 +561,14 @@ public class ShiftFormActivity extends AppCompatActivity {
 
         //If the minute edittext only contains one integer, a zero will be added before the
         //integer.  2 >> 02
-        if(declaredStartTimeMinuteEditText.getText().toString().length() == 1){
+        if (declaredStartTimeMinuteEditText.getText().toString().length() == 1) {
             String currentStartTimeMinute = declaredStartTimeMinuteEditText.getText().toString();
             String newStartTimeMinute = "0" + currentStartTimeMinute;
             declaredStartTimeMinuteEditText.setText(newStartTimeMinute);
         }
 
         //If the validation was a fail, info banner will be updated with a list of all form errors.
-        if(!pass){
+        if (!pass) {
             updateInfoBanner(formErrors);
         }
 
@@ -563,9 +580,9 @@ public class ShiftFormActivity extends AppCompatActivity {
         String formErrors = "";
 
         //Check if the hour EditText is not empty.
-        if(!declaredEndTimeHourEditText.getText().toString().equals("")){
+        if (!declaredEndTimeHourEditText.getText().toString().equals("")) {
             //Check if the hour EditText value is less than 12, since we will be using the AmPm format.
-            if(Integer.parseInt(declaredEndTimeHourEditText.getText().toString()) > 12 ){
+            if (Integer.parseInt(declaredEndTimeHourEditText.getText().toString()) > 12) {
                 pass = false;
 //                formErrors += "Invalid ending Hour.\n";
             }
@@ -576,7 +593,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         }
 
         //Check if the minute EditText is not empty.
-        if(!declaredEndTimeMinuteEditText.getText().toString().equals("")) {
+        if (!declaredEndTimeMinuteEditText.getText().toString().equals("")) {
             //Check if the minute EditText value is less than 59.
             if (Integer.parseInt(declaredEndTimeMinuteEditText.getText().toString()) > 59) {
                 pass = false;
@@ -589,21 +606,23 @@ public class ShiftFormActivity extends AppCompatActivity {
 
         //If the minute edittext only contains only one integer, a zero will be added before the
         //integer.  2 >> 02
-        if(declaredEndTimeMinuteEditText.getText().toString().length() == 1){
+        if (declaredEndTimeMinuteEditText.getText().toString().length() == 1) {
             String currentStartTimeMinute = declaredEndTimeMinuteEditText.getText().toString();
             String newStartTimeMinute = "0" + currentStartTimeMinute;
             declaredEndTimeMinuteEditText.setText(newStartTimeMinute);
         }
 
         //If the validation was a fail, info banner will be updated with a list of all form errors.
-        if(!pass){
+        if (!pass) {
             updateInfoBanner(formErrors);
         }
 
-        return pass;    }
+        return pass;
+    }
 
     /**
      * Combines and returns the values from the declared start time editTexts.
+     *
      * @return declared start time in AmPm format.
      */
     public String getDeclaredStartTime() {
@@ -621,6 +640,7 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     /**
      * Combines and returns the values from the declared end time editTexts.
+     *
      * @return declared start time in AmPm format.
      */
     public String getDeclaredEndTime() {
@@ -631,281 +651,130 @@ public class ShiftFormActivity extends AppCompatActivity {
                 + declaredEndTimeMinuteEditText.getText().toString()
                 + endTimeAmPmToggleButton.getText().toString();
 
-        Log.d("startTimeAmPm", timeAmPm);
+        Log.d("endTimeAmPm", timeAmPm);
 
         return timeAmPm;
     }
 
-    /**
-     * Checks and formats starting till value, and alerts user of invalid entries.
-     * @return returns true if valid, false otherwise.
-     */
-    private boolean isStartingTillValid() {
-        String formErrors = "";
-        boolean pass = true;
 
-        if(TextUtils.isEmpty(startingTillEditText.getText().toString())) {
-            startingTillEditText.setError("Entry missing");
-            Log.d("TextUtils", " startingTill " );
-            pass = false;
-        }
-
-
-//        //If starting till is NOT empty.
-//        if (!startingTillEditText.getText().toString().equals("")) {
-//            String startingTill = startingTillEditText.getText().toString();
-//
-        return pass;
-    }
-
-    private boolean isRedemptionsValid() {
-        String formErrors = "";
-        boolean pass = true;
-
-        //If starting till is NOT empty.
-        if (!redemptionsEditText.getText().toString().equals("")) {
-            String redemptions = redemptionsEditText.getText().toString();
-
-            //If starting till contains a decimal.
-            if (redemptions.contains(".")) {
-
-                //If no chars after decimal, add '00'
-                if (redemptions.substring(redemptions.indexOf(".")).length() == 1) {
-                    redemptions += "00";
-                }
-
-                //If only 1 char after decimal, add '0'
-                if (redemptions.substring(redemptions.indexOf(".")).length() == 2) {
-                    redemptions += "0";
-                }
-
-                //No decimal, add '.00'
-            } else {
-                redemptions += ".00";
-            }
-            //Update starting till EditText with formatted starting till value.
-            redemptionsEditText.setText(redemptions);
-
-            Log.d("Redemption", " " + redemptions);
-
-        } else {
-            formErrors += "Redemptions invalid.\n";
-            updateInfoBanner(formErrors);
-            pass = false;
-        }
-        return pass;
-    }
-
-    private boolean isFinalDropValid() {
-        String formErrors = "";
-        boolean pass = true;
-
-        Log.d("TextUtils", " oooooooooooo " );
-
-        String finalDrop = finalDropEditText.getText().toString();
-        if(TextUtils.isEmpty(finalDrop)) {
-            finalDropEditText.setError("Your message");
-            Log.d("TextUtils", " oooooooooooo " );
-            pass = false;
-        }
-
-
-        //If starting till is NOT empty.
-//        if (!finalDropEditText.getText().toString().equals("")) {
-//            String finalDrop = finalDropEditText.getText().toString();
-//
-//            //If starting till contains a decimal.
-//
-//            //Update starting till EditText with formatted starting till value.
-//            finalDropEditText.setText(finalDrop);
-//
-//            Log.d("Final Drop", " " + finalDrop);
-//
-//
-//        } else {
-//            formErrors += "Final drop invalid.\n";
-//            updateInfoBanner(formErrors);
-//            pass = false;
-//        }
-        return pass;
-
-
-    }
-
-    private String formatToDollarValue(String string){
-        if (string.contains(".")) {
-
-            //If no chars after decimal, add '00'
-            if (string.substring(string.indexOf(".")).length() == 1) {
-                string += "00";
-            }
-
-            //If only 1 char after decimal, add '0'
-            if (string.substring(string.indexOf(".")).length() == 2) {
-                string += "0";
-            }
-
-            //No decimal, add '.00'
-        } else {
-            string += ".00";
-        }
-
-        return string;
-    }
-
-    //TODO: Should move all collecting and data writing to another method, only invoked if this method returns true.
-    private boolean areManditoryClosingFormFieldsValid(){
-        boolean pass = true;
-        infoBannerTextView.setText("");
-
-        if(isFinalDropValid()){
-            finalDropAmount = Double.parseDouble(finalDropEditText.getText().toString());
-        } else {
-            pass = false;
-        }
-
-        if(isRedemptionsValid()) {
-            redemptionsAmount = Double.parseDouble(redemptionsEditText.getText().toString());
-        } else {
-            pass = false;
-        }
-
-        return pass;
-    }
-
-    //TODO: Should move all collecting and data writing to another method, only invoked if this method returns true.
     private boolean areManditoryOpenningFormFieldsValid() {
         boolean pass = true;
         infoBannerTextView.setText("");
 
         //Check the declared start time.
-        if(isDeclaredStartTimeValid()){
+        if (isDeclaredStartTimeValid()) {
             declaredStartTime = getDeclaredStartTime();
         } else {
             pass = false;
         }
 
-
-
-        //Till option must be selected before moving onwards.
-        //If the 'offTill' option is selected, the methods returns and all onTill form fields are
-        //not checked.
-        if (tillNumberRadioGroup.getCheckedRadioButtonId() == -1)
-        {
-            updateInfoBanner("Must select till option");
-        } else  {
-            //Get the till number, if off till return and do not collect remain form fields.
-            tillNumber = tillNumberRadioGroup.getCheckedRadioButtonId();
-
-            //If the shift is an over lap shift, retrun true, the rest of the checks are for on-till
-            //shifts
-            if(offTillRadioButton.isChecked()){
-                return true;
-            }
-        }
-
-
-
-
-        //Check and get the starting till amount.
-        if(TextUtils.isEmpty(startingTillEditText.getText().toString().trim())) {
-            startingTillEditText.setError("Entry needed.");
-            pass = false;
-        } else {
-            startingTillAmount = Double.parseDouble(startingTillEditText.getText().toString().trim());
-        }
-        Log.d("TextUtils", " scratchStart " );
-
-
-        //Check and get the starting scratch ticket count.
-        if(TextUtils.isEmpty(scratchStartEditText.getText().toString().trim())) {
-            scratchStartEditText.setError("Entry needed.");
-            pass = false;
-        } else {
-            scratchStart = Integer.parseInt(scratchStartEditText.getText().toString().trim());
-        }
-        Log.d("TextUtils", " scratchStart " );
-
-        return pass;
-    }
-
-    public void openShiftButtonOnClick(View view) {
-        if(areManditoryOpenningFormFieldsValid()) {
-            actualStartTime = calendar.getTime().toString().substring(11, 16);
-            openNewShift();
-        }
-    }
-
-    private void openNewShift() {
-        Log.d("openingNewShift", dateStart);
-
-        shiftsDataAccess.openNewShift(employeeName, userID, dateStart, declaredStartTime,
-                actualStartTime, tillNumber, startingTillAmount, scratchStart, 1);
-
-    }
-
-    public void closeShiftButtonOnClick(View view) {
-        if(areManditoryOpenningFormFieldsValid()) {
-            if (areManditoryClosingFormFieldsValid()) {
-                actualEndTime = calendar.getTime().toString().substring(11, 16);
-            }
-        }
-    }
-
-
-
-    /**
-     * This method will check all EditTexts that are not manditory for opening a shift, if they
-     * contain a valid entry, it will be saved in the db.
-     */
-    private void checkAndUpdateFormFields(){
-
-        if(isDeclaredEndTimeValid()){
+        //Collect the start time here, only if the entry is valid. This is because shift ending
+        //can change.
+        if (isDeclaredEndTimeValid()) {
             declaredEndTime = getDeclaredEndTime();
         } else {
             declaredEndTime = "00:00AM";
         }
 
 
-        //Get redemptions
-        if(TextUtils.isEmpty(redemptionsEditText.getText().toString().trim())) {
-            redemptionsAmount = 00;
+        //Till option must be selected before moving onwards.
+        //If the 'offTill' option is selected, the methods returns and all onTill form fields are
+        //not checked.
+        if (tillNumberRadioGroup.getCheckedRadioButtonId() == -1) {
+            updateInfoBanner("Must select till option");
         } else {
-            redemptionsAmount = Double.parseDouble(redemptionsEditText.getText().toString().trim());
+            //Get the till number, if off till return and do not collect remain form fields.
+            tillNumber = tillNumberRadioGroup.getCheckedRadioButtonId();
+
+            //If the shift is an over lap shift, retrun true, the rest of the checks are for on-till
+            //shifts
+            if (offTillRadioButton.isChecked()) {
+                return true;
+            }
+        }
+
+
+        //Check and get the starting till amount.
+        if (TextUtils.isEmpty(startingTillEditText.getText().toString().trim())) {
+            startingTillEditText.setError("Entry needed.");
+            pass = false;
+        } else {
+            startingTillAmount = Double.parseDouble(df.format(Double.parseDouble(startingTillEditText.getText().toString().trim())));
+        }
+        Log.d("TextUtils", " scratchStart ");
+
+
+        //Check and get the starting scratch ticket count.
+        if (TextUtils.isEmpty(scratchStartEditText.getText().toString().trim())) {
+            scratchStartEditText.setError("Entry needed.");
+            pass = false;
+        } else {
+            scratchStart = Integer.parseInt(scratchStartEditText.getText().toString().trim());
+        }
+        Log.d("TextUtils", " scratchStart ");
+
+        return pass;
+    }
+
+    private boolean areManditoryClosingFormFieldsValid() {
+        boolean pass = true;
+        infoBannerTextView.setText("");
+
+
+        if (isDeclaredEndTimeValid()) {
+            declaredEndTime = getDeclaredEndTime();
+        } else {
+            updateInfoBanner("End time invalid.");
+            pass = false;
+        }
+
+
+        //Get redemptions
+        if (TextUtils.isEmpty(redemptionsEditText.getText().toString().trim())) {
+            redemptionsEditText.setError("Cannot be empty.");
+            pass = false;
+        } else {
+            redemptionsAmount = Double.parseDouble(df.format(Double.parseDouble(redemptionsEditText.getText().toString().trim())));
+
         }
 
         //Get drive offs
-        if(TextUtils.isEmpty(driveOffsEditText.getText().toString().trim())) {
-            driveOffs = 00;
+        if (TextUtils.isEmpty(driveOffsEditText.getText().toString().trim())) {
+            driveOffsEditText.setError("Cannot be empty.");
+            pass = false;
         } else {
-            driveOffs = Double.parseDouble(redemptionsEditText.getText().toString().trim());
+            driveOffs = Double.parseDouble(df.format(Double.parseDouble(redemptionsEditText.getText().toString().trim())));
         }
 
         //Get finalDrop
-        if(TextUtils.isEmpty(finalDropEditText.getText().toString().trim())) {
-            finalDrop = 00;
+        if (TextUtils.isEmpty(finalDropEditText.getText().toString().trim())) {
+            finalDropEditText.setError("Cannot be empty.");
+            pass = false;
         } else {
-            finalDrop = Double.parseDouble(finalDropEditText.getText().toString().trim());
+            finalDrop = Double.parseDouble(df.format(Double.parseDouble(finalDropEditText.getText().toString().trim())));
         }
 
         //Get till short over
-        if(TextUtils.isEmpty(tillShortOverEditText.getText().toString().trim())) {
-            shortOver = 00;
+        if (TextUtils.isEmpty(tillShortOverEditText.getText().toString().trim())) {
+            tillShortOverEditText.setError("Cannot be empty.");
+            pass = false;
         } else {
-            shortOver = Double.parseDouble(tillShortOverEditText.getText().toString().trim());
+            shortOver = Double.parseDouble(df.format(Double.parseDouble(tillShortOverEditText.getText().toString().trim())));
         }
 
 
-        if(TextUtils.isEmpty(printOutTerminalEditText.getText().toString().trim())) {
-            printOutTerminal = 00;
+        if (TextUtils.isEmpty(printOutTerminalEditText.getText().toString().trim())) {
+            printOutTerminalEditText.setError("Cannot be empty.");
+            pass = false;
         } else {
-            printOutTerminal = Double.parseDouble(printOutTerminalEditText.getText().toString().trim());
+            printOutTerminal = Double.parseDouble(df.format(Double.parseDouble(printOutTerminalEditText.getText().toString().trim())));
         }
 
-        if(TextUtils.isEmpty(printOutPassportEditText.getText().toString().trim())) {
-            printOutPassport = 00;
+        if (TextUtils.isEmpty(printOutPassportEditText.getText().toString().trim())) {
+            printOutPassportEditText.setError("Cannot be empty.");
+            pass = false;
         } else {
-            printOutPassport = Double.parseDouble(printOutPassportEditText.getText().toString().trim());
+            printOutPassport = Double.parseDouble(df.format(Double.parseDouble(printOutPassportEditText.getText().toString().trim())));
         }
 
 
@@ -914,21 +783,122 @@ public class ShiftFormActivity extends AppCompatActivity {
         printOutDifferenceEditText.setText(String.valueOf(printOutDifference));
 
         //Get added scratch tickets
-        if(TextUtils.isEmpty(scratchAddEditText.getText().toString().trim())) {
+        if (TextUtils.isEmpty(scratchAddEditText.getText().toString().trim())) {
+            scratchAddEditText.setError("Cannot be empty.");
+            pass = false;
+        } else {
+            scratchAdd = Integer.parseInt(scratchAddEditText.getText().toString().trim());
+        }
+
+        //Get closing scratch tickets
+        if (TextUtils.isEmpty(scratchCloseEditText.getText().toString().trim())) {
+            scratchCloseEditText.setError("Cannot be empty.");
+            pass = false;
+        } else {
+            scratchClose = Integer.parseInt(scratchCloseEditText.getText().toString().trim());
+        }
+
+
+        if (TextUtils.isEmpty(scratchPassportEditText.getText().toString().trim())) {
+            scratchPassportEditText.setError("Cannot be empty.");
+            pass = false;
+        } else {
+            scratchPassport = Integer.parseInt(scratchPassportEditText.getText().toString().trim());
+        }
+
+        if (pass) {
+            //Calculate scratch sold count.
+            scratchSold = scratchStart + scratchAdd - scratchClose;
+            scratchSoldEditText.setText(String.valueOf(scratchSold));
+
+
+            //Calculate scratch difference.
+            scratchDifference = scratchPassport - scratchSold;
+            scratchDifferenceEditText.setText(String.valueOf(scratchDifference));
+        }
+
+        if (!pass) {
+            updateInfoBanner("Please see form errors...");
+        }
+
+        return pass;
+    }
+
+    /**
+     * This method will check all EditTexts that are not manditory for opening a shift, if they
+     * contain a valid entry, it will be saved in the db.
+     */
+    private void checkAndUpdateFormFields() {
+
+        if (isDeclaredEndTimeValid()) {
+            declaredEndTime = getDeclaredEndTime();
+        } else {
+            declaredEndTime = "00:00AM";
+        }
+
+
+        //Get redemptions
+        if (TextUtils.isEmpty(redemptionsEditText.getText().toString().trim())) {
+            redemptionsAmount = 00;
+        } else {
+            redemptionsAmount = Double.parseDouble(df.format(Double.parseDouble(redemptionsEditText.getText().toString().trim())));
+        }
+
+        //Get drive offs
+        if (TextUtils.isEmpty(driveOffsEditText.getText().toString().trim())) {
+            driveOffs = 00;
+        } else {
+            driveOffs = Double.parseDouble(df.format(Double.parseDouble(redemptionsEditText.getText().toString().trim())));
+        }
+
+        //Get finalDrop
+        if (TextUtils.isEmpty(finalDropEditText.getText().toString().trim())) {
+            finalDrop = 00;
+        } else {
+            finalDrop = Double.parseDouble(df.format(Double.parseDouble(finalDropEditText.getText().toString().trim())));
+        }
+
+        //Get till short over
+        if (TextUtils.isEmpty(tillShortOverEditText.getText().toString().trim())) {
+            shortOver = 00;
+        } else {
+            shortOver = Double.parseDouble(df.format(Double.parseDouble(tillShortOverEditText.getText().toString().trim())));
+        }
+
+
+        if (TextUtils.isEmpty(printOutTerminalEditText.getText().toString().trim())) {
+            printOutTerminal = 00;
+        } else {
+            printOutTerminal = Double.parseDouble(df.format(Double.parseDouble(printOutTerminalEditText.getText().toString().trim())));
+        }
+
+        if (TextUtils.isEmpty(printOutPassportEditText.getText().toString().trim())) {
+            printOutPassport = 00;
+        } else {
+            printOutPassport = Double.parseDouble(df.format(Double.parseDouble(printOutPassportEditText.getText().toString().trim())));
+        }
+
+
+        //Calculate difference between lotto terminal and passport.
+        printOutDifference = printOutPassport - printOutTerminal;
+        printOutDifferenceEditText.setText(String.valueOf(printOutDifference));
+
+        //Get added scratch tickets
+        if (TextUtils.isEmpty(scratchAddEditText.getText().toString().trim())) {
             scratchAdd = 00;
         } else {
             scratchAdd = Integer.parseInt(scratchAddEditText.getText().toString().trim());
         }
 
         //Get closing scratch tickets
-        if(TextUtils.isEmpty(scratchCloseEditText.getText().toString().trim())) {
+        if (TextUtils.isEmpty(scratchCloseEditText.getText().toString().trim())) {
             scratchClose = 00;
         } else {
             scratchClose = Integer.parseInt(scratchCloseEditText.getText().toString().trim());
         }
 
 
-        if(TextUtils.isEmpty(scratchPassportEditText.getText().toString().trim())) {
+        if (TextUtils.isEmpty(scratchPassportEditText.getText().toString().trim())) {
             scratchPassport = 00;
         } else {
             scratchPassport = Integer.parseInt(scratchPassportEditText.getText().toString().trim());
@@ -948,15 +918,157 @@ public class ShiftFormActivity extends AppCompatActivity {
                 printOutTerminal, printOutPassport, printOutDifference, scratchAdd, scratchClose,
                 scratchPassport, scratchSold, scratchDifference);
 
-        Intent intent = getIntent();
         finish();
         startActivity(getIntent());
     }
 
+    private void openNewShift() {
+        Log.d("openingNewShift", dateStart);
 
-    public void updateShiftButtonOnClick(View view) {
-        checkAndUpdateFormFields();
+        shiftsDataAccess.openNewShift(employeeName, userID, dateStart,yearStart, monthStart, dayOfMonthStart, dayOfWeek, declaredStartTime,
+                actualStartTime, tillNumber, startingTillAmount, scratchStart, 1);
 
 
     }
+
+
+
+
+
+    public void openShiftButtonOnClick(View view) {
+        if (areManditoryOpenningFormFieldsValid()) {
+            actualStartTime = calendar.getTime().toString().substring(11, 16);
+            openNewShift();
+            toaster.toastUp(getApplicationContext(), "Shift Opened.");
+        }
+        shiftsDataAccess.printTable();
+
+        finish();
+        startActivity(getIntent());
+    }
+
+    public void updateShiftButtonOnClick(View view) {
+        checkAndUpdateFormFields();
+        shiftsDataAccess.printTable();
+        toaster.toastUp(getApplicationContext(), "Shift Updated.");
+
+        finish();
+        startActivity(getIntent());
+    }
+
+    public void closeShiftButtonOnClick(View view) {
+        if (areManditoryOpenningFormFieldsValid()) {
+            if (areManditoryClosingFormFieldsValid()) {
+                getEndDate();
+                actualEndTime = calendar.getTime().toString().substring(11, 16);
+
+                try {
+                    calculateHoursWorked2();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.d("CloseShiftButton", "calculateHours error");
+                }
+
+                shiftsDataAccess.closeShift(declaredEndTime, actualEndTime, redemptionsAmount,
+                        driveOffs, finalDrop, shortOver, printOutTerminal, printOutPassport,
+                        printOutDifference, scratchAdd, scratchClose, scratchPassport, scratchSold,
+                        scratchDifference, shiftID, 0, hoursWorked);
+                toaster.toastUp(getApplicationContext(), "Shift Closed.");
+                finish();
+            }
+        }
+        shiftsDataAccess.printTable();
+
+
+    }
+
+//    private void calculateHoursWorked() {
+//        int startHour = 3;
+//        int startMin = 30;
+//        double startMinuteValue;
+//
+//        int endHour = 1;
+//        int endMin = 45;
+//        double endMinuteValue;
+//
+//        boolean startIsPM = true;
+//        boolean endIsPM = false;
+//
+////        endHour = Integer.parseInt(declaredEndTime.substring(0, declaredEndTime.indexOf(":")));
+////        endMin = Integer.parseInt(declaredEndTime.substring(declaredEndTime.indexOf(":") + 1, 5));
+////        if(declaredStartTime.substring(5).equals("PM")){
+////            startIsPM = true;
+////        } else {
+////            startIsPM = false;
+////
+////        }
+//
+////        startHour = Integer.parseInt(declaredStartTime.substring(0, declaredStartTime.indexOf(":")));
+////        startMin = Integer.parseInt(declaredStartTime.substring(declaredStartTime.indexOf(":") + 1, 5));
+////        if(declaredEndTime.substring(5).equals("PM")){
+////            endIsPM = true;
+////        } else {
+////            endIsPM = false;
+////
+////        }
+//
+//        if(startIsPM){
+//            startHour += 12;
+//        }
+//
+//        if(endIsPM){
+//            endHour += 12;
+//        }
+//
+//        startMinuteValue = ((startHour * 60) + startMin);
+//        endMinuteValue = ((endHour * 60) + endMin);
+//        double differenceHourValue = (endMinuteValue - startMinuteValue)/60;
+//
+//        Log.d("Start", startHour + ":" + startMin);
+//        Log.d("End", endHour + ":" + endMin);
+//        Log.d("StartMinValue", startMinuteValue + " ");
+//        Log.d("EndMinValue", endMinuteValue + " ");
+//        Log.d("Difference", differenceHourValue + " ");
+//
+//
+//
+//
+//
+//
+//    }
+
+    private void calculateHoursWorked2() throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyEEE MMM dd h:mma");
+
+        Date start;
+        Date end;
+        double difference;
+
+
+        start = simpleDateFormat.parse(yearStart + dateStart + declaredStartTime);
+        Log.d("StartDataFormat", String.valueOf(yearStart + dateStart + declaredStartTime));
+
+        end = simpleDateFormat.parse(yearEnd + dateEnd + declaredEndTime);
+        Log.d("EndDataFormat", String.valueOf(yearEnd + dateEnd + declaredEndTime));
+
+        difference = end.getTime() - start.getTime();
+
+        Log.d("Difference", String.valueOf(difference)); // 3.06E7
+        Log.d("Time difference", String.valueOf(((difference/1000)/60)/60));
+        //Prints '8'
+
+        difference = (((difference/1000)/60)/60);
+
+        String dif;
+        dif = df.format(difference);
+
+        hoursWorked = Double.parseDouble(dif);
+
+        hoursWorked = Math.round(hoursWorked);
+
+
+
+    }
+
+
 }

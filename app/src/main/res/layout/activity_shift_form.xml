@@ -105,7 +105,9 @@
                         android:layout_weight="3"
                         android:enabled="false"
                         android:text="Date"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+
+                        />
 
                 </LinearLayout>
 
@@ -137,7 +139,9 @@
                             android:inputType="number"
                             android:maxLength="2"
                             android:text="00"
-                            android:textSize="@dimen/title_font_size" />
+                            android:textSize="@dimen/title_font_size"
+                            android:selectAllOnFocus="true"
+                            />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -155,7 +159,9 @@
                             android:inputType="number"
                             android:maxLength="2"
                             android:text="00"
-                            android:textSize="@dimen/title_font_size" />
+                            android:textSize="@dimen/title_font_size"
+                            android:selectAllOnFocus="true"
+                            />
 
                         <ToggleButton
                             android:layout_width="wrap_content"
@@ -200,7 +206,9 @@
                             android:inputType="number"
                             android:maxLength="2"
                             android:text="00"
-                            android:textSize="@dimen/title_font_size" />
+                            android:textSize="@dimen/title_font_size"
+                            android:selectAllOnFocus="true"
+                            />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -218,7 +226,9 @@
                             android:inputType="number"
                             android:maxLength="2"
                             android:text="00"
-                            android:textSize="@dimen/title_font_size" />
+                            android:textSize="@dimen/title_font_size"
+                            android:selectAllOnFocus="true"
+                            />
 
                         <ToggleButton
                             android:layout_width="wrap_content"
@@ -308,7 +318,9 @@
                         android:inputType="numberDecimal"
                         android:maxLength="6"
                         android:hint="00.00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+                        />
 
                 </LinearLayout>
 
@@ -323,7 +335,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
                         android:text="Redemptions $: "
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+
+                        />
 
                     <EditText
                         android:id="@+id/redemptionsEditText"
@@ -333,7 +347,10 @@
                         android:hint="Fuel, Giftcards, and/or Lotto..."
                         android:inputType="numberDecimal"
                         android:text="00.00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 
@@ -358,7 +375,9 @@
                         android:hint="drive offs..."
                         android:inputType="numberDecimal"
                         android:text="00.00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+                        />
 
                 </LinearLayout>
 
@@ -383,7 +402,9 @@
                         android:inputType="numberDecimal"
                         android:maxLength="6"
                         android:text="00.00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+                        />
 
                 </LinearLayout>
 
@@ -406,9 +427,11 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:inputType="numberSigned|numberDecimal"
-                        android:maxLength="6"
+                        android:maxLength="7"
                         android:text="00.00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+                        />
 
                 </LinearLayout>
 
@@ -417,7 +440,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
                     android:text="Print Out Ticket Counts"
-                    android:textSize="@dimen/title_font_size" />
+                    android:textSize="@dimen/title_font_size"
+                    />
 
                 <LinearLayout
                     android:id="@+id/printOutTerminalLinearLayout"
@@ -438,9 +462,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:hint="Total sales from lotto terminal"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:text="00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 
@@ -463,9 +490,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:hint="Total sales from lotto terminal"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:text="00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 
@@ -489,9 +519,12 @@
                         android:layout_weight="3"
                         android:enabled="false"
                         android:hint="Total sales from lotto terminal"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:text="00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 
@@ -523,7 +556,10 @@
                         android:layout_weight="3"
                         android:inputType="number"
                         android:hint="00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 
@@ -548,7 +584,10 @@
                         android:hint="Total add value..."
                         android:inputType="number"
                         android:text="00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 
@@ -573,7 +612,10 @@
                         android:hint="Total close value..."
                         android:inputType="number"
                         android:text="00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 
@@ -598,7 +640,10 @@
                         android:hint="Total sold value..."
                         android:text="00"
                         android:enabled="false"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 
@@ -624,7 +669,10 @@
                         android:hint="Total passport value..."
                         android:inputType="number"
                         android:text="00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 
@@ -649,7 +697,10 @@
                         android:inputType="number"
                         android:enabled="false"
                         android:text="00"
-                        android:textSize="@dimen/subtitle_font_size" />
+                        android:textSize="@dimen/subtitle_font_size"
+                        android:selectAllOnFocus="true"
+
+                        />
 
                 </LinearLayout>
 

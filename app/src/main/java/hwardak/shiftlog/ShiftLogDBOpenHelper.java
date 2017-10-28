@@ -13,7 +13,7 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "DATABASE: ";
     private static final String DATABASE_NAME ="shiftLog.db";
-    private static int DATABASE_VERSION = 28;
+    private static int DATABASE_VERSION = 29;
 
     private static final String TABLE_SETTINGS = "settings";
     private static final String SETTINGS_COLUMN_USER_EMAIL = "userEmail";
@@ -51,6 +51,10 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
     static final String SHIFTS_COLUMN_EMPLOYEE_ID = "employeeId";
     static final String SHIFTS_COLUMN_EMPLOYEE_NAME = "name";
     static final String SHIFTS_COLUMN_DATE = "date";
+    static final String SHIFTS_COLUMN_YEAR = "year";
+    static final String SHIFTS_COLUMN_MONTH = "month";
+    static final String SHIFTS_COLUMN_DAY_OF_MONTHS = "dayOfMonth";
+    static final String SHIFTS_COLUMN_DAY_OF_WEEK = "dayOfWeek";
     static final String SHIFTS_COLUMN_DECLARED_START_TIME = "declaredStartTime";
     static final String SHIFTS_COLUMN_ACTUAL_START_TIME = "actualStartTime";
     static final String SHIFTS_COLUMN_DECLARED_END_TIME = "declaredEndTime";
@@ -82,6 +86,10 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
             + SHIFTS_COLUMN_EMPLOYEE_NAME + " TEXT, "
             + SHIFTS_COLUMN_DATE + " TEXT, "
             + SHIFTS_COLUMN_DECLARED_START_TIME + " TEXT, "
+            + SHIFTS_COLUMN_YEAR + " INTEGER, "
+            + SHIFTS_COLUMN_MONTH + " INTEGER, "
+            + SHIFTS_COLUMN_DAY_OF_MONTHS + " INTEGER, "
+            + SHIFTS_COLUMN_DAY_OF_WEEK + " TEXT, "
             + SHIFTS_COLUMN_ACTUAL_START_TIME + " TEXT, "
             + SHIFTS_COLUMN_DECLARED_END_TIME + " TEXT, "
             + SHIFTS_COLUMN_ACTUAL_END_TIME + " TEXT, "

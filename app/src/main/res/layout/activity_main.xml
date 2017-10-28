@@ -19,7 +19,9 @@
             android:hint="@string/IdEditTextHint"
             android:textColorHint="#f7ff00"
             android:inputType="number"
-            android:textSize="@dimen/title_font_size" />
+            android:textSize="@dimen/title_font_size"
+            android:selectAllOnFocus="true"
+            />
 
         <ImageView
             android:layout_width="match_parent"

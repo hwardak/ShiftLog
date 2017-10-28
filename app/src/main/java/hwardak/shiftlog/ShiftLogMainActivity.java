@@ -28,9 +28,19 @@ public class ShiftLogMainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        employeeIdEditText.setText("");
+        employeeIdEditText.requestFocus();
+    }
+
+
     private void instantiateAllVariable() {
         employeeDataAccess = new EmployeeDataAccess(this);
         employeeIdEditText = (EditText) findViewById(R.id.employeeIdEditText);
+
+        employeeIdEditText.setText("");
     }
 
 

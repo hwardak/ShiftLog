@@ -3,7 +3,6 @@ package hwardak.shiftlog;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,7 +41,7 @@ public class EmployeeOptions extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_options);
 
-        getEmployeeList();
+//        getEmployeeList();
         updateListView();
 
         addEmployeeLayout = (LinearLayout) findViewById(R.id.employeeOptionsAddEmployeeLinearLayout);
@@ -111,7 +110,7 @@ public class EmployeeOptions extends AppCompatActivity {
 
     private void updateListView() {
         employeeList = employeeDataAccess.getEmployeeList();
-        listAdapter = new ArrayAdapter<>(this, R.layout.listview_row, R.id.listViewRow, employeeList);
+        listAdapter = new ArrayAdapter<>(this, R.layout.employee_listview_row, R.id.listViewRow, employeeList);
         listView = (ListView) findViewById(R.id.employeeListView);
         listView.setAdapter(listAdapter);
 
