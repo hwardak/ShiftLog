@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Name: "
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewRowName"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Date: "
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewRowDate"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Till #: "
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewRowTill"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Start: "
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewRowStartTime"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="End: "
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewRowEndTime"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Hours: "
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewRowHoursWorked"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Till Start: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewStartingTill"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Final Drop: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewFinalDrop"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Short/Over: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewShortOver"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Redemptions: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewRedemptions"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Drive Offs: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewDriveOffs"
+            />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Print Out Ticket Counts"
+        android:gravity="center_horizontal"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Terminal: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewTerminal"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Passport: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewPrintOutPassport"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Diff: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewPrintOutDifference"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scratch Ticket Counts"
+        android:gravity="center_horizontal"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Start: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewScratchStart"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Add: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewScratchAdd"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Close: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewScratchClose"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Sold: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewScratchSold"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Passport: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewScratchPassport"
+            />
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Diff: $"
+            />
+
+        <TextView
+            android:layout_weight=".5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailedDayListViewScratchDifference"
+            />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

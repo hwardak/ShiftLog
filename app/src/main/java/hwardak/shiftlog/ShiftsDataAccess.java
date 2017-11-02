@@ -114,7 +114,7 @@ public  class ShiftsDataAccess {
      */
     public void openNewShift(String employeeName, int userID, String dateStart, int yearStart,
                              int monthStart, int dayOfMonthStart, String dayOfWeek,
-                             String declaredStartTime, String actualStartTime,
+                             String declaredStartTime, String actualStartTime, String declaredEndTime,
                              int tillNumber, double startingTillAmount, int scratchStart,
                              int shiftOpen) {
         this.open();
@@ -134,8 +134,8 @@ public  class ShiftsDataAccess {
         values.put(ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_START, scratchStart);
         values.put(ShiftLogDBOpenHelper.SHIFTS_COLUMN_SHIFT_OPEN, shiftOpen);
 
+        values.put(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_END_TIME, declaredEndTime);
         values.put(ShiftLogDBOpenHelper.SHIFTS_COLUMN_ACTUAL_END_TIME, "00:00AM");
-        values.put(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_END_TIME, "00:00AM");
 
         //These columns are assigned a value once the shift is closed.
         values.put(ShiftLogDBOpenHelper.SHIFTS_COLUMN_HOURS_WORKED, 0);
