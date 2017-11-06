@@ -1,7 +1,6 @@
 package hwardak.shiftlog;
 
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,6 +28,7 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
     TextView totalHoursEditText;
     TextView overLapHoursTextView;
     TextView overLapHoursPerDayTextView;
+    TextView detailedDayDateTextView;
 
     int monthNumber;
     String monthString;
@@ -40,7 +40,7 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
     int employeeId;
     String employee;
 
-    int counter = 0 ;
+    int counter = 0;
 
 
     @Override
@@ -51,11 +51,11 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
         totalHoursEditText = (TextView) findViewById(R.id.totalHoursTextView);
         overLapHoursTextView = (TextView) findViewById(R.id.overLapHoursTextView);
         overLapHoursPerDayTextView = (TextView) findViewById(R.id.overLapHoursPerDayTextView);
+        detailedDayDateTextView = (TextView) findViewById(R.id.detailedDayDateTextView);
 
         loadShifts(shiftsDataAccess.getShiftsCursor());
 
         loadHoursDetails(shiftsDataAccess.getTotalHours(), shiftsDataAccess.getTotalDistinctDates());
-
 
 
         instantiateDisplayBySpinner();
@@ -65,83 +65,10 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
         instantiateYearSpinner();
 
 
-
     }
 
 
 
-
-    /**
-     * This method instantiates,
-     * a String[] of Columns name who's contents we would like, and an Array of ints, each
-     * representing the resource id of the view within the row layout. There must be an equal count
-     * of resource ID's and Column names.
-     * The resource id, column name arrays, along with the resource id of the row layout we
-     * want to use are passed the SimpleListAdapter constructor
-     * @param cursor
-     */
-    private void loadShifts(Cursor cursor) {
-
-        //All shifts are retrieved if the cursor is null. Like when this activity is first created.
-        if (cursor == null) {
-            cursor = shiftsDataAccess.getShiftsCursor();
-        }
-
-        //Array of columns that are needed for our row layout.
-        String[] columns = {
-                ShiftLogDBOpenHelper.SHIFTS_COLUMN_EMPLOYEE_NAME,
-                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE,
-                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_START_TIME,
-                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_END_TIME,
-                ShiftLogDBOpenHelper.SHIFTS_COLUMN_HOURS_WORKED
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SHIFT_ID,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_EMPLOYEE_ID,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_TILL_NUMBER,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_STARTING_TILL_AMOUNT,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_REDEMPTIONS,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DRIVE_OFFS,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_FINAL_DROP_AMOUNT,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SHORT_OVER,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_PRINT_OUT_TERMINAL_COUNT,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_PRINT_OUT_PASSPORT_COUNT,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_PRINT_OUT_DIFFERENCE,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_START,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_ADD,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_CLOSE,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_SOLD,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_PASSPORT,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_DIFFERENCE,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_ACTUAL_START_TIME,
-//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_ACT
-        };
-
-
-
-        //Int array of resource ID's, one for each column in the columns String array.
-        int[] resourceIds = {
-                R.id.listviewRowEmployeeName,
-                R.id.listviewRowDate,
-                R.id.listviewRowStartTime,
-                R.id.listviewRowEndTime,
-                R.id.listviewRowHoursWorked
-
-        };
-
-        //Resource ID of the Listview we want to populate.
-        ListView listView = (ListView) findViewById(R.id.shiftRecordListView);
-
-
-
-        //The array of resource ID's, column name's, and layout for the listview row are passed to
-        // the below constructor to be assemebled.
-        ListAdapter listAdapter = new SimpleCursorAdapter(this, R.layout.shift_listview_row,
-                cursor, columns, resourceIds, 0);
-
-        listView.setAdapter(listAdapter);
-
-        listView.invalidateViews();
-
-    }
 
     private void instantiateDisplayBySpinner() {
         displayBySpinner = (Spinner) findViewById(R.id.displayBySpinner);
@@ -225,7 +152,6 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
      * Depending on the above Spinner selections, the respective amount of hours is also pulled from
      * the DB and passed to the loadHoursDetails method.
      *
-     *
      * @param parent
      * @param view
      * @param position
@@ -235,9 +161,8 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-
         counter++;
-        if(counter >= 4) {
+        if (counter >= 4) {
 
             if (parent == monthSpinner) {
                 if (position != 0) {
@@ -271,35 +196,179 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
             if (parent == displayBySpinner) {
                 if (position == 0) { // All shifts
+                    detailedDayDateTextView.setVisibility(View.GONE);
                     loadShifts(shiftsDataAccess.getShiftsCursor(monthYearEmployee));
                     loadHoursDetails(shiftsDataAccess.getTotalHours(monthYearEmployee), shiftsDataAccess.getTotalDistinctDates(monthYearEmployee));
 
                 } else if (position == 1) { //Detailed day
+                    detailedDayDateTextView.setVisibility(View.VISIBLE);
                     loadDetailedDay();
+
                 } else if (position == 2) { //Pay period
                     loadPayPeriod();
                 }
             }
 
-            if(displayBySpinner.getSelectedItemPosition() == 0 ){
+            if (displayBySpinner.getSelectedItemPosition() == 0) {
                 loadShifts(shiftsDataAccess.getShiftsCursor(String.valueOf(monthNumber), String.valueOf(year), employee));
                 loadHoursDetails(shiftsDataAccess.getTotalHours(String.valueOf(monthNumber), String.valueOf(year), employee), shiftsDataAccess.getTotalDistinctDates(String.valueOf(monthNumber), String.valueOf(year), employee));
-
-
+            } else if (displayBySpinner.getSelectedItemPosition() == 1) {
+                //TODO: load detailed day textview date.
             }
         }
-
     }
 
     private void loadPayPeriod() {
 
 
+    }
+
+
+    /**
+     * This method instantiates,
+     * a String[] of Columns name who's contents we would like, and an Array of ints, each
+     * representing the resource id of the view within the row layout. There must be an equal count
+     * of resource ID's and Column names.
+     * The resource id, column name arrays, along with the resource id of the row layout we
+     * want to use are passed the SimpleListAdapter constructor
+     *
+     * @param cursor
+     */
+    private void loadShifts(Cursor cursor) {
+
+        //All shifts are retrieved if the cursor is null. Like when this activity is first created.
+        if (cursor == null) {
+            cursor = shiftsDataAccess.getShiftsCursor();
+        }
+
+        //Array of columns that are needed for our row layout.
+        String[] columns = {
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_EMPLOYEE_NAME,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_START_TIME,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_END_TIME,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_HOURS_WORKED
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SHIFT_ID,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_EMPLOYEE_ID,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_TILL_NUMBER,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_STARTING_TILL_AMOUNT,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_REDEMPTIONS,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DRIVE_OFFS,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_FINAL_DROP_AMOUNT,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SHORT_OVER,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_PRINT_OUT_TERMINAL_COUNT,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_PRINT_OUT_PASSPORT_COUNT,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_PRINT_OUT_DIFFERENCE,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_START,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_ADD,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_CLOSE,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_SOLD,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_PASSPORT,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_DIFFERENCE,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_ACTUAL_START_TIME,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_ACT
+        };
+
+
+        //Int array of resource ID's, one for each column in the columns String array.
+        int[] resourceIds = {
+                R.id.listviewRowEmployeeName,
+                R.id.listviewRowDate,
+                R.id.listviewRowStartTime,
+                R.id.listviewRowEndTime,
+                R.id.listviewRowHoursWorked
+
+        };
+
+        //Resource ID of the Listview we want to populate.
+        ListView listView = (ListView) findViewById(R.id.shiftRecordListView);
+
+
+        //The array of resource ID's, column name's, and layout for the listview row are passed to
+        // the below constructor to be assemebled.
+        ListAdapter listAdapter = new SimpleCursorAdapter(this, R.layout.shift_listview_row,
+                cursor, columns, resourceIds, 0);
+
+        listView.setAdapter(listAdapter);
+
+        listView.invalidateViews();
 
     }
+
 
     private void loadDetailedDay() {
+        String date = shiftsDataAccess.getMostRecentDate();
+        detailedDayDateTextView.setText(date);
+
+        Cursor cursor = shiftsDataAccess.getShiftsCursorByDate(date);
+
+
+        //Array of columns that are needed for our row layout.
+        String[] columns = {
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_EMPLOYEE_NAME,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_START_TIME,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_END_TIME,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_HOURS_WORKED,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SHIFT_ID,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_EMPLOYEE_ID,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_TILL_NUMBER,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_STARTING_TILL_AMOUNT,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_REDEMPTIONS,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DRIVE_OFFS,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_FINAL_DROP_AMOUNT,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SHORT_OVER,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_PRINT_OUT_TERMINAL_COUNT,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_PRINT_OUT_PASSPORT_COUNT,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_PRINT_OUT_DIFFERENCE,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_START,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_ADD,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_CLOSE,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_SOLD,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_PASSPORT,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_SCRATCH_DIFFERENCE,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_ACTUAL_START_TIME,
+                ShiftLogDBOpenHelper.SHIFTS_COLUMN_ACTUAL_END_TIME};
+
+
+        int[] resourceIds = {
+                R.id.detailedDayListViewRowName,
+                R.id.detailedDayListViewRowDate,
+                R.id.detailedDayListViewRowStartTime,
+                R.id.detailedDayListViewRowEndTime,
+                R.id.detailedDayListViewRowHoursWorked,
+                R.id.detailedDayListViewRowTill,
+                R.id.detailedDayListViewStartingTill,
+                R.id.detailedDayListViewRedemptions,
+                R.id.detailedDayListViewDriveOffs,
+                R.id.detailedDayListViewFinalDrop,
+                R.id.detailedDayListViewShortOver,
+                R.id.detailedDayListViewPrintOutTerminal,
+                R.id.detailedDayListViewPrintOutPassport,
+                R.id.detailedDayListViewPrintOutDifference,
+                R.id.detailedDayListViewScratchStart,
+                R.id.detailedDayListViewScratchAdd,
+                R.id.detailedDayListViewScratchClose,
+                R.id.detailedDayListViewScratchSold,
+                R.id.detailedDayListViewScratchPassport,
+                R.id.detailedDayListViewScratchDifference
+
+
+        };
+
+
+        ListView listView = (ListView) findViewById(R.id.shiftRecordListView);
+
+        ListAdapter listAdapter = new SimpleCursorAdapter(this, R.layout.detailed_day_listview_row,
+                cursor, columns, resourceIds, 0);
+
+        listView.setAdapter(listAdapter);
+
+        listView.invalidateViews();
 
     }
+
+
 
 
     /**

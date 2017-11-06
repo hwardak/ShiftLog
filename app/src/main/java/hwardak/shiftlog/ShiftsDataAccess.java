@@ -224,7 +224,7 @@ public  class ShiftsDataAccess {
         return shiftData;
     }
 
-
+    //TODO: Change this method name, we only need five columns from here, for a quick look of the shifts.
     /**
      * This method contains a 'dynamic' query.
      * Depending on the values contained with the monthYearEmployee argument, the query will be
@@ -329,6 +329,12 @@ public  class ShiftsDataAccess {
     }
 
 
+    public Cursor getAllShiftsCursor(){
+        this.open();
+        Cursor cursor;
+        cursor = database.rawQuery("Select * from  " + ShiftLogDBOpenHelper.TABLE_SHIFTS, null);
+        return cursor;
+    }
 
 
 
@@ -550,6 +556,33 @@ public  class ShiftsDataAccess {
 
         cursor.moveToFirst();
         return cursor.getInt(0);
+
+    }
+
+    public String getMostRecentDate() {
+        String mostRecentDate;
+
+        this.open();
+        Cursor cursor;
+        cursor = database.rawQuery("SELECT date, _id \n" +
+                "FROM shifts \n" +
+                "WHERE _id=(\n" +
+                "    SELECT max(_id) FROM shifts\n" +
+                "    )", null);
+
+        cursor.moveToNext();
+        mostRecentDate = cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE));
+
+        return mostRecentDate;
+    }
+
+    public Cursor getShiftsCursorByDate(String date) {
+        this.open();
+
+        return  database.rawQuery("SELECT * FROM shifts WHERE date = \"" + date +"\"", null);
+
+
+
 
     }
 }
