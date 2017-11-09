@@ -3,6 +3,7 @@ package hwardak.shiftlog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,7 +13,13 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import static android.R.id.input;
 
 public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -202,7 +209,7 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
                 } else if (position == 1) { //Detailed day
                     detailedDayDateTextView.setVisibility(View.VISIBLE);
-                    loadDetailedDay();
+                    loadDetailedDay(null);
 
                 } else if (position == 2) { //Pay period
                     loadPayPeriod();
@@ -296,12 +303,23 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
     }
 
 
-    private void loadDetailedDay() {
-        String date = shiftsDataAccess.getMostRecentDate();
-        detailedDayDateTextView.setText(date);
+    private void loadDetailedDay(String date) {
+        Cursor cursor;
 
-        Cursor cursor = shiftsDataAccess.getShiftsCursorByDate(date);
+        if(date == null) {
+            date = shiftsDataAccess.getMostRecentDate();
+        }
 
+        date = date.trim();
+
+        if(date.length() == 15) {
+            cursor = shiftsDataAccess.getShiftsCursorByDate(date.substring(0,10), date.substring(11));
+            detailedDayDateTextView.setText(date.substring(0, 10) + " " + date.substring(10));
+        }  else {
+            cursor = shiftsDataAccess.getShiftsCursorByDate(date.substring(0, 10), "0");
+            detailedDayDateTextView.setText(date.substring(0, 10) + " " + date.substring(10));
+
+        }
 
         //Array of columns that are needed for our row layout.
         String[] columns = {
@@ -403,4 +421,30 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
     }
 
 
+    public void onPreviousButtonClick(View view) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd yyyyy");
+        Date myDate = simpleDateFormat.parse(detailedDayDateTextView.getText().toString());
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(myDate);
+        cal1.add(Calendar.DAY_OF_YEAR, -1);
+        Date previousDate = cal1.getTime();
+
+        Log.d("previous date ", String.valueOf(previousDate).substring(0,10) + " " + String.valueOf(previousDate).substring(24));
+
+        loadDetailedDay(String.valueOf(previousDate).substring(0,10) + " " + String.valueOf(previousDate).substring(24));
+
+    }
+
+    public void onNextButtonClick(View view) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd yyyyy");
+        Date myDate = simpleDateFormat.parse(detailedDayDateTextView.getText().toString());
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(myDate);
+        cal1.add(Calendar.DAY_OF_YEAR, +1);
+        Date previousDate = cal1.getTime();
+
+        Log.d("previous date ", String.valueOf(previousDate).substring(0,10) + " " + String.valueOf(previousDate).substring(24));
+
+        loadDetailedDay(String.valueOf(previousDate).substring(0,10) + " " + String.valueOf(previousDate).substring(24));
+    }
 }

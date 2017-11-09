@@ -198,6 +198,7 @@
         android:layout_height="wrap_content"
         android:text="Print Out Ticket Counts"
         android:gravity="center_horizontal"
+        android:textSize="@dimen/title_font_size"
         />
 
 
@@ -256,6 +257,7 @@
         android:layout_height="wrap_content"
         android:text="Scratch Ticket Counts"
         android:gravity="center_horizontal"
+        android:textSize="@dimen/title_font_size"
         />
 
 

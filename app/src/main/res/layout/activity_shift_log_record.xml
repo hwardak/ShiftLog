@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="100"
-        >
+        android:weightSum="100">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -185,11 +184,37 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Previous"
+                android:onClick="onPreviousButtonClick"
+                />
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                android:onClick="onNextButtonClick"
+                />
+
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="..."
             android:id="@+id/detailedDayDateTextView"
+            android:textSize="@dimen/title_font_size"
+            android:layout_gravity="center_horizontal"
             />
 
         <ScrollView
@@ -202,38 +227,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
-            <ListView
-                android:id="@+id/shiftRecordListView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <ListView
+                    android:id="@+id/shiftRecordListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
 
-            </ListView>
+                </ListView>
             </FrameLayout>
 
         </ScrollView>
 
-        <LinearLayout
+<!--Need to make this second scroll view host a list of OverLap shifts only.-->
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="0dp"
+            android:layout_weight="90"
+            android:fillViewport="true"
             >
-
-            <Button
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Previous"
-                />
+                >
+                <ListView
+                    android:id="@+id/shiftRecordListView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Previous"
-                />
+                </ListView>
+            </FrameLayout>
 
+        </ScrollView>
 
-        </LinearLayout>
 
     </LinearLayout>
 

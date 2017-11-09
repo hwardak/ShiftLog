@@ -379,12 +379,12 @@ public class ShiftFormActivity extends AppCompatActivity {
         }
 
         String hour = declaredStartTime.substring(0, declaredStartTime.indexOf(":"));
-        String min = declaredStartTime.substring(declaredStartTime.indexOf(":") + 1, 4);
-        String amPM = declaredStartTime.substring(4);
+        String min = declaredStartTime.substring(declaredStartTime.indexOf(":") + 1, 5);
+//        String amPM = declaredStartTime.substring(6);
 
 
 
-        Log.d("AmPM", amPM + hour + min);
+        Log.d("StartTime", hour  + ":" + min + declaredStartTime.substring(6));
 
 //        Log.d("loadStartTimeHour", hour);
 //        Log.d("loadStartTimeMin", min);
@@ -393,7 +393,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         declaredStartTimeHourEditText.setText(hour);
         declaredStartTimeMinuteEditText.setText(min);
 
-        if (amPM.equals("AM")){
+        if (declaredStartTime.contains("AM")){
             startTimeAmPmToggleButton.setChecked(false);
         } else {
             startTimeAmPmToggleButton.setChecked(true);
@@ -417,18 +417,17 @@ public class ShiftFormActivity extends AppCompatActivity {
 //        }
 
         String hourEnd = declaredEndTime.substring(0, declaredEndTime.indexOf(":"));
-        String minEnd = declaredEndTime.substring(declaredEndTime.indexOf(":") + 1, 4);
-        String amPMEnd = declaredEndTime.substring(4);
+        String minEnd = declaredEndTime.substring(declaredEndTime.indexOf(":") + 1, 5);
 
 
         Log.d("loadEndTimeHour", hourEnd);
         Log.d("loadEndTimeMin", minEnd);
-        Log.d("loadEndTimeAMPM", amPMEnd);
+        Log.d("loadEndTimeAMPM", declaredEndTime.substring(6));
 
         declaredEndTimeHourEditText.setText(hourEnd);
         declaredEndTimeMinuteEditText.setText(minEnd);
 
-        if (amPMEnd.equals("AM")) {
+        if (declaredEndTime.contains("AM")) {
             endTimeAmPmToggleButton.setChecked(false);
         } else {
             endTimeAmPmToggleButton.setChecked(true);
@@ -503,7 +502,7 @@ public class ShiftFormActivity extends AppCompatActivity {
     }
 
     private void getStartDate() {
-        dateStart = calendar.getTime().toString().substring(0, 11); // Wed Aug 09
+        dateStart = calendar.getTime().toString().substring(0, 10); // Wed Aug 09
         yearStart = calendar.get(Calendar.YEAR); // 2017
         monthStart = calendar.get(Calendar.MONTH); // Jan = 0, dec = 11
         dayOfMonthStart = calendar.get(Calendar.DAY_OF_MONTH);
@@ -513,7 +512,7 @@ public class ShiftFormActivity extends AppCompatActivity {
     }
 
     private void getEndDate() {
-        dateEnd = calendar.getTime().toString().substring(0, 11); // Wed Aug 09
+        dateEnd = calendar.getTime().toString().substring(0, 10); // Wed Aug 09
         yearEnd = calendar.get(Calendar.YEAR); // 2017
 
 
@@ -931,7 +930,7 @@ public class ShiftFormActivity extends AppCompatActivity {
     private void openNewShift() {
         Log.d("openingNewShift", dateStart);
 
-        shiftsDataAccess.openNewShift(employeeName, userID, dateStart,yearStart, monthStart, dayOfMonthStart, dayOfWeek, declaredStartTime,
+        shiftsDataAccess.openNewShift(employeeName, userID, dateStart, yearStart, monthStart, dayOfMonthStart, dayOfWeek, declaredStartTime,
                 actualStartTime, declaredEndTime, tillNumber, startingTillAmount, scratchStart, 1);
 
 
@@ -1000,7 +999,7 @@ public class ShiftFormActivity extends AppCompatActivity {
 
 
     private void calculateHoursWorked() throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyEEE MMM dd h:mma");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyEEE MMM ddh:mma");
 
         Date start;
         Date end;

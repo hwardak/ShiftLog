@@ -364,6 +364,9 @@ public  class ShiftsDataAccess {
             shiftData += " DATE: ";
             shiftData += cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE));
 
+            shiftData += " YEAR: ";
+            shiftData += cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_YEAR));
+
             shiftData += " START: ";
             shiftData += cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_START_TIME));
 
@@ -511,7 +514,7 @@ public  class ShiftsDataAccess {
 
         // If the
         if(monthYearEmployee.length < 2){
-            cursor = database.rawQuery("Select COUNT(DISTINCT " + ShiftLogDBOpenHelper.SHIFTS_COLUMN_HOURS_WORKED + ") from shifts;", null);
+            cursor = database.rawQuery("Select COUNT(DISTINCT " + ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE + ") from shifts;", null);
             cursor.moveToFirst();
             return cursor.getInt(0);
         } else {
@@ -564,7 +567,7 @@ public  class ShiftsDataAccess {
 
         this.open();
         Cursor cursor;
-        cursor = database.rawQuery("SELECT date, _id \n" +
+        cursor = database.rawQuery("SELECT date, year, _id \n" +
                 "FROM shifts \n" +
                 "WHERE _id=(\n" +
                 "    SELECT max(_id) FROM shifts\n" +
@@ -572,14 +575,22 @@ public  class ShiftsDataAccess {
 
         cursor.moveToNext();
         mostRecentDate = cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE));
-
+        mostRecentDate += " ";
+        mostRecentDate += cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_YEAR));
+        cursor.close();
         return mostRecentDate;
     }
 
-    public Cursor getShiftsCursorByDate(String date) {
+    public Cursor getShiftsCursorByDate(String date, String year) {
         this.open();
 
-        return  database.rawQuery("SELECT * FROM shifts WHERE date = \"" + date +"\"", null);
+        if(Integer.parseInt(year) > 0) {
+            return database.rawQuery("SELECT * FROM shifts WHERE date LIKE \"%" + date + "%\" AND year = " + year + "", null);
+        } else {
+            return database.rawQuery("SELECT * FROM shifts WHERE date LIKE \"%" + date + "%\"", null);
+
+        }
+
 
 
 
