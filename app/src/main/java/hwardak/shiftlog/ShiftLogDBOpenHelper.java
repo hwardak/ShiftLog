@@ -45,7 +45,8 @@ public class ShiftLogDBOpenHelper extends SQLiteOpenHelper {
 
     }
 
-    //TODO: Remove date column, and replace with 3 columns, day, month, year
+    //TODO: Date should include the entire date according to SimpleDateFormat.
+    //TODO" The date should also be stored in the seperate columns such as Month,DayOfWeek,year, and such...
     static final String TABLE_SHIFTS = "shifts";
     static final String SHIFTS_COLUMN_SHIFT_ID = "_id";
     static final String SHIFTS_COLUMN_EMPLOYEE_ID = "employeeId";

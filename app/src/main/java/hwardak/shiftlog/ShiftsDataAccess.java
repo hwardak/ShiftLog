@@ -364,6 +364,15 @@ public  class ShiftsDataAccess {
             shiftData += " DATE: ";
             shiftData += cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE));
 
+            shiftData += " Month: ";
+            shiftData += cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_MONTH));
+
+            shiftData += " DayOfMonth: ";
+            shiftData += cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DAY_OF_MONTHS));
+
+            shiftData += " DayOfWeek: ";
+            shiftData += cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_DAY_OF_WEEK));
+
             shiftData += " YEAR: ";
             shiftData += cursor.getString(cursor.getColumnIndex(ShiftLogDBOpenHelper.SHIFTS_COLUMN_YEAR));
 
@@ -446,7 +455,25 @@ public  class ShiftsDataAccess {
 
     }
 
-    public double getTotalHours(String... monthYearEmployee) {
+    public double getTotalHoursByDate(int dayOfMonth, int month, int year){
+        this.open();
+        Cursor cursor;
+
+        String query = "Select SUM(" + ShiftLogDBOpenHelper.SHIFTS_COLUMN_HOURS_WORKED + ") from  "
+                + ShiftLogDBOpenHelper.TABLE_SHIFTS
+                + " Where " + ShiftLogDBOpenHelper.SHIFTS_COLUMN_MONTH + " = "+ month
+                + " AND " + ShiftLogDBOpenHelper.SHIFTS_COLUMN_YEAR + " = " + year
+                + " AND " + ShiftLogDBOpenHelper.SHIFTS_COLUMN_DAY_OF_MONTHS + " = " + dayOfMonth;
+
+        cursor = database.rawQuery(query, null);
+        cursor.moveToFirst();
+
+
+        return cursor.getDouble(0);
+    }
+
+    //TODO: It gets the job done, but needs to be changed so that it match
+    public double getTotalHoursByMonthYearEmployee(String... monthYearEmployee) {
 
         this.open();
 
@@ -495,10 +522,9 @@ public  class ShiftsDataAccess {
             Log.d("Query", query);
 
 
-            cursor
-                    = database.rawQuery(query, null);
+            cursor = database.rawQuery(query, null);
         }
-
+        
 
         cursor.moveToFirst();
         return cursor.getDouble(0);

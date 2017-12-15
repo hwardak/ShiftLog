@@ -88,7 +88,7 @@ public class ShiftLogMainActivity extends AppCompatActivity {
     }
 
     public void EmployeesButtonOnClick(View view) {
-        final Intent employeeLogIntent = new Intent(this, EmployeeOptions.class);
+        final Intent employeeLogIntent = new Intent(this, EmployeeOptionsActivity.class);
         startActivity(employeeLogIntent);
     }
 

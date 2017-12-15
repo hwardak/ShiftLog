@@ -4,7 +4,7 @@
     android:id="@+id/activity_manager_options"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hwardak.shiftlog.EmployeeOptions"
+    tools:context="hwardak.shiftlog.EmployeeOptionsActivity"
     android:orientation="vertical">
 
     <LinearLayout

@@ -11,33 +11,45 @@
         android:orientation="horizontal"
 
         >
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Name: "
-            />
+        <!--<TextView-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Name: "-->
+            <!--/>-->
 
         <TextView
             android:layout_weight=".5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/detailedDayListViewRowName"
+            android:textSize="@dimen/title_font_size"
             />
 
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Date: "
-            />
+        <!--<TextView-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Date: "-->
+            <!--/>-->
 
-        <TextView
-            android:layout_weight=".5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/detailedDayListViewRowDate"
-            />
+        <!--<TextView-->
+            <!--android:layout_weight=".5"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/detailedDayListViewRowDate"-->
+            <!--/>-->
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
 
         <TextView
             android:layout_weight="1"
@@ -52,15 +64,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/detailedDayListViewRowTill"
             />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
 
         <TextView
             android:layout_weight="1"

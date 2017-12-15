@@ -18,7 +18,10 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class EmployeeOptions extends AppCompatActivity {
+/**
+ * This activity is where the employees are added, deleted, or viewed to or from the application.
+ */
+public class EmployeeOptionsActivity extends AppCompatActivity {
 
     EmployeeDataAccess employeeDataAccess = new EmployeeDataAccess(this);
 
@@ -36,12 +39,15 @@ public class EmployeeOptions extends AppCompatActivity {
     String name;
 
 
+    /**
+     * 
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_options);
 
-//        getEmployeeList();
         updateListView();
 
         addEmployeeLayout = (LinearLayout) findViewById(R.id.employeeOptionsAddEmployeeLinearLayout);

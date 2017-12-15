@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ShiftFormActivity" />
-        <activity android:name=".EmployeeOptions" />
+        <activity android:name=".EmployeeOptionsActivity" />
         <activity android:name=".ShiftLogRecord"></activity>
     </application>
 

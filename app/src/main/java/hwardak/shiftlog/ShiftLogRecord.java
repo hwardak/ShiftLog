@@ -1,10 +1,12 @@
 package hwardak.shiftlog;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -18,8 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import static android.R.id.input;
 
 public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -62,7 +62,7 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
         loadShifts(shiftsDataAccess.getShiftsCursor());
 
-        loadHoursDetails(shiftsDataAccess.getTotalHours(), shiftsDataAccess.getTotalDistinctDates());
+        loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(), shiftsDataAccess.getTotalDistinctDates());
 
 
         instantiateDisplayBySpinner();
@@ -205,10 +205,13 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
                 if (position == 0) { // All shifts
                     detailedDayDateTextView.setVisibility(View.GONE);
                     loadShifts(shiftsDataAccess.getShiftsCursor(monthYearEmployee));
-                    loadHoursDetails(shiftsDataAccess.getTotalHours(monthYearEmployee), shiftsDataAccess.getTotalDistinctDates(monthYearEmployee));
+                    loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(monthYearEmployee), shiftsDataAccess.getTotalDistinctDates(monthYearEmployee));
+                    loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(String.valueOf(monthNumber), String.valueOf(year), employee), shiftsDataAccess.getTotalDistinctDates(String.valueOf(monthNumber), String.valueOf(year), employee));
+
 
                 } else if (position == 1) { //Detailed day
                     detailedDayDateTextView.setVisibility(View.VISIBLE);
+
                     loadDetailedDay(null);
 
                 } else if (position == 2) { //Pay period
@@ -218,9 +221,10 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
             if (displayBySpinner.getSelectedItemPosition() == 0) {
                 loadShifts(shiftsDataAccess.getShiftsCursor(String.valueOf(monthNumber), String.valueOf(year), employee));
-                loadHoursDetails(shiftsDataAccess.getTotalHours(String.valueOf(monthNumber), String.valueOf(year), employee), shiftsDataAccess.getTotalDistinctDates(String.valueOf(monthNumber), String.valueOf(year), employee));
+                loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(String.valueOf(monthNumber), String.valueOf(year), employee), shiftsDataAccess.getTotalDistinctDates(String.valueOf(monthNumber), String.valueOf(year), employee));
             } else if (displayBySpinner.getSelectedItemPosition() == 1) {
-                //TODO: load detailed day textview date.
+                //TODO: fix this.
+//                loadHoursDetails(shiftsDataAccess.getTotalHoursByDate());
             }
         }
     }
@@ -306,16 +310,16 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
     private void loadDetailedDay(String date) {
         Cursor cursor;
 
-        if(date == null) {
+        if (date == null) {
             date = shiftsDataAccess.getMostRecentDate();
         }
 
         date = date.trim();
 
-        if(date.length() == 15) {
-            cursor = shiftsDataAccess.getShiftsCursorByDate(date.substring(0,10), date.substring(11));
+        if (date.length() == 15) {
+            cursor = shiftsDataAccess.getShiftsCursorByDate(date.substring(0, 10), date.substring(11));
             detailedDayDateTextView.setText(date.substring(0, 10) + " " + date.substring(10));
-        }  else {
+        } else {
             cursor = shiftsDataAccess.getShiftsCursorByDate(date.substring(0, 10), "0");
             detailedDayDateTextView.setText(date.substring(0, 10) + " " + date.substring(10));
 
@@ -324,7 +328,7 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
         //Array of columns that are needed for our row layout.
         String[] columns = {
                 ShiftLogDBOpenHelper.SHIFTS_COLUMN_EMPLOYEE_NAME,
-                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE,
+//                ShiftLogDBOpenHelper.SHIFTS_COLUMN_DATE,
                 ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_START_TIME,
                 ShiftLogDBOpenHelper.SHIFTS_COLUMN_DECLARED_END_TIME,
                 ShiftLogDBOpenHelper.SHIFTS_COLUMN_HOURS_WORKED,
@@ -351,7 +355,7 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
         int[] resourceIds = {
                 R.id.detailedDayListViewRowName,
-                R.id.detailedDayListViewRowDate,
+//                R.id.detailedDayListViewRowDate,
                 R.id.detailedDayListViewRowStartTime,
                 R.id.detailedDayListViewRowEndTime,
                 R.id.detailedDayListViewRowHoursWorked,
@@ -378,16 +382,48 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
         ListView listView = (ListView) findViewById(R.id.shiftRecordListView);
 
         ListAdapter listAdapter = new SimpleCursorAdapter(this, R.layout.detailed_day_listview_row,
-                cursor, columns, resourceIds, 0);
+                cursor, columns, resourceIds, 0) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Get the current item from ListView
+                View view = super.getView(position, convertView, parent);
+                ++position;
+
+                //Rows are to be alternatively colored, blue, green, red, and repeating.
+                switch (position % 3){
+                    case 0:
+                        view.setBackgroundColor(Color.parseColor("#990033")); // red
+                        break;
+                    case 1:
+                        view.setBackgroundColor(Color.parseColor("#0066ff")); //blue
+                        break;
+                    case 2:
+                        view.setBackgroundColor(Color.parseColor("#009900")); // green
+
+                }
+//
+
+
+
+
+
+                return view;
+            }
+
+
+        };
+
+
 
         listView.setAdapter(listAdapter);
 
         listView.invalidateViews();
 
+
+
+
     }
-
-
-
 
     /**
      * This method receives the total hours and days for a given query of shifts. The data is then
@@ -446,5 +482,8 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
         Log.d("previous date ", String.valueOf(previousDate).substring(0,10) + " " + String.valueOf(previousDate).substring(24));
 
         loadDetailedDay(String.valueOf(previousDate).substring(0,10) + " " + String.valueOf(previousDate).substring(24));
+
     }
+
+
 }
