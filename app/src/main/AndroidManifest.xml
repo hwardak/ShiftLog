@@ -18,7 +18,7 @@
         </activity>
         <activity android:name=".ShiftFormActivity" />
         <activity android:name=".EmployeeOptionsActivity" />
-        <activity android:name=".ShiftLogRecord"></activity>
+        <activity android:name=".ShiftLogRecordActivity"></activity>
     </application>
 
 </manifest>

@@ -21,7 +21,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+/**
+ * This activity is where the history of shifts is displayed. They can be viewed in here a summary
+ * type view or a detailed view by date. The views can be requested via selections made in the
+ * spinners.
+ */
+public class ShiftLogRecordActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
 
     ShiftsDataAccess shiftsDataAccess = new ShiftsDataAccess(this);
@@ -49,22 +55,18 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
     int counter = 0;
 
-
+    /**
+     * Activity creation point, includes instantiation of views and variables, also invokes methods
+     * that populate the activity's views.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shift_log_record);
 
-        totalHoursEditText = (TextView) findViewById(R.id.totalHoursTextView);
-        overLapHoursTextView = (TextView) findViewById(R.id.overLapHoursTextView);
-        overLapHoursPerDayTextView = (TextView) findViewById(R.id.overLapHoursPerDayTextView);
-        detailedDayDateTextView = (TextView) findViewById(R.id.detailedDayDateTextView);
 
-        loadShifts(shiftsDataAccess.getShiftsCursor());
-
-        loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(), shiftsDataAccess.getTotalDistinctDates());
-
-
+        instantiateTextViews();
         instantiateDisplayBySpinner();
         instantiateEmployeeSpinner();
         instantiateDaySpinner();
@@ -72,11 +74,26 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
         instantiateYearSpinner();
 
 
+        loadShifts(shiftsDataAccess.getShiftsCursor());
+        loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(), shiftsDataAccess.getTotalDistinctDates());
+
+    }
+
+    /**
+     * EditTexts and TextViews are instantiated here.
+     */
+    private void instantiateTextViews() {
+        totalHoursEditText = (TextView) findViewById(R.id.totalHoursTextView);
+        overLapHoursTextView = (TextView) findViewById(R.id.overLapHoursTextView);
+        overLapHoursPerDayTextView = (TextView) findViewById(R.id.overLapHoursPerDayTextView);
+        detailedDayDateTextView = (TextView) findViewById(R.id.detailedDayDateTextView);
     }
 
 
-
-
+    /**
+     * Instantiate spinner responsible for display selections. User can pick; All Shifts, Detailed
+     * Day, or Pay Period.
+     */
     private void instantiateDisplayBySpinner() {
         displayBySpinner = (Spinner) findViewById(R.id.displayBySpinner);
 
@@ -91,6 +108,9 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
     }
 
+    /**
+     * Spinner for selecting which employee's shifts to display in the All Shifts display.
+     */
     private void instantiateEmployeeSpinner() {
         employeeSpinner = (Spinner) findViewById(R.id.employeeSpinner);
 
@@ -107,6 +127,9 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
     }
 
+    /**
+     * Spinner for selecting which year's shifts to display in the All Shifts display.
+     */
     private void instantiateYearSpinner() {
         yearSpinner = (Spinner) findViewById(R.id.yearSpinner);
 
@@ -123,6 +146,10 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
     }
 
+    /**
+     * Spinner for selecting which day's shifts to display in the All Shifts display.
+     * CURRENTLY NOT IN USE.
+     */
     private void instantiateDaySpinner() {
         daySpinner = (Spinner) findViewById(R.id.daySpinner);
 
@@ -136,6 +163,9 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
 
     }
 
+    /**
+     * Spinner for selecting which month's shifts to display in the All Shifts display.
+     */
     private void instantiateMonthSpinner() {
         monthSpinner = (Spinner) findViewById(R.id.monthSpinner);
 
@@ -167,10 +197,12 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-
-        counter++;
+        //When each spinner is instantiated, this method is called, invoking it unessecarily the
+        //the first time. Thus a counter was placed to skip the body of this method the first 4
+        //times, once for each spinner.
         if (counter >= 4) {
 
+            //If monthSpinner item is selected.
             if (parent == monthSpinner) {
                 if (position != 0) {
                     //The position number is one higher than month's number value, so we negate one to
@@ -182,6 +214,7 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
                 monthString = parent.getItemAtPosition(position).toString();
             }
 
+            //If yearSpinner item is selected.
             if (parent == yearSpinner) {
                 if (position != 0) {
                     year = Integer.parseInt(parent.getItemAtPosition(position).toString());
@@ -190,6 +223,7 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
                 }
             }
 
+            //If employeeSpinner item is selected.
             if (parent == employeeSpinner) {
                 if (position != 0) {
                     employee = parent.getItemAtPosition(position).toString();
@@ -198,27 +232,36 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
                 }
             }
 
+            //Assign the values from the above spinner in this String array for later handling by
+            //data access layer.
             String[] monthYearEmployee = {String.valueOf(monthNumber), String.valueOf(year), employee};
 
 
+            //If displayBySpinner item is selected.
             if (parent == displayBySpinner) {
-                if (position == 0) { // All shifts
+
+                // Display all shifts.
+                if (position == 0) {
                     detailedDayDateTextView.setVisibility(View.GONE);
                     loadShifts(shiftsDataAccess.getShiftsCursor(monthYearEmployee));
                     loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(monthYearEmployee), shiftsDataAccess.getTotalDistinctDates(monthYearEmployee));
                     loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(String.valueOf(monthNumber), String.valueOf(year), employee), shiftsDataAccess.getTotalDistinctDates(String.valueOf(monthNumber), String.valueOf(year), employee));
 
-
-                } else if (position == 1) { //Detailed day
+                //Display detailed day
+                } else if (position == 1) {
                     detailedDayDateTextView.setVisibility(View.VISIBLE);
 
                     loadDetailedDay(null);
 
-                } else if (position == 2) { //Pay period
+                    //Display shifts by pay period
+                } else if (position == 2) {
                     loadPayPeriod();
                 }
             }
 
+            //If all shift are to be displayed, the sub-selection of month, year, and employee are
+            //used to display those specific shifts.
+            //The hours worked details are recalculated.
             if (displayBySpinner.getSelectedItemPosition() == 0) {
                 loadShifts(shiftsDataAccess.getShiftsCursor(String.valueOf(monthNumber), String.valueOf(year), employee));
                 loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(String.valueOf(monthNumber), String.valueOf(year), employee), shiftsDataAccess.getTotalDistinctDates(String.valueOf(monthNumber), String.valueOf(year), employee));
@@ -402,11 +445,6 @@ public class ShiftLogRecord extends AppCompatActivity implements AdapterView.OnI
                         view.setBackgroundColor(Color.parseColor("#009900")); // green
 
                 }
-//
-
-
-
-
 
                 return view;
             }

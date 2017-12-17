@@ -93,7 +93,7 @@ public class ShiftLogMainActivity extends AppCompatActivity {
     }
 
     public void ShiftLogButtonOnClick(View view) {
-        final Intent shiftLogRecord = new Intent(this, ShiftLogRecord.class);
+        final Intent shiftLogRecord = new Intent(this, ShiftLogRecordActivity.class);
         startActivity(shiftLogRecord);
     }
 
