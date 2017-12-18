@@ -200,6 +200,9 @@ public class ShiftLogRecordActivity extends AppCompatActivity implements Adapter
         //When each spinner is instantiated, this method is called, invoking it unessecarily the
         //the first time. Thus a counter was placed to skip the body of this method the first 4
         //times, once for each spinner.
+
+        counter++;
+
         if (counter >= 4) {
 
             //If monthSpinner item is selected.
@@ -247,7 +250,7 @@ public class ShiftLogRecordActivity extends AppCompatActivity implements Adapter
                     loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(monthYearEmployee), shiftsDataAccess.getTotalDistinctDates(monthYearEmployee));
                     loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(String.valueOf(monthNumber), String.valueOf(year), employee), shiftsDataAccess.getTotalDistinctDates(String.valueOf(monthNumber), String.valueOf(year), employee));
 
-                //Display detailed day
+                    //Display detailed day
                 } else if (position == 1) {
                     detailedDayDateTextView.setVisibility(View.VISIBLE);
 
@@ -261,7 +264,7 @@ public class ShiftLogRecordActivity extends AppCompatActivity implements Adapter
 
             //If all shift are to be displayed, the sub-selection of month, year, and employee are
             //used to display those specific shifts.
-            //The hours worked details are recalculated.
+            //The hours worked details are recalculated
             if (displayBySpinner.getSelectedItemPosition() == 0) {
                 loadShifts(shiftsDataAccess.getShiftsCursor(String.valueOf(monthNumber), String.valueOf(year), employee));
                 loadHoursDetails(shiftsDataAccess.getTotalHoursByMonthYearEmployee(String.valueOf(monthNumber), String.valueOf(year), employee), shiftsDataAccess.getTotalDistinctDates(String.valueOf(monthNumber), String.valueOf(year), employee));
@@ -359,14 +362,12 @@ public class ShiftLogRecordActivity extends AppCompatActivity implements Adapter
 
         date = date.trim();
 
-        if (date.length() == 15) {
-            cursor = shiftsDataAccess.getShiftsCursorByDate(date.substring(0, 10), date.substring(11));
-            detailedDayDateTextView.setText(date.substring(0, 10) + " " + date.substring(10));
-        } else {
-            cursor = shiftsDataAccess.getShiftsCursorByDate(date.substring(0, 10), "0");
-            detailedDayDateTextView.setText(date.substring(0, 10) + " " + date.substring(10));
+        //Retrieve a cursor of shifts of a given date.
+        cursor = shiftsDataAccess.getShiftsCursorByDate(date.substring(0, 10), date.substring(11));
 
-        }
+        //Set that date in the date textview.
+        detailedDayDateTextView.setText(date.substring(0, 10) + " " + date.substring(10));
+
 
         //Array of columns that are needed for our row layout.
         String[] columns = {
@@ -396,6 +397,7 @@ public class ShiftLogRecordActivity extends AppCompatActivity implements Adapter
                 ShiftLogDBOpenHelper.SHIFTS_COLUMN_ACTUAL_END_TIME};
 
 
+        //Int array of resource ID's, one for each column in the columns String array.
         int[] resourceIds = {
                 R.id.detailedDayListViewRowName,
 //                R.id.detailedDayListViewRowDate,
@@ -494,7 +496,11 @@ public class ShiftLogRecordActivity extends AppCompatActivity implements Adapter
 
     }
 
-
+    /**
+     * Retrieves the previous date to the date in display in the Detailed Day view.
+     * @param view
+     * @throws ParseException
+     */
     public void onPreviousButtonClick(View view) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd yyyyy");
         Date myDate = simpleDateFormat.parse(detailedDayDateTextView.getText().toString());
@@ -509,6 +515,11 @@ public class ShiftLogRecordActivity extends AppCompatActivity implements Adapter
 
     }
 
+    /**
+     * Retrieves the next date to the date in display in the Detailed Day view.
+     * @param view
+     * @throws ParseException
+     */
     public void onNextButtonClick(View view) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd yyyyy");
         Date myDate = simpleDateFormat.parse(detailedDayDateTextView.getText().toString());
