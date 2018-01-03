@@ -14,5 +14,6 @@ Some fields cannot be editted until the shift has started, other fields cannot b
 
 From within the Shift Log activity, managers can view the history of shifts and their details in multiple view formats. 
 The default view will display every shift worked, its date, employee name, start time and end time. In the default view, managers can select to filter results by specifiic employee, month and/or year.
+Shifts can be viewed in detailed per day by selecting the "Detailed day" option via the "Display by" spinner. In this view, the most recent day is displayed, with the details of each shift that was logged that day. Click the "Previous" and "Next" will display the next of previous day of shifts. 
 
 
