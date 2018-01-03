@@ -17,3 +17,10 @@ The default view will display every shift worked, its date, employee name, start
 Shifts can be viewed in detailed per day by selecting the "Detailed day" option via the "Display by" spinner. In this view, the most recent day is displayed, with the details of each shift that was logged that day. Click the "Previous" and "Next" will display the next of previous day of shifts. 
 
 
+*Further development will allow managers; 
+To view shifts for specific payroll periods. This will reduce the need for managers to manually calculate and prepare payroll hours. 
+Export shift logs and/or payroll hours via email. 
+Track and flag overtime hours.
+Track and flag employee punctuality issues. 
+Track and flag descripencies in specicied inventories and till counts.
+
