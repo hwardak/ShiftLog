@@ -24,3 +24,7 @@ Track and flag overtime hours.
 Track and flag employee punctuality issues. 
 Track and flag discrepancies’ in specified inventories and till counts.
 
+Happy shift logging!
+
+-Hasib Wardak 
+-2017
