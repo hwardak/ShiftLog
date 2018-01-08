@@ -356,10 +356,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         employeeName = shiftData.get(0);
         employeeNameEditText.setText(employeeName);
 
-/////////////////////
         //TODO: Move all the declared time functions below to its own method.
-
-
         yearStart = Integer.parseInt(shiftData.get(22));
         dateStart = shiftData.get(2);
 
@@ -380,15 +377,10 @@ public class ShiftFormActivity extends AppCompatActivity {
 
         String hour = declaredStartTime.substring(0, declaredStartTime.indexOf(":"));
         String min = declaredStartTime.substring(declaredStartTime.indexOf(":") + 1, 5);
-//        String amPM = declaredStartTime.substring(6);
-
 
 
         Log.d("StartTime", hour  + ":" + min + declaredStartTime.substring(6));
 
-//        Log.d("loadStartTimeHour", hour);
-//        Log.d("loadStartTimeMin", min);
-//        Log.d("loadStartTimeAMPM", amPM);
 
         declaredStartTimeHourEditText.setText(hour);
         declaredStartTimeMinuteEditText.setText(min);
@@ -402,19 +394,12 @@ public class ShiftFormActivity extends AppCompatActivity {
 
 
         //TODO: Move all the declared time functions below to its own method.
-
         //declaredStartTime comes in the format '1234PM', it is split into 3 subStrings.
         //hour and min are set into their respective EditTexts, amPm is used to toggle the AMPM
         //toggle button.
         declaredEndTime = shiftData.get(6);
         Log.d("loadEndTime", declaredEndTime);
 
-        //TODO: this could be imporved.
-        //If the length of the declaredStart time is less than 4, a space is added to beginning of
-        // of the string.
-//        if (declaredEndTime.length() == 5) {
-//            declaredEndTime = "0" + declaredEndTime;
-//        }
 
         String hourEnd = declaredEndTime.substring(0, declaredEndTime.indexOf(":"));
         String minEnd = declaredEndTime.substring(declaredEndTime.indexOf(":") + 1, 5);
@@ -433,11 +418,9 @@ public class ShiftFormActivity extends AppCompatActivity {
             endTimeAmPmToggleButton.setChecked(true);
 
         }
-///////////
 
         //gets the previously checked radioButton's id, and compares it with each radioButton in the
         //form, which ever one it matches is the one that is checked.
-
         Log.d("loadTillNumberID", " " + tillNumber);
         Log.d("loadTillNumberOneID", " " + tillOneRadioButton.getId());
         Log.d("loadTillNumberTwoID", " " + tillTwoRadioButton.getId());
@@ -500,6 +483,7 @@ public class ShiftFormActivity extends AppCompatActivity {
 
 
     }
+
 
     private void getStartDate() {
         dateStart = calendar.getTime().toString().substring(0, 10); // Wed Aug 09
@@ -935,9 +919,6 @@ public class ShiftFormActivity extends AppCompatActivity {
 
 
     }
-
-
-
 
 
     public void openShiftButtonOnClick(View view) {

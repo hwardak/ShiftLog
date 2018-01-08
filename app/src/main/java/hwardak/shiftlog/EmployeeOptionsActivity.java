@@ -24,23 +24,18 @@ import java.util.ArrayList;
 public class EmployeeOptionsActivity extends AppCompatActivity {
 
     EmployeeDataAccess employeeDataAccess = new EmployeeDataAccess(this);
-
-    Button deleteEmployeeButton;
-
-    EditText employeeIdEditText;
-    EditText employeeNameEditText;
-
-    ListView listView;
-    ListAdapter listAdapter;
-    ArrayList<String> employeeList;
-
-    View rowView;
-    View previouslySelectedView;
-    LinearLayout addEmployeeLayout;
-
     int ListViewPosition;
     int id;
     String name;
+    Button deleteEmployeeButton;
+    EditText employeeIdEditText;
+    EditText employeeNameEditText;
+    ListView listView;
+    ListAdapter listAdapter;
+    ArrayList<String> employeeList;
+    View rowView;
+    View previouslySelectedView;
+    LinearLayout addEmployeeLayout;
 
 
     /**
@@ -51,14 +46,9 @@ public class EmployeeOptionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_options);
-
         updateListView();
-
         instantiateViews();
-
         instantiateListViewClickListener();
-
-
     }
 
     /**
@@ -82,10 +72,8 @@ public class EmployeeOptionsActivity extends AppCompatActivity {
                 } else {
                     previouslySelectedView = view;
                 }
-                //Clicked view in list will be highlighted.
+                //Clicked view in list will be highlighted. Light blue
                 view.setBackgroundColor(Color.parseColor("#66ccff"));
-
-
             }
         });
     }
@@ -128,7 +116,6 @@ public class EmployeeOptionsActivity extends AppCompatActivity {
 
                         //Disable delete button since there is no longer a selection.
                         deleteEmployeeButton.setEnabled(false);
-
                     }
                 })
 
@@ -141,8 +128,6 @@ public class EmployeeOptionsActivity extends AppCompatActivity {
 
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
-
-
     }
 
     /**
@@ -157,18 +142,11 @@ public class EmployeeOptionsActivity extends AppCompatActivity {
     }
 
 
-//    private ArrayList<String> getEmployeeList() {
-//        employeeList = employeeDataAccess.getEmployeeList();
-//        return employeeList;
-//    }
-
-
     /**
      * On click to add new employee to list.
      * @param view
      */
     public void addEmployeeButtonOnClick(View view) {
-
         //Check if the name and Id in the editTexts are acceptable.
         if (isNameAndIdValid()) {
             //Clear fields and reset hints.
@@ -180,14 +158,16 @@ public class EmployeeOptionsActivity extends AppCompatActivity {
             employeeIdEditText.setHintTextColor(Color.parseColor("#8FF742"));
             employeeNameEditText.setHintTextColor(Color.parseColor("#8FF742"));
 
+            //Add the employee and their ID to the DB.
             employeeDataAccess.addEmployeeToTable(id, name);
 
+            //Clear variables.
             id = 0;
             name = null;
 
+            //Update listview to include newly added employee.
             updateListView();
             ((BaseAdapter) listAdapter).notifyDataSetChanged();
-
         }
     }
 
@@ -224,7 +204,7 @@ public class EmployeeOptionsActivity extends AppCompatActivity {
         id = Integer.parseInt(employeeIdEditText.getText().toString().trim());
         name = employeeNameEditText.getText().toString();
 
-
+        //If all EditText entries are valid...
         return true;
     }
 }

@@ -26,10 +26,12 @@ public class EmployeeDataAccess {
 
     private static final String LOGTAG = "DATABASE E: ";
 
+
     public static final String[] ALL_EMPLOYEE_TABLE_COLUMNS = {
             ShiftLogDBOpenHelper.EMPLOYEES_COLUMN_EMPLOYEE_ID,
             ShiftLogDBOpenHelper.EMPLOYEES_COLUMN_EMPLOYEE_NAME
     };
+
 
 
     public EmployeeDataAccess(Context context) {
