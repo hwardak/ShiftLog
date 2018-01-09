@@ -33,16 +33,25 @@ public class EmployeeDataAccess {
     };
 
 
-
+    /**
+     * Default constructor.
+     * @param context
+     */
     public EmployeeDataAccess(Context context) {
         dbHelper = new ShiftLogDBOpenHelper(context);
     }
 
+    /**
+     * Opens Database.
+     */
     public void open() {
         Log.d(LOGTAG, "Database opened.");
         database = dbHelper.getWritableDatabase();
     }
 
+    /**
+     * Closes Database.
+     */
     public void close() {
         Log.d(LOGTAG, "Database closed.");
         dbHelper.close();

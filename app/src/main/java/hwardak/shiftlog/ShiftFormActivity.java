@@ -22,52 +22,67 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+
+/**
+ * This the heart of the application. It is a form that all employees will need to fill out at the
+ * start of their shift, and edit at the end of their shift. It will wear all the necassary shift
+ * details are collected.
+ */
 public class ShiftFormActivity extends AppCompatActivity {
 
-    int userID;
-    int shiftID;
+    Calendar calendar;
 
+    //Class references.
+    DecimalFormat df = new DecimalFormat("#.00");
     EmployeeDataAccess employeeDataAccess;
     ShiftsDataAccess shiftsDataAccess;
-
     Toaster toaster;
 
+    //Layout for fields necessary on to 'on till' shifts. Layout hidden if employee is not on till.
     LinearLayout onTillShiftFieldsLinearLayout;
 
+    //Informative banner, displays info to user as they use the activity.
     TextView infoBannerTextView;
 
+    //Name/date EditTexts. (disabled as of this version).
     EditText employeeNameEditText;
     EditText dateEditText;
 
+    //Start/End time EditTexts.
     EditText declaredStartTimeHourEditText;
     EditText declaredStartTimeMinuteEditText;
-    ToggleButton startTimeAmPmToggleButton;
-
     EditText declaredEndTimeHourEditText;
     EditText declaredEndTimeMinuteEditText;
+
+    //Start/End AM/PM Toggles.
+    ToggleButton startTimeAmPmToggleButton;
     ToggleButton endTimeAmPmToggleButton;
 
+    //Till number views and toggles.
     RadioGroup tillNumberRadioGroup;
     RadioButton tillOneRadioButton;
     RadioButton tillTwoRadioButton;
     RadioButton offTillRadioButton;
     TextView tillNumberRadioGroupTextView;
 
-
+    //Form buttons.
     Button openShiftButton;
     Button updateShiftButton;
     Button closeShiftButton;
 
+    //All till balancing EditTexts.
     EditText startingTillEditText;
     EditText redemptionsEditText;
     EditText driveOffsEditText;
     EditText finalDropEditText;
     EditText tillShortOverEditText;
 
+    //All printed lotto ticket EditTexts.
     EditText printOutTerminalEditText;
     EditText printOutPassportEditText;
     EditText printOutDifferenceEditText;
 
+    //All scratch ticket EditTexts.
     EditText scratchStartEditText;
     EditText scratchAddEditText;
     EditText scratchCloseEditText;
@@ -75,9 +90,20 @@ public class ShiftFormActivity extends AppCompatActivity {
     EditText scratchPassportEditText;
     EditText scratchDifferenceEditText;
 
-
+    //Flag for employees shift status.
     boolean employeeHasOpenShift;
 
+    //Times employee declared in shift form.
+    String declaredStartTime;
+    String declaredEndTime;
+
+    //Actual time employee started/ended shift.
+    String actualStartTime;
+    String actualEndTime;
+
+    //Shift details
+    int userID;
+    int shiftID;
     String employeeName;
     String dateStart;
     String dateEnd;
@@ -85,31 +111,20 @@ public class ShiftFormActivity extends AppCompatActivity {
     int yearEnd;
     int monthStart;
     int monthEnd;
-
     double hoursWorked;
-
     int dayOfMonthStart;
     int dayOfMonthEnd;
     String dayOfWeek;
-
-    String declaredStartTime;
-    String actualStartTime;
-    String declaredEndTime;
-    String actualEndTime;
-
     int tillNumber;
-
     double startingTillAmount;
     double finalDropAmount;
     double redemptionsAmount;
     double driveOffs;
     double shortOver;
     double finalDrop;
-
     double printOutTerminal;
     double printOutPassport;
     double printOutDifference;
-
     int scratchStart;
     int scratchAdd;
     int scratchClose;
@@ -117,10 +132,6 @@ public class ShiftFormActivity extends AppCompatActivity {
     int scratchSold;
     int scratchDifference;
 
-
-    Calendar calendar;
-
-    DecimalFormat df = new DecimalFormat("#.00");
 
 
     /**
@@ -148,53 +159,52 @@ public class ShiftFormActivity extends AppCompatActivity {
 
         } else {
             toaster.toastUp(getApplicationContext(), "Starting new shift...");
-
             this.getStartDate();
             this.preloadStartTime();
             this.loadNewForm(userID);
             enableClosingViews(false);
-
-
         }
+    }
 
-//        try {
-//            calculateHoursWorked();
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+    /**
+     * Closing shift views are only available after a shift has been started.
+     *
+     * @param isEnabled
+     */
+    private void enableClosingViews(boolean isEnabled) {
+
+        startingTillEditText.setEnabled(!isEnabled);
+        redemptionsEditText.setEnabled(isEnabled);
+        driveOffsEditText.setEnabled(isEnabled);
+        finalDropEditText.setEnabled(isEnabled);
+        tillShortOverEditText.setEnabled(isEnabled);
+        printOutTerminalEditText.setEnabled(isEnabled);
+        printOutPassportEditText.setEnabled(isEnabled);
+
+        declaredStartTimeHourEditText.setEnabled(!isEnabled);
+        declaredStartTimeMinuteEditText.setEnabled(!isEnabled);
+        startTimeAmPmToggleButton.setEnabled(!isEnabled);
+
+        offTillRadioButton.setEnabled(!isEnabled);
+        tillOneRadioButton.setEnabled(!isEnabled);
+        tillTwoRadioButton.setEnabled(!isEnabled);
+
+        scratchStartEditText.setEnabled(!isEnabled);
+
+        scratchAddEditText.setEnabled(isEnabled);
+        scratchCloseEditText.setEnabled(isEnabled);
+        scratchPassportEditText.setEnabled(isEnabled);
+
+        closeShiftButton.setEnabled(isEnabled);
+        updateShiftButton.setEnabled(isEnabled);
+        openShiftButton.setEnabled(!isEnabled);
 
     }
 
-    private void enableClosingViews(boolean b) {
-
-        startingTillEditText.setEnabled(!b);
-        redemptionsEditText.setEnabled(b);
-        driveOffsEditText.setEnabled(b);
-        finalDropEditText.setEnabled(b);
-        tillShortOverEditText.setEnabled(b);
-        printOutTerminalEditText.setEnabled(b);
-        printOutPassportEditText.setEnabled(b);
-
-        declaredStartTimeHourEditText.setEnabled(!b);
-        declaredStartTimeMinuteEditText.setEnabled(!b);
-        startTimeAmPmToggleButton.setEnabled(!b);
-
-        offTillRadioButton.setEnabled(!b);
-        tillOneRadioButton.setEnabled(!b);
-        tillTwoRadioButton.setEnabled(!b);
-
-        scratchStartEditText.setEnabled(!b);
-
-        scratchAddEditText.setEnabled(b);
-        scratchCloseEditText.setEnabled(b);
-        scratchPassportEditText.setEnabled(b);
-
-        closeShiftButton.setEnabled(b);
-        updateShiftButton.setEnabled(b);
-        openShiftButton.setEnabled(!b);
-
-    }
-
+    /**
+     * All activity views and variables are instantiated here during onCreate.
+     * Including onTill RadioButton on click listener.
+     */
     private void instantiateVariables() {
         Intent intent = this.getIntent();
         userID = intent.getIntExtra("userID", 0);
@@ -206,7 +216,6 @@ public class ShiftFormActivity extends AppCompatActivity {
         toaster = new Toaster();
 
         employeeHasOpenShift = shiftsDataAccess.doesEmployeeHaveOpenShift(userID);
-
 
         infoBannerTextView = (TextView) findViewById(R.id.infoBannerTextView);
 
@@ -259,7 +268,7 @@ public class ShiftFormActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 Log.d("checkedId", " " + checkedId);
 
-                //If the overlap radiobutton is clicked, the nonOverLapShiftFieldsLayout is made
+                //If the overlap RadioButton is clicked, the nonOverLapShiftFieldsLayout is made
                 //visible.
                 if (offTillRadioButton.getId() == checkedId) {
                     onTillShiftFieldsLinearLayout.setVisibility(View.GONE);
@@ -272,9 +281,6 @@ public class ShiftFormActivity extends AppCompatActivity {
     }
 
     private void preloadStartTime() {
-//        Log.d("PreloadStartTime", calendar.getTime().toString().substring(11, 16));
-//        Log.d("PreloadStartTimeHour", calendar.getTime().toString().substring(11, 13));
-//        Log.d("PreloadStartTimeMinute", calendar.getTime().toString().substring(14, 16));
 
         int hour = Integer.parseInt(calendar.getTime().toString().substring(11, 13));
         int minute = Integer.parseInt(calendar.getTime().toString().substring(14, 16));
@@ -317,21 +323,14 @@ public class ShiftFormActivity extends AppCompatActivity {
         }
 
 
-//        hourString = Integer.toString(hour);
-
-
-//        Log.d("PreloadHour",  " " + hour);
-//        Log.d("PreloadMinute",  " " + minute);
-//        Log.d("PreloadMinuteString",  " " + minuteString);
-//        Log.d("PreloadHourString",  " " + hourString);
-
-
         declaredStartTimeHourEditText.setText(String.valueOf(hour));
         declaredStartTimeMinuteEditText.setText(minuteString);
-
-
     }
 
+    /**
+     * If the employee does not already have an active (on going shift) then this method is invoked.
+     * @param userID
+     */
     private void loadNewForm(int userID) {
         employeeName = employeeDataAccess.getEmployeeName(userID);
         employeeNameEditText.setText(employeeName);
@@ -378,10 +377,8 @@ public class ShiftFormActivity extends AppCompatActivity {
         String hour = declaredStartTime.substring(0, declaredStartTime.indexOf(":"));
         String min = declaredStartTime.substring(declaredStartTime.indexOf(":") + 1, 5);
 
-
         Log.d("StartTime", hour  + ":" + min + declaredStartTime.substring(6));
-
-
+        
         declaredStartTimeHourEditText.setText(hour);
         declaredStartTimeMinuteEditText.setText(min);
 
