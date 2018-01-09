@@ -378,7 +378,7 @@ public class ShiftFormActivity extends AppCompatActivity {
         String min = declaredStartTime.substring(declaredStartTime.indexOf(":") + 1, 5);
 
         Log.d("StartTime", hour  + ":" + min + declaredStartTime.substring(6));
-        
+
         declaredStartTimeHourEditText.setText(hour);
         declaredStartTimeMinuteEditText.setText(min);
 
@@ -435,7 +435,8 @@ public class ShiftFormActivity extends AppCompatActivity {
             offTillRadioButton.setChecked(true);
         }
 
-
+        //TODO: Should move to a method of its own.
+        //Extracts Strings from a singed on shifts shift data.
         startingTillAmount = Double.parseDouble(shiftData.get(4));
         startingTillEditText.setText(String.valueOf(startingTillAmount));
 
@@ -481,7 +482,9 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Gets the starting date details when a new shift is started.
+     */
     private void getStartDate() {
         dateStart = calendar.getTime().toString().substring(0, 10); // Wed Aug 09
         yearStart = calendar.get(Calendar.YEAR); // 2017
@@ -492,6 +495,9 @@ public class ShiftFormActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * When a shift is ended, end dates are assigned.
+     */
     private void getEndDate() {
         dateEnd = calendar.getTime().toString().substring(0, 10); // Wed Aug 09
         yearEnd = calendar.get(Calendar.YEAR); // 2017
@@ -561,6 +567,11 @@ public class ShiftFormActivity extends AppCompatActivity {
         return pass;
     }
 
+    /**
+     * Checks if the end time entered is valid.
+     * User will be notified via info banner if time format is invalid.
+     * @return
+     */
     private boolean isDeclaredEndTimeValid() {
         boolean pass = true;
         String formErrors = "";
